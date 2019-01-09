@@ -1,0 +1,9 @@
+[book]
+title = "L-Systems"
+authors = ["Phil Fried", "Daan van Berkel"]
+description = "A compendium to the L-Systems workshop"
+multilingual = false
+src = "src"
+
+[build]
+build-dir = "../docs"
