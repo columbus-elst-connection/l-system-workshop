@@ -6,6 +6,12 @@ The material includes the following
 
 * **book**: a book that provides background and assignments to study the subject.
 
+## Development
+The material is developed over multiple repositories. Go to the respective
+repositories and make a contribution.
+
+* [book][]
+
 ## Collecting the material
 There is a `Makefile` in this directory that collects all the material in a
 compressed archive.
@@ -20,3 +26,5 @@ following command
 ```sh
 make clean
 ```
+
+[book]: https://github.com/columbus-elst-connection/workshop/tree/master/book
