@@ -1,9 +1,14 @@
 # workshop
-A comprehensive collection of all things related to the workshop
+A comprehensive collection of all things related to the workshop.
+
+## Overview
+The material includes the following
+
+* **book**: a book that provides background and assignments to study the subject.
 
 ## Collecting the material
-There is a `Makefile` in this directory that collects all the material in an
-archive and compresses that.
+There is a `Makefile` in this directory that collects all the material in a
+compressed archive.
 
 ```sh
 make
