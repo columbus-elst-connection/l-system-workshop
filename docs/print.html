@@ -74,7 +74,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li></ol>
+            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -140,6 +140,51 @@ we can answer them. Try one of the following means of communication</p>
 <li><a href="https://github.com/columbus-elst-connection/workshop/issues">GitHub Issues</a></li>
 <li><a href="mailto://daan.v.berkel.1980+l-system@gmail.com">Mail</a></li>
 </ul>
+<a class="header" href="print.html#outline" id="outline"><h1>Outline</h1></a>
+<p>There are various ways of learning and we want to enable you to choose your path
+through the material. Below you can find the main sections that we will address
+during this workshop.</p>
+<p>It is possible to progress through the sections in any order you want. We have
+setup things in such a way that you can rely on our code so long as yours is not
+ready.</p>
+<a class="header" href="print.html#l-systems" id="l-systems"><h2>L-systems</h2></a>
+<p>This section teaches you what <a href="https://en.wikipedia.org/wiki/L-system">L-systems</a> are, trains you how to
+create them, and allows you to play with them.</p>
+<p>Describing a L-system is one thing. Teaching a computer how to work with
+L-systems is another. The next sections are major parts in the software that
+allows you to explore L-systems.</p>
+<a class="header" href="print.html#parser" id="parser"><h2>Parser</h2></a>
+<p>A <a href="https://en.wikipedia.org/wiki/Parsing">parser</a> is a</p>
+<blockquote>
+<p>software component that takes input data (frequently text) and builds a data
+structure – often some kind of parse tree, abstract syntax tree or other
+hierarchical structure, giving a structural representation of the input while
+checking for correct syntax.</p>
+</blockquote>
+<p>This section focuses on parsing a L-system. We do this by creating our own
+<a href="https://en.wikipedia.org/wiki/Parser_combinator">Parser Combinator framework</a> that we use to read an L-system
+and turn it into a data structure that we can use.</p>
+<a class="header" href="print.html#interpreter" id="interpreter"><h2>Interpreter</h2></a>
+<p>Once you have defined an L-system, you probably would like to do something with
+it. The <a href="https://en.wikipedia.org/wiki/Interpreter_(computing)">interpreter</a> helps with this goal. It diligently executes the
+instructions described by the L-system informing interested parties what has
+happened.</p>
+<p>The interpreter is the workhorse of our program. Although it is the centerpiece
+of our software, it is a quit simple machine.</p>
+<a class="header" href="print.html#renderer" id="renderer"><h2>Renderer</h2></a>
+<p>An L-system with out a &quot;picture&quot; is as a Christmas tree with out decorations. It
+still is instructive, but is sure isn't as much fun.</p>
+<p>In this section we explore various way of make a &quot;picture&quot; for our L-system.
+There are various ways of turning the L-system into meaningful artifact. Making
+an image is surely not the only one.</p>
+<a class="header" href="print.html#l-system" id="l-system"><h1>L-system</h1></a>
+<a class="header" href="print.html#aristid-lindenmayer" id="aristid-lindenmayer"><h1>Aristid Lindenmayer</h1></a>
+<p><a href="https://en.wikipedia.org/wiki/Aristid_Lindenmayer">Aristid Lindenmayer</a> was a Hungarian biologist. He lived from 1925
+until 1989. He studied biology and chemistry at the university of Budapest.
+Lindenmayer got his Ph.D. from the University of Michigan before accepting a
+position as professor in Philosophy of Life Sciences and Biology at the
+University of Utrecht.</p>
+<p><img src="lindenmayer.jpg" alt="Aristid Lindenmayer" /></p>
 
                     </main>
 
