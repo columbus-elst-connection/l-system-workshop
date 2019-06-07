@@ -2,13 +2,13 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Outline - L-Systems</title>
+        <title>What is a Parser? - L-Systems</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="A compendium to the L-Systems workshop">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <base href="">
+        <base href="../">
 
         <link rel="stylesheet" href="book.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
@@ -74,7 +74,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html" class="active"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li></ol></li></ol>
+            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html" class="active"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li></ol></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -120,20 +120,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <a class="header" href="outline.html#outline" id="outline"><h1>Outline</h1></a>
-<p>There are various ways of learning and we want to enable you to choose your path
-through the material. Below you can find the main sections that we will address
-during this workshop.</p>
-<p>It is possible to progress through the sections in any order you want. We have
-setup things in such a way that you can rely on our code so long as yours is not
-ready.</p>
-<a class="header" href="outline.html#l-systems" id="l-systems"><h2>L-systems</h2></a>
-<p>This section teaches you what <a href="https://en.wikipedia.org/wiki/L-system">L-systems</a> are, trains you how to
-create them, and allows you to play with them.</p>
-<p>Describing a L-system is one thing. Teaching a computer how to work with
-L-systems is another. The next sections are major parts in the software that
-allows you to explore L-systems.</p>
-<a class="header" href="outline.html#parser" id="parser"><h2>Parser</h2></a>
+                        <a class="header" href="parser/what.html#what-is-a-parser" id="what-is-a-parser"><h1>What is a Parser?</h1></a>
 <p>A <a href="https://en.wikipedia.org/wiki/Parsing">parser</a> is a</p>
 <blockquote>
 <p>software component that takes input data (frequently text) and builds a data
@@ -141,37 +128,39 @@ structure – often some kind of parse tree, abstract syntax tree or other
 hierarchical structure, giving a structural representation of the input while
 checking for correct syntax.</p>
 </blockquote>
-<p>This section focuses on parsing a L-system. We do this by creating our own
-<a href="https://en.wikipedia.org/wiki/Parser_combinator">Parser Combinator framework</a> that we use to read an L-system
-and turn it into a data structure that we can use.</p>
-<a class="header" href="outline.html#interpreter" id="interpreter"><h2>Interpreter</h2></a>
-<p>Once you have defined an L-system, you probably would like to do something with
-it. The <a href="https://en.wikipedia.org/wiki/Interpreter_(computing)">interpreter</a> helps with this goal. It diligently executes the
-instructions described by the L-system informing interested parties what has
-happened.</p>
-<p>The interpreter is the workhorse of our program. Although it is the centerpiece
-of our software, it is a quit simple machine.</p>
-<a class="header" href="outline.html#renderer" id="renderer"><h2>Renderer</h2></a>
-<p>An L-system with out a &quot;picture&quot; is as a Christmas tree with out decorations. It
-still is instructive, but is sure isn't as much fun.</p>
-<p>In this section we explore various way of make a &quot;picture&quot; for our L-system.
-There are various ways of turning the L-system into meaningful artifact. Making
-an image is surely not the only one.</p>
+<p>In our case we want to teach the computer to understand <code>.ls</code> files. This is our
+<em>input data</em>. Although this input is convenient for us, it is just a sequences of
+bytes to a computer.</p>
+<p>What we want is an L-system that we can manipulate. That is our <em>data
+structure</em>. Parsing is what brings us from our input data to our L-system.</p>
+<a class="header" href="parser/what.html#parser-framework" id="parser-framework"><h2>Parser framework</h2></a>
+<p>We will be building our own Parser framework. I.e. we will build the
+infrastructure that allows us to create a custom parser. We will use our
+framework to create a specific parser that reads in our <code>.ls</code> files and create
+the L-system for us.</p>
+<a class="header" href="parser/what.html#parser-combinator" id="parser-combinator"><h2>Parser Combinator</h2></a>
+<p>Our framework will be based on the concept of Parser Combinators. A Parser
+Combinator is a</p>
+<blockquote>
+<p>higher-order function that accepts several parsers as input and returns a new
+parser as its output. In this context, a parser is a function accepting strings
+as input and returning some structure as output, typically a parse tree or a set
+of indices representing locations in the string where parsing stopped
+successfully.</p>
+</blockquote>
+<p>If this does not really makes sense to you. Keep reading and soon you will be an
+expert Parser Combinatorist.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="parser.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
-                        
-                            <a rel="next" href="l-system.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
                         
 
                         <div style="clear: both"></div>
@@ -181,15 +170,11 @@ an image is surely not the only one.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="introduction.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="parser.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
-                
-                    <a href="l-system.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
                 
             </nav>
 

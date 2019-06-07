@@ -5,6 +5,6 @@ Lindenmayer got his Ph.D. from the University of Michigan before accepting a
 position as professor in Philosophy of Life Sciences and Biology at the
 University of Utrecht.
 
-![Aristid Lindenmayer](lindenmayer.jpg)
+![Aristid Lindenmayer](image/lindenmayer.jpg)
 
 [wiki]: https://en.wikipedia.org/wiki/Aristid_Lindenmayer

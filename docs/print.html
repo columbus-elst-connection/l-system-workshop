@@ -74,7 +74,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li></ol>
+            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li></ol></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -187,7 +187,43 @@ until 1989. He studied biology and chemistry at the university of Budapest.
 Lindenmayer got his Ph.D. from the University of Michigan before accepting a
 position as professor in Philosophy of Life Sciences and Biology at the
 University of Utrecht.</p>
-<p><img src="lindenmayer.jpg" alt="Aristid Lindenmayer" /></p>
+<p><img src="image/lindenmayer.jpg" alt="Aristid Lindenmayer" /></p>
+<a class="header" href="print.html#parser-1" id="parser-1"><h1>Parser</h1></a>
+<p>In the L-system section you have the opportunity to learn about and play with
+Lindenmayer systems. The Parser section starts our journey of creating our own
+software to explore L-systems.</p>
+<p>The journey starts with teaching the computer about <code>.ls</code> files and what we
+describe with them.</p>
+<a class="header" href="print.html#what-is-a-parser" id="what-is-a-parser"><h1>What is a Parser?</h1></a>
+<p>A <a href="https://en.wikipedia.org/wiki/Parsing">parser</a> is a</p>
+<blockquote>
+<p>software component that takes input data (frequently text) and builds a data
+structure – often some kind of parse tree, abstract syntax tree or other
+hierarchical structure, giving a structural representation of the input while
+checking for correct syntax.</p>
+</blockquote>
+<p>In our case we want to teach the computer to understand <code>.ls</code> files. This is our
+<em>input data</em>. Although this input is convenient for us, it is just a sequences of
+bytes to a computer.</p>
+<p>What we want is an L-system that we can manipulate. That is our <em>data
+structure</em>. Parsing is what brings us from our input data to our L-system.</p>
+<a class="header" href="print.html#parser-framework" id="parser-framework"><h2>Parser framework</h2></a>
+<p>We will be building our own Parser framework. I.e. we will build the
+infrastructure that allows us to create a custom parser. We will use our
+framework to create a specific parser that reads in our <code>.ls</code> files and create
+the L-system for us.</p>
+<a class="header" href="print.html#parser-combinator" id="parser-combinator"><h2>Parser Combinator</h2></a>
+<p>Our framework will be based on the concept of Parser Combinators. A Parser
+Combinator is a</p>
+<blockquote>
+<p>higher-order function that accepts several parsers as input and returns a new
+parser as its output. In this context, a parser is a function accepting strings
+as input and returning some structure as output, typically a parse tree or a set
+of indices representing locations in the string where parsing stopped
+successfully.</p>
+</blockquote>
+<p>If this does not really makes sense to you. Keep reading and soon you will be an
+expert Parser Combinatorist.</p>
 
                     </main>
 
