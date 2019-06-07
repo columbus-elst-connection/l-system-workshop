@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>What is a Parser? - L-Systems</title>
+        <title>Looking at the type - L-Systems</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="A compendium to the L-Systems workshop">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -74,7 +74,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html" class="active"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li></ol></li></ol>
+            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html" class="active"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li></ol></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -120,51 +120,63 @@
 
                 <div id="content" class="content">
                     <main>
-                        <a class="header" href="parser/what.html#what-is-a-parser" id="what-is-a-parser"><h1>What is a Parser?</h1></a>
-<p>A <a href="https://en.wikipedia.org/wiki/Parsing">parser</a> is a</p>
-<blockquote>
-<p>software component that takes input data (frequently text) and builds a data
-structure – often some kind of parse tree, abstract syntax tree or other
-hierarchical structure, giving a structural representation of the input while
-checking for correct syntax.</p>
-</blockquote>
-<p>In our case we want to teach the computer to understand <code>.ls</code> files. This is our
-<em>input data</em>. Although this input is convenient for us, it is just a sequences of
-bytes to a computer.</p>
-<p>What we want is an L-system that we can manipulate. That is our <em>data
-structure</em>. Parsing is what brings us from our input data to our L-system.</p>
-<a class="header" href="parser/what.html#parser-framework" id="parser-framework"><h2>Parser framework</h2></a>
-<p>We will be building our own Parser framework. I.e. we will build the
-infrastructure that allows us to create a custom parser. We will use our
-framework to create a specific parser that reads in our <code>.ls</code> files and create
-the L-system for us.</p>
-<a class="header" href="parser/what.html#parser-combinator" id="parser-combinator"><h2>Parser Combinator</h2></a>
-<p>Our framework will be based on the concept of Parser Combinators. A Parser
-Combinator is a</p>
-<blockquote>
-<p>higher-order function that accepts several parsers as input and returns a new
-parser as its output. In this context, a parser is a function accepting strings
-as input and returning some structure as output, typically a parse tree or a set
-of indices representing locations in the string where parsing stopped
-successfully.</p>
-</blockquote>
-<p>If this does not really makes sense to you. Keep reading and soon you will be an
-expert Parser Combinatorist.</p>
+                        <a class="header" href="parser/type.html#looking-at-the-type" id="looking-at-the-type"><h1>Looking at the type</h1></a>
+<p>Before we start out it is good to think what we want to achieve. This allows us
+to reason about the constraints and capture those in our types.</p>
+<p>A parser reads input and transforms that into some data structure. This already
+provides us with a decision. In what type is our input?</p>
+<p>We want to make things easy for our selves and since string literals have type
+<code>&amp;str</code> we our going to pick that as our input type.</p>
+<p>We don't really know what output type is going to be, put we do know that the
+parser could fail. Take a look at the following code</p>
+<pre><code class="language-lsystem">F -&gt; FF
+</code></pre>
+<p>Although it looks like an L-system, it not quite an L-system. At least not in
+the form we expect in the L-system section. The arrow is wrong!</p>
+<p>Because the data-structure could be anything, we better make it a generic
+parameter. So our first guess for the output type could be
+<code>Result&lt;T, ParserError&gt;</code>, where <code>ParserError</code> is defined as</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+#[derive(Debug, PartialEq)]
+pub enum ParseError {
+    GenericError,
+}
+#}</code></pre></pre>
+<a class="header" href="parser/type.html#combinator" id="combinator"><h2>Combinator</h2></a>
+<p>Although our first guess isn't that far off, it is lacking some flexibility.
+What we like to achieve is to easily combine different kind of parsers into a
+more complex one.</p>
+<p>With this goal in mind, we would like to pass information about what part of the
+input still needs parsing. Because we want to feed that into a different parser,
+that type should be <code>&amp;str</code>, our input type.</p>
+<p>So our second guess is <code>Result&lt;(T, &amp;str), ParserError&gt;</code>.</p>
+<p>A Parser returns a either a tuple of the parsed result and the rest of the
+input, or it returns an error.</p>
+<a class="header" href="parser/type.html#trait" id="trait"><h2>Trait</h2></a>
+<p>We now can create a <code>trait</code> that describes the contract our parsers have. It is
+little more than our consideration, with the correct use of lifetimes to keep
+the compiler happy.</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub trait Parser&lt;'a, T&gt; {
+    fn parse(&amp;self, input: &amp;'a str) -&gt; Result&lt;(T, &amp;'a str), ParseError&gt;;
+}
+#}</code></pre></pre>
+<p>So a Parser is anything that has a <code>parse</code> method of the right signature.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="parser.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="parser/what.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
-                        
-                            <a rel="next" href="parser/type.html" class="mobile-nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
                         
 
                         <div style="clear: both"></div>
@@ -174,15 +186,11 @@ expert Parser Combinatorist.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="parser.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="parser/what.html" class="nav-chapters previous" title="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
-                
-                    <a href="parser/type.html" class="nav-chapters next" title="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
                 
             </nav>
 
