@@ -7,3 +7,4 @@
 - [Parsers](./parser.md)
     - [What is a Parser?](./parser/what.md)
     - [Looking at the type](./parser/type.md)
+    - [Functions are Parsers!](./parser/function.md)

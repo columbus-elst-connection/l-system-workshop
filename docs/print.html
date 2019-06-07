@@ -74,7 +74,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li></ol></li></ol>
+            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li></ol></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -270,6 +270,20 @@ pub trait Parser&lt;'a, T&gt; {
 }
 #}</code></pre></pre>
 <p>So a Parser is anything that has a <code>parse</code> method of the right signature.</p>
+<a class="header" href="print.html#functions-are-parsers" id="functions-are-parsers"><h1>Functions are Parsers!</h1></a>
+<p>With our <code>Parser</code> trait in place we can start implementing it. Thinking about
+the trait one implementation springs to mind.</p>
+<p>If we have a function, or a lambda expression for that matter, that has the
+right signature. I.e. accepts a <code>&amp;str</code> and returns a
+<code>Result&lt;(T, &amp;str), ParseError&gt;</code>, in some sense it is a parser. We just have to
+apply the function!</p>
+<p>Let's start with that implementation.</p>
+<pre><code>impl &lt;'a, T, F&gt; Parser&lt;'a, T&gt; for F where F: Fn(&amp;'a str) -&gt; Result&lt;(T, &amp;'a str), ParseError&gt; {
+    fn parse(&amp;self, input: &amp;'a str) -&gt; Result&lt;(T, &amp;'a str), ParseError&gt; {
+        self(input)
+    }
+}
+</code></pre>
 
                     </main>
 
