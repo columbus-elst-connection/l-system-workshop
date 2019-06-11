@@ -4,10 +4,5 @@ version = "0.1.0"
 authors = ["Phil Fried <philfried@gmail.com>", "Daan van Berkel <daan.v.berkel.1980@gmail.com>"]
 edition = "2018"
 
-[workspace]
-members = [
-    "examplar-parser",
-]
-
 [dependencies]
 parser = { path = "examplar-parser" }
