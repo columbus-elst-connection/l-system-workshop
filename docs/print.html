@@ -74,7 +74,7 @@
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li></ol></li></ol>
+            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li></ol></li><li><a href="workspaces.html">Working with Workspaces</a></li></ol>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -284,6 +284,45 @@ apply the function!</p>
     }
 }
 </code></pre>
+<a class="header" href="print.html#working-with-workspaces" id="working-with-workspaces"><h1>Working with Workspaces</h1></a>
+<p>There are two different goals for this workshop. First is to allow you to play
+with L-systems. Second is to allow you to code your own L-system, and then play
+with that.</p>
+<p>In order to facilitate that the code makes use of <a href="https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html">workspaces</a>. A
+workspace is</p>
+<blockquote>
+<p>a set of packages that share the same Cargo.lock and output directory.</p>
+</blockquote>
+<p>It is an aid in organizing a project.</p>
+<p>The way we use workspaces is to easily transition from relying on provided code
+to relying on your own code.</p>
+<a class="header" href="print.html#mechanism" id="mechanism"><h2>Mechanism</h2></a>
+<p>If you take a look at the <code>Cargo.toml</code> file you will notice a <code>[workspace]</code>
+table. The <code>member</code> key lists all the workspaces in use. From the start the
+value is populated with a lot of <code>examplar-*</code> libraries. E.g. <code>examplar-parser</code>,
+<code>examplar-renderer</code> etcetera.</p>
+<p>Furthermore the <code>[dependencies]</code> table has a lot of path dependencies. E.g. we
+have a dependency on <code>parser</code> which can be found at <code>examplar-parser</code>, according
+to the following snippet.</p>
+<pre><code class="language-toml">[dependencies]
+parser = { path = &quot;examplar-parser&quot; }
+</code></pre>
+<a class="header" href="print.html#your-code" id="your-code"><h3>Your code</h3></a>
+<p>Every <code>examplar-*</code> library has a regular counter-part. I.e. besides
+<code>examplar-parser</code> there is also <code>parser</code>. This library has some skeletal code.
+It is an ideal starting ground for working on your own code.</p>
+<a class="header" href="print.html#hooking-up-your-code" id="hooking-up-your-code"><h3>Hooking up your code</h3></a>
+<p>Once you are comfortable with your code, it is time to hook it up to the main
+executable. This way you can play with your own L-system.</p>
+<p>This is done by changing the top-level <code>Cargo.toml</code>. Specifically the
+<code>[workspace]</code> table and the <code>[dependencies]</code> table. For the <code>[workspace]</code> you
+need to swap the specific <code>examplar-*</code> workspace for your own. E.g. change
+<code>examplar-parser</code> with <code>parser</code>.
+for the <code>[dependencies]</code> you need to point to the correct path. E.g. for the
+parser dependency the path should be <code>parser</code> if you want to use your own code.</p>
+<a class="header" href="print.html#enjoy-your-l-system" id="enjoy-your-l-system"><h3>Enjoy your L-System</h3></a>
+<p>If everything works out, you should be able to enjoy your own L-system
+framework.</p>
 
                     </main>
 
