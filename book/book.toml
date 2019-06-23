@@ -7,3 +7,6 @@ src = "src"
 
 [build]
 build-dir = "../docs"
+
+[output.html]
+mathjax-support = true

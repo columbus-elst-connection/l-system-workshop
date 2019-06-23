@@ -1,43 +1,49 @@
 <!DOCTYPE HTML>
-<html lang="en">
+<html lang="en" class="sidebar-visible no-js">
     <head>
+        <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
         <title>L-Systems</title>
+        
+        <meta name="robots" content="noindex" />
+        
+
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="A compendium to the L-Systems workshop">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <base href="">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
 
-        <link rel="stylesheet" href="book.css">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
 
-        <link rel="shortcut icon" href="favicon.png">
-
-        <!-- Font Awesome -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-
+        <!-- Highlight.js Stylesheets -->
         <link rel="stylesheet" href="highlight.css">
         <link rel="stylesheet" href="tomorrow-night.css">
         <link rel="stylesheet" href="ayu-highlight.css">
 
-        <!-- Custom theme -->
+        <!-- Custom theme stylesheets -->
         
 
         
-
-        <!-- Fetch Clipboard.js from CDN but have a local fallback -->
-        <script src="https://cdn.jsdelivr.net/clipboard.js/1.6.1/clipboard.min.js"></script>
-        <script>
-            if (typeof Clipboard == 'undefined') {
-                document.write(unescape("%3Cscript src='clipboard.min.js'%3E%3C/script%3E"));
-            }
-        </script>
-
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
     </head>
     <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = "light";
+        </script>
+
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
         <script type="text/javascript">
             try {
@@ -57,24 +63,29 @@
         <!-- Set the theme before any content is loaded, prevents flash -->
         <script type="text/javascript">
             var theme;
-            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { } 
-            if (theme === null || theme === undefined) { theme = 'light'; }
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
             document.body.className = theme;
-            document.querySelector('html').className = theme;
+            document.querySelector('html').className = theme + ' js';
         </script>
 
         <!-- Hide / unhide sidebar before it is displayed -->
         <script type="text/javascript">
+            var html = document.querySelector('html');
             var sidebar = 'hidden';
             if (document.body.clientWidth >= 1080) {
                 try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
                 sidebar = sidebar || 'visible';
             }
-            document.querySelector('html').classList.add("sidebar-" + sidebar);
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
         </script>
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
-            <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li></ol></li><li><a href="dependencies.html">Working with Dependencies</a></li></ol>
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li></ol></li><li><a href="dependencies.html">Working with Dependencies</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
 
         <div id="page-wrapper" class="page-wrapper">
@@ -84,30 +95,49 @@
                 <div id="menu-bar" class="menu-bar">
                     <div id="menu-bar-sticky-container">
                         <div class="left-buttons">
-                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-controls="sidebar">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
                                 <i class="fa fa-bars"></i>
                             </button>
-                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
                                 <i class="fa fa-paint-brush"></i>
                             </button>
-                            <ul id="theme-list" class="theme-popup" aria-label="submenu">
-                                <li><button class="theme" id="light">Light <span class="default">(default)</span></button></li>
-                                <li><button class="theme" id="rust">Rust</button></li>
-                                <li><button class="theme" id="coal">Coal</button></li>
-                                <li><button class="theme" id="navy">Navy</button></li>
-                                <li><button class="theme" id="ayu">Ayu</button></li>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                             </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
                         </div>
 
                         <h1 class="menu-title">L-Systems</h1>
 
                         <div class="right-buttons">
-                            <a href="print.html" title="Print this book">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
                                 <i id="print-button" class="fa fa-print"></i>
                             </a>
+                            
                         </div>
                     </div>
                 </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
 
                 <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
                 <script type="text/javascript">
@@ -120,7 +150,7 @@
 
                 <div id="content" class="content">
                     <main>
-                        <a class="header" href="print.html#introduction" id="introduction"><h1>Introduction</h1></a>
+                        <h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
 <p>This book is a compendium to the <a href="https://en.wikipedia.org/wiki/L-system">L-systems</a> workshop.</p>
 <p>This book and the workshop will introduce you to L-systems, allowing you to play
 and understand them.</p>
@@ -130,7 +160,7 @@ the necessary tools and techniques to finish.</p>
 <p>This book serves as a guide during your journey. A trusty companion that cheers
 you on, helps you when you are stuck and can turn to when your motivation is
 low.</p>
-<a class="header" href="print.html#not-at-a-workshop" id="not-at-a-workshop"><h2>Not at a workshop?</h2></a>
+<h2><a class="header" href="#not-at-a-workshop" id="not-at-a-workshop">Not at a workshop?</a></h2>
 <p>This book is written to be self contained. The only downside of not being in a
 workshop is missing the ability to ask questions and getting a quick answer.</p>
 <p>There still is the ability to ask questions, it might just take some time before
@@ -140,63 +170,97 @@ we can answer them. Try one of the following means of communication</p>
 <li><a href="https://github.com/columbus-elst-connection/workshop/issues">GitHub Issues</a></li>
 <li><a href="mailto://daan.v.berkel.1980+l-system@gmail.com">Mail</a></li>
 </ul>
-<a class="header" href="print.html#outline" id="outline"><h1>Outline</h1></a>
+<h1><a class="header" href="#outline" id="outline">Outline</a></h1>
 <p>There are various ways of learning and we want to enable you to choose your path
 through the material. Below you can find the main sections that we will address
 during this workshop.</p>
 <p>It is possible to progress through the sections in any order you want. We have
 setup things in such a way that you can rely on our code so long as yours is not
 ready.</p>
-<a class="header" href="print.html#l-systems" id="l-systems"><h2>L-systems</h2></a>
+<h2><a class="header" href="#l-systems" id="l-systems">L-systems</a></h2>
 <p>This section teaches you what <a href="https://en.wikipedia.org/wiki/L-system">L-systems</a> are, trains you how to
 create them, and allows you to play with them.</p>
 <p>Describing a L-system is one thing. Teaching a computer how to work with
 L-systems is another. The next sections are major parts in the software that
 allows you to explore L-systems.</p>
-<a class="header" href="print.html#parser" id="parser"><h2>Parser</h2></a>
+<h2><a class="header" href="#parser" id="parser">Parser</a></h2>
 <p>A <a href="https://en.wikipedia.org/wiki/Parsing">parser</a> is a</p>
 <blockquote>
 <p>software component that takes input data (frequently text) and builds a data
 structure – often some kind of parse tree, abstract syntax tree or other
 hierarchical structure, giving a structural representation of the input while
-checking for correct syntax.</p>
+checking for correct syntax. </p>
 </blockquote>
 <p>This section focuses on parsing a L-system. We do this by creating our own
 <a href="https://en.wikipedia.org/wiki/Parser_combinator">Parser Combinator framework</a> that we use to read an L-system
 and turn it into a data structure that we can use.</p>
-<a class="header" href="print.html#interpreter" id="interpreter"><h2>Interpreter</h2></a>
+<h2><a class="header" href="#interpreter" id="interpreter">Interpreter</a></h2>
 <p>Once you have defined an L-system, you probably would like to do something with
 it. The <a href="https://en.wikipedia.org/wiki/Interpreter_(computing)">interpreter</a> helps with this goal. It diligently executes the
 instructions described by the L-system informing interested parties what has
 happened.</p>
 <p>The interpreter is the workhorse of our program. Although it is the centerpiece
 of our software, it is a quit simple machine.</p>
-<a class="header" href="print.html#renderer" id="renderer"><h2>Renderer</h2></a>
+<h2><a class="header" href="#renderer" id="renderer">Renderer</a></h2>
 <p>An L-system with out a &quot;picture&quot; is as a Christmas tree with out decorations. It
 still is instructive, but is sure isn't as much fun.</p>
 <p>In this section we explore various way of make a &quot;picture&quot; for our L-system.
 There are various ways of turning the L-system into meaningful artifact. Making
 an image is surely not the only one.</p>
-<a class="header" href="print.html#l-system" id="l-system"><h1>L-system</h1></a>
+<h1><a class="header" href="#l-system" id="l-system">L-system</a></h1>
 <p>This section teaches you all about what <a href="https://en.wikipedia.org/wiki/L-system">L-systems</a> are.</p>
 <p>Read about Aristid Lindenmayer and why he invented his system. Explore the rich
 language and it's beautiful images.</p>
-<a class="header" href="print.html#aristid-lindenmayer" id="aristid-lindenmayer"><h1>Aristid Lindenmayer</h1></a>
+<h1><a class="header" href="#aristid-lindenmayer" id="aristid-lindenmayer">Aristid Lindenmayer</a></h1>
 <p><a href="https://en.wikipedia.org/wiki/Aristid_Lindenmayer">Aristid Lindenmayer</a> was a Hungarian biologist. He lived from 1925
 until 1989. He studied biology and chemistry at the university of Budapest.
 Lindenmayer got his Ph.D. from the University of Michigan before accepting a
 position as professor in Philosophy of Life Sciences and Biology at the
 University of Utrecht.</p>
-<p><img src="image/lindenmayer.jpg" alt="Aristid Lindenmayer" /></p>
-<a class="header" href="print.html#parser-1" id="parser-1"><h1>Parser</h1></a>
+<p><img src="lsystem/image/lindenmayer.jpg" alt="Aristid Lindenmayer" /></p>
+<h1><a class="header" href="#algae" id="algae">Algae</a></h1>
+<p>Aristid Lindenmayer introduces a system of substitutions that would later bear his name. He did this in a set of two articles; <em>Mathematical Models for Cellular Interactions in Development</em>. As the title implies it offers a mathematical theory to model growth in certain type of cells. Stripping away the mathematics his article described an example that modeled algae. A more modern description follows below.</p>
+<p>We will study <em>words</em>, i.e. a sequence of symbols, over an <em>alphabet</em>. In our example we take our alphabet to be the symbols <em>A</em>, and <em>B</em>. We will examine a series of words. In the algae example we are starting with the word <em>A</em>. 
+With the current word in the series, we replace each symbol with a sequence of symbols and concatenating the sub-sequences in a new word. In our example we will replace each occurring symbol <em>A</em> with the sequence <em>AB</em>, and each occurring symbol <em>B</em> with the sequence <em>A</em>.</p>
+<p>Below you find the first few iterations of this process.</p>
+<ol>
+<li><em>A</em>, our starting word.</li>
+<li><em>AB</em>, because the single <em>A</em> is replaced with <em>AB</em>.</li>
+<li><em>ABA</em>, because the single <em>A</em> is replaced with <em>AB</em> and the <em>B</em> is replaced with <em>A</em>.</li>
+<li><em>ABAAB</em>, because each <em>A</em> is replaced with <em>AB</em> and each <em>B</em> is replaced with <em>A</em>.</li>
+</ol>
+<p>In the above model the symbol <em>A</em> is a model for a mature cell, ready to divide itself. The division however is asymmetric. It allows the original cell to comfortable remain in place, making place for a young cell <em>B</em>. In its stead, the young cell <em>B</em> first must mature to and become an <em>A</em> cell before it can start reproducing itself.</p>
+<p>Although this is a simple model. A lot can be learned from this. For an few examples, see the exercises.</p>
+<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
+<ol>
+<li>
+<p>Extend the example with the a few iterations.</p>
+</li>
+<li>
+<p>Count the number of symbols in each word of the series. Guess what number comes next.</p>
+</li>
+<li>
+<p>Count the number of <em>A</em>'s and the number of <em>B</em>'s separately. What do you get.</p>
+</li>
+<li>
+<p>We will number the words in our series, \(W_{0}\) for our start word, \(W_{1}\), for the next, \(W_{2}\) for the one after that, etcetera. Pick any number, let's say 4. Notice how \(W_{4}\), i.e. <em>ABAAB</em> is the concatenation of <em>ABA</em>, which is \(W_{3}\), and <em>AB</em>, which is \(W_{2}\). In other words \(W_{4}=W_{3}W_{2}\).</p>
+</li>
+<li>
+<p>Check if something similar holds for \(W_{3}\) and \(W_{5}\).</p>
+</li>
+<li>
+<p>Does this property, i.e. \(W_{k} = W_{k-1}W_{k-2}\) always hold?</p>
+</li>
+</ol>
+<h1><a class="header" href="#parser-1" id="parser-1">Parser</a></h1>
 <p>In the L-system section you have the opportunity to learn about and play with
 Lindenmayer systems. The Parser section starts our journey of creating our own
 software to explore L-systems.</p>
 <p>The journey starts with teaching the computer about <code>.ls</code> files and what we
-describe with them.</p>
-<p>Make sure to looking to <a href="dependencies.html">working with dependencies</a> to find out
+describe with them. </p>
+<p>Make sure to look in to <a href="dependencies.html">working with dependencies</a> to find out
 how to incorporate your code into the project.</p>
-<a class="header" href="print.html#what-is-a-parser" id="what-is-a-parser"><h1>What is a Parser?</h1></a>
+<h1><a class="header" href="#what-is-a-parser" id="what-is-a-parser">What is a Parser?</a></h1>
 <p>A <a href="https://en.wikipedia.org/wiki/Parsing">parser</a> is a</p>
 <blockquote>
 <p>software component that takes input data (frequently text) and builds a data
@@ -209,12 +273,12 @@ checking for correct syntax.</p>
 bytes to a computer.</p>
 <p>What we want is an L-system that we can manipulate. That is our <em>data
 structure</em>. Parsing is what brings us from our input data to our L-system.</p>
-<a class="header" href="print.html#parser-framework" id="parser-framework"><h2>Parser framework</h2></a>
+<h2><a class="header" href="#parser-framework" id="parser-framework">Parser framework</a></h2>
 <p>We will be building our own Parser framework. I.e. we will build the
 infrastructure that allows us to create a custom parser. We will use our
 framework to create a specific parser that reads in our <code>.ls</code> files and create
 the L-system for us.</p>
-<a class="header" href="print.html#parser-combinator" id="parser-combinator"><h2>Parser Combinator</h2></a>
+<h2><a class="header" href="#parser-combinator" id="parser-combinator">Parser Combinator</a></h2>
 <p>Our framework will be based on the concept of Parser Combinators. A Parser
 Combinator is a</p>
 <blockquote>
@@ -226,7 +290,7 @@ successfully.</p>
 </blockquote>
 <p>If this does not really makes sense to you. Keep reading and soon you will be an
 expert Parser Combinatorist.</p>
-<a class="header" href="print.html#looking-at-the-type" id="looking-at-the-type"><h1>Looking at the type</h1></a>
+<h1><a class="header" href="#looking-at-the-type" id="looking-at-the-type">Looking at the type</a></h1>
 <p>Before we start out it is good to think what we want to achieve. This allows us
 to reason about the constraints and capture those in our types.</p>
 <p>A parser reads input and transforms that into some data structure. This already
@@ -250,7 +314,7 @@ pub enum ParseError {
     GenericError,
 }
 #}</code></pre></pre>
-<a class="header" href="print.html#combinator" id="combinator"><h2>Combinator</h2></a>
+<h2><a class="header" href="#combinator" id="combinator">Combinator</a></h2>
 <p>Although our first guess isn't that far off, it is lacking some flexibility.
 What we like to achieve is to easily combine different kind of parsers into a
 more complex one.</p>
@@ -259,8 +323,8 @@ input still needs parsing. Because we want to feed that into a different parser,
 that type should be <code>&amp;str</code>, our input type.</p>
 <p>So our second guess is <code>Result&lt;(T, &amp;str), ParserError&gt;</code>.</p>
 <p>A Parser returns a either a tuple of the parsed result and the rest of the
-input, or it returns an error.</p>
-<a class="header" href="print.html#trait" id="trait"><h2>Trait</h2></a>
+input, or it returns an error. </p>
+<h2><a class="header" href="#trait" id="trait">Trait</a></h2>
 <p>We now can create a <code>trait</code> that describes the contract our parsers have. It is
 little more than our consideration, with the correct use of lifetimes to keep
 the compiler happy.</p>
@@ -272,13 +336,13 @@ pub trait Parser&lt;'a, T&gt; {
 }
 #}</code></pre></pre>
 <p>So a Parser is anything that has a <code>parse</code> method of the right signature.</p>
-<a class="header" href="print.html#functions-are-parsers" id="functions-are-parsers"><h1>Functions are Parsers!</h1></a>
+<h1><a class="header" href="#functions-are-parsers" id="functions-are-parsers">Functions are Parsers!</a></h1>
 <p>With our <code>Parser</code> trait in place we can start implementing it. Thinking about
 the trait one implementation springs to mind.</p>
 <p>If we have a function, or a lambda expression for that matter, that has the
-right signature. I.e. accepts a <code>&amp;str</code> and returns a
+right signature. I.e. accepts a <code>&amp;str</code> and returns a 
 <code>Result&lt;(T, &amp;str), ParseError&gt;</code>, in some sense it is a parser. We just have to
-apply the function!</p>
+apply the function! </p>
 <p>Let's start with that implementation.</p>
 <pre><code>impl &lt;'a, T, F&gt; Parser&lt;'a, T&gt; for F where F: Fn(&amp;'a str) -&gt; Result&lt;(T, &amp;'a str), ParseError&gt; {
     fn parse(&amp;self, input: &amp;'a str) -&gt; Result&lt;(T, &amp;'a str), ParseError&gt; {
@@ -286,31 +350,31 @@ apply the function!</p>
     }
 }
 </code></pre>
-<a class="header" href="print.html#working-with-dependencies" id="working-with-dependencies"><h1>Working with Dependencies</h1></a>
+<h1><a class="header" href="#working-with-dependencies" id="working-with-dependencies">Working with Dependencies</a></h1>
 <p>There are two different goals for this workshop. First is to allow you to play
 with L-systems. Second is to allow you to code your own L-system, and then play
 with that.</p>
 <p>In order to facilitate that the code makes use of path dependencies. That way we
 use can easily transition from relying on provided code to relying on your own
 code.</p>
-<a class="header" href="print.html#mechanism" id="mechanism"><h2>Mechanism</h2></a>
+<h2><a class="header" href="#mechanism" id="mechanism">Mechanism</a></h2>
 <p>If you take a look at the <code>Cargo.toml</code> file you will notice the <code>[dependencies]</code>
 table has a lot of path dependencies. E.g. we have a dependency on <code>parser</code>
 which can be found at <code>examplar-parser</code>, according to the following snippet.</p>
 <pre><code class="language-toml">[dependencies]
 parser = { path = &quot;examplar-parser&quot; }
 </code></pre>
-<a class="header" href="print.html#your-code" id="your-code"><h3>Your code</h3></a>
+<h3><a class="header" href="#your-code" id="your-code">Your code</a></h3>
 <p>Every <code>examplar-*</code> library has a regular counter-part. I.e. besides
 <code>examplar-parser</code> there is also <code>parser</code> library. This library has some skeletal
 code. It is an ideal starting ground for working on your own code.</p>
-<a class="header" href="print.html#hooking-up-your-code" id="hooking-up-your-code"><h3>Hooking up your code</h3></a>
+<h3><a class="header" href="#hooking-up-your-code" id="hooking-up-your-code">Hooking up your code</a></h3>
 <p>Once you are comfortable with your code, it is time to hook it up to the main
 executable. This way you can play with your own L-system.</p>
 <p>This is done by changing the top-level <code>Cargo.toml</code>. Specifically the
 [dependencies]<code>table. For the</code>[dependencies]<code>you need to point to the correct path. E.g. for the parser dependency the path should be</code>parser` if you want to
-use your own code.</p>
-<a class="header" href="print.html#enjoy-your-l-system" id="enjoy-your-l-system"><h3>Enjoy your L-System</h3></a>
+use your own code. </p>
+<h3><a class="header" href="#enjoy-your-l-system" id="enjoy-your-l-system">Enjoy your L-System</a></h3>
 <p>If everything works out, you should be able to enjoy your own L-system
 framework.</p>
 
@@ -335,36 +399,35 @@ framework.</p>
 
         </div>
 
+        
 
-        <!-- Local fallback for Font Awesome -->
-        <script>
-            if (getComputedStyle(document.querySelector(".fa")).fontFamily !== "FontAwesome") {
-                var link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.type = 'text/css';
-                link.href = '_FontAwesome/css/font-awesome.css';
-                document.head.insertBefore(link, document.head.firstChild)
-            }
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
+        });
         </script>
-
         
-
-        
-
-        
-
-        
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                window.print();
-            })
-        </script>
-        
-
-        <script src="highlight.js"></script>
-        <script src="book.js"></script>
-
-        <!-- Custom JS script -->
         
 
     </body>

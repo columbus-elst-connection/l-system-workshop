@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Parsers - L-Systems</title>
+        <title>Algae - L-Systems</title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -11,21 +11,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <link rel="shortcut icon" href="favicon.png">
-        <link rel="stylesheet" href="css/variables.css">
-        <link rel="stylesheet" href="css/general.css">
-        <link rel="stylesheet" href="css/chrome.css">
-        <link rel="stylesheet" href="css/print.css" media="print">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="highlight.css">
-        <link rel="stylesheet" href="tomorrow-night.css">
-        <link rel="stylesheet" href="ayu-highlight.css">
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         
@@ -38,7 +38,7 @@
     <body class="light">
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "";
+            var path_to_root = "../";
             var default_theme = "light";
         </script>
 
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="parser.html" class="active"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li></ol></li><li><a href="dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html" class="active"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li></ol></li><li><a href="../dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -116,7 +116,7 @@
                         <h1 class="menu-title">L-Systems</h1>
 
                         <div class="right-buttons">
-                            <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <a href="../print.html" title="Print this book" aria-label="Print this book">
                                 <i id="print-button" class="fa fa-print"></i>
                             </a>
                             
@@ -148,27 +148,53 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#parser" id="parser">Parser</a></h1>
-<p>In the L-system section you have the opportunity to learn about and play with
-Lindenmayer systems. The Parser section starts our journey of creating our own
-software to explore L-systems.</p>
-<p>The journey starts with teaching the computer about <code>.ls</code> files and what we
-describe with them. </p>
-<p>Make sure to look in to <a href="dependencies.html">working with dependencies</a> to find out
-how to incorporate your code into the project.</p>
+                        <h1><a class="header" href="#algae" id="algae">Algae</a></h1>
+<p>Aristid Lindenmayer introduces a system of substitutions that would later bear his name. He did this in a set of two articles; <em>Mathematical Models for Cellular Interactions in Development</em>. As the title implies it offers a mathematical theory to model growth in certain type of cells. Stripping away the mathematics his article described an example that modeled algae. A more modern description follows below.</p>
+<p>We will study <em>words</em>, i.e. a sequence of symbols, over an <em>alphabet</em>. In our example we take our alphabet to be the symbols <em>A</em>, and <em>B</em>. We will examine a series of words. In the algae example we are starting with the word <em>A</em>. 
+With the current word in the series, we replace each symbol with a sequence of symbols and concatenating the sub-sequences in a new word. In our example we will replace each occurring symbol <em>A</em> with the sequence <em>AB</em>, and each occurring symbol <em>B</em> with the sequence <em>A</em>.</p>
+<p>Below you find the first few iterations of this process.</p>
+<ol>
+<li><em>A</em>, our starting word.</li>
+<li><em>AB</em>, because the single <em>A</em> is replaced with <em>AB</em>.</li>
+<li><em>ABA</em>, because the single <em>A</em> is replaced with <em>AB</em> and the <em>B</em> is replaced with <em>A</em>.</li>
+<li><em>ABAAB</em>, because each <em>A</em> is replaced with <em>AB</em> and each <em>B</em> is replaced with <em>A</em>.</li>
+</ol>
+<p>In the above model the symbol <em>A</em> is a model for a mature cell, ready to divide itself. The division however is asymmetric. It allows the original cell to comfortable remain in place, making place for a young cell <em>B</em>. In its stead, the young cell <em>B</em> first must mature to and become an <em>A</em> cell before it can start reproducing itself.</p>
+<p>Although this is a simple model. A lot can be learned from this. For an few examples, see the exercises.</p>
+<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
+<ol>
+<li>
+<p>Extend the example with the a few iterations.</p>
+</li>
+<li>
+<p>Count the number of symbols in each word of the series. Guess what number comes next.</p>
+</li>
+<li>
+<p>Count the number of <em>A</em>'s and the number of <em>B</em>'s separately. What do you get.</p>
+</li>
+<li>
+<p>We will number the words in our series, \(W_{0}\) for our start word, \(W_{1}\), for the next, \(W_{2}\) for the one after that, etcetera. Pick any number, let's say 4. Notice how \(W_{4}\), i.e. <em>ABAAB</em> is the concatenation of <em>ABA</em>, which is \(W_{3}\), and <em>AB</em>, which is \(W_{2}\). In other words \(W_{4}=W_{3}W_{2}\).</p>
+</li>
+<li>
+<p>Check if something similar holds for \(W_{3}\) and \(W_{5}\).</p>
+</li>
+<li>
+<p>Does this property, i.e. \(W_{k} = W_{k-1}W_{k-2}\) always hold?</p>
+</li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="lsystem/algae.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../lsystem/Aristid.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="parser/what.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../parser.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -180,13 +206,13 @@ how to incorporate your code into the project.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="lsystem/algae.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="../lsystem/Aristid.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a href="parser/what.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="../parser.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
@@ -201,14 +227,14 @@ how to incorporate your code into the project.</p>
         
 
         
-        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
-        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         
