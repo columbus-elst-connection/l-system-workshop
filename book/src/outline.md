@@ -37,7 +37,7 @@ The interpreter is the workhorse of our program. Although it is the centerpiece
 of our software, it is a quit simple machine.
 
 ## Renderer
-An L-system with out a "picture" is as a Christmas tree with out decorations. It
+An L-system without a "picture" is as a Christmas tree without decorations. It
 still is instructive, but is sure isn't as much fun.
 
 In this section we explore various way of make a "picture" for our L-system.
