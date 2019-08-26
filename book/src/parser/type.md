@@ -3,7 +3,7 @@ Before we start out it is good to think what we want to achieve. This allows us
 to reason about the constraints and capture those in our types.
 
 A parser reads input and transforms that into some data structure. This already
-provides us with a decision. In what type is our input?
+provides us with a decision. I.e. what type is our input?
 
 We want to make things easy for our selves and since string literals have type
 `&str` we our going to pick that as our input type.
@@ -40,7 +40,7 @@ that type should be `&str`, our input type.
 
 So our second guess is `Result<(T, &str), ParserError>`.
 
-A Parser returns a either a tuple of the parsed result and the rest of the
+A Parser returns either a tuple of the parsed result and the rest of the
 input, or it returns an error. 
 
 ## Trait

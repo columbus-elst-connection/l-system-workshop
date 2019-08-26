@@ -284,7 +284,7 @@ expert Parser Combinatorist.</p>
 <p>Before we start out it is good to think what we want to achieve. This allows us
 to reason about the constraints and capture those in our types.</p>
 <p>A parser reads input and transforms that into some data structure. This already
-provides us with a decision. In what type is our input?</p>
+provides us with a decision. I.e. what type is our input?</p>
 <p>We want to make things easy for our selves and since string literals have type
 <code>&amp;str</code> we our going to pick that as our input type.</p>
 <p>We don't really know what output type is going to be, put we do know that the
@@ -312,7 +312,7 @@ more complex one.</p>
 input still needs parsing. Because we want to feed that into a different parser,
 that type should be <code>&amp;str</code>, our input type.</p>
 <p>So our second guess is <code>Result&lt;(T, &amp;str), ParserError&gt;</code>.</p>
-<p>A Parser returns a either a tuple of the parsed result and the rest of the
+<p>A Parser returns either a tuple of the parsed result and the rest of the
 input, or it returns an error. </p>
 <h2><a class="header" href="#trait" id="trait">Trait</a></h2>
 <p>We now can create a <code>trait</code> that describes the contract our parsers have. It is
