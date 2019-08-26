@@ -21,5 +21,5 @@ Although this is a simple model. A lot can be learned from this. For an few exam
 3. Count the number of *A*'s and the number of *B*'s separately. What do you get.
 4. We will number the words in our series, \\(W_{0}\\) for our start word, \\(W_{1}\\), for the next, \\(W_{2}\\) for the one after that, etcetera. Pick any number, let's say 4. Notice how \\(W_{4}\\), i.e. *ABAAB* is the concatenation of *ABA*, which is \\(W_{3}\\), and *AB*, which is \\(W_{2}\\). In other words \\(W_{4}=W_{3}W_{2}\\).
 
-1. Check if something similar holds for \\(W_{3}\\) and \\(W_{5}\\).
-2. Does this property, i.e. \\(W_{k} = W_{k-1}W_{k-2}\\) always hold?
+* Check if something similar holds for \\(W_{3}\\) and \\(W_{5}\\).
+* Does this property, i.e. \\(W_{k} = W_{k-1}W_{k-2}\\) always hold?
