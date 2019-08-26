@@ -27,7 +27,7 @@ Once you are comfortable with your code, it is time to hook it up to the main
 executable. This way you can play with your own L-system.
 
 This is done by changing the top-level `Cargo.toml`. Specifically the
-[dependencies]` table. For the `[dependencies]` you need to point to the correct
+`[dependencies]` table. For the `[dependencies]` you need to point to the correct
 path. E.g. for the parser dependency the path should be `parser` if you want to
 use your own code. 
 
