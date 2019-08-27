@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>What is a Parser? - L-Systems</title>
+        <title>Parsing a char - L-Systems</title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html" class="active"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="../dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html" class="active"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="../dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,49 +148,115 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#what-is-a-parser" id="what-is-a-parser">What is a Parser?</a></h1>
-<p>A <a href="https://en.wikipedia.org/wiki/Parsing">parser</a> is a</p>
-<blockquote>
-<p>software component that takes input data (frequently text) and builds a data
-structure – often some kind of parse tree, abstract syntax tree or other
-hierarchical structure, giving a structural representation of the input while
-checking for correct syntax.</p>
-</blockquote>
-<p>In our case we want to teach the computer to understand <code>.ls</code> files. This is our
-<em>input data</em>. Although this input is convenient for us, it is just a sequences of
-bytes to a computer.</p>
-<p>What we want is an L-system that we can manipulate. That is our <em>data
-structure</em>. Parsing is what brings us from our input data to our L-system.</p>
-<h2><a class="header" href="#parser-framework" id="parser-framework">Parser framework</a></h2>
-<p>We will be building our own Parser framework. I.e. we will build the
-infrastructure that allows us to create a custom parser. We will use our
-framework to create a specific parser that reads in our <code>.ls</code> files and create
-the L-system for us.</p>
-<h2><a class="header" href="#parser-combinator" id="parser-combinator">Parser Combinator</a></h2>
-<p>Our framework will be based on the concept of Parser Combinators. A Parser
-Combinator is a</p>
-<blockquote>
-<p>higher-order function that accepts several parsers as input and returns a new
-parser as its output. In this context, a parser is a function accepting strings
-as input and returning some structure as output, typically a parse tree or a set
-of indices representing locations in the string where parsing stopped
-successfully.</p>
-</blockquote>
-<p>If this does not really makes sense to you. Keep reading and soon you will be an
-expert Parser Combinatorist.</p>
+                        <h1><a class="header" href="#parsing-a-char" id="parsing-a-char">Parsing a <code>char</code></a></h1>
+<p>In this chapter we will spend some time explaining how to create a <code>Parser</code>
+capable of parsing a <code>char</code>. We will go through all the motions and explain
+all the steps.</p>
+<p>Our goal for this chapter is to make the following test pass.</p>
+<pre><code>    fn parse_a_character() {
+        let input = &quot;ABCD&quot;;
+        let parser = character('A');
+
+        let actual = parser.parse(input);
+
+        let expected = Ok(('A', &quot;BCD&quot;));
+        assert_eq!(actual, expected);
+    }
+</code></pre>
+<p>So let's get started.</p>
+<h2><a class="header" href="#character" id="character">Character</a></h2>
+<p>Thinking about the challenge of parsing a <code>char</code> one could notice the following
+things. Giving a certain <code>&amp;str</code>, we need to</p>
+<ol>
+<li>Check if it starts with the correct character.</li>
+<li>If it does, return it and the rest of the <code>&amp;str</code>.</li>
+<li>If it does not, report an error.</li>
+</ol>
+<p>In order to be able to implement the <code>Parser</code> trait, there first needs to be
+something we can implement the <code>Parser</code> trait for. This thing will need to keep
+track of what character to parse.</p>
+<p>We will use a struct <code>Character</code> for that. We will give it a field that tracks
+the intended character to match.</p>
+<pre><code>pub struct Character {
+  character_to_match: char,
+}
+</code></pre>
+<h2><a class="header" href="#impl-parser" id="impl-parser">Impl Parser</a></h2>
+<p>Let's implement <code>Parser</code> for the <code>Character</code> struct. We will be guided by the outline above</p>
+<pre><code>impl&lt;'a&gt; Parser&lt;'a, char&gt; for Character {
+    fn parse(&amp;self, input: &amp;'a str) -&gt; Result&lt;(char, &amp;'a str), ParseError&gt; {
+        if input.starts_with(self.character_to_match) {
+            Ok((self.character_to_match, &amp;input[1..]))
+        } else {
+            Err(ParseError::ExpectingCharacter(self.character_to_match))
+        }
+    }
+}
+</code></pre>
+<p>The first two lines are the signature needed to adhere to the traits contract.
+Next we check if the input starts with the character to match. If it does, we
+return a succesful parse with the matched character and the remaining input.
+Otherwise we announce an error, which we also need to add to our <code>ParseError</code>
+enum.</p>
+<pre><code>#[derive(Debug, PartialEq)]
+pub enum ParseError {
+    GenericError,
+    ExpectingCharacter(char),
+}
+</code></pre>
+<h2><a class="header" href="#constructor" id="constructor">Constructor</a></h2>
+<p>It is convenient to create a <em>constructor</em> for our <code>Character</code> struct. This eases the
+burden of creating a <code>Character</code> parser.</p>
+<pre><code>impl Character {
+    pub fn new&lt;'a&gt;(character_to_match: char) -&gt; impl Parser&lt;'a, char&gt; {
+        Self { character_to_match }
+    }
+}
+</code></pre>
+<p>Notice the return type of our constructor. It hides the implementation details.
+It only tells you that you can expect to get something that implements a <code>Parser</code>
+that returns a <code>char</code> on success.</p>
+<p>This allows us greater flexibility in the future. We can easily change the structure
+of Character without changing the constructor, or code that relies on it.</p>
+<h2><a class="header" href="#factory" id="factory">Factory</a></h2>
+<p>An other convience is the use of a <a href="https://en.wikipedia.org/wiki/Factory_method_pattern">factory</a>. A factory is a pattern that hides the
+details of how an struct is created. It serves yet an other purpose, to use a name that
+reflects the intention, instead of exposing the mechanism of construction.</p>
+<p>So instead of writing <code>Character::new('a')</code>, we want to write <code>character('a')</code>. Under
+the covers this is done by using the constructor for <code>Character</code>.</p>
+<pre><code>pub fn character&lt;'a&gt;(character_to_match: char) -&gt; impl Parser&lt;'a, char&gt; {
+    Character::new(character_to_match)
+}
+</code></pre>
+<h2><a class="header" href="#summary" id="summary">Summary</a></h2>
+<p>Since the <code>Character</code> parser is an example of how parser can be created we are going to
+summarize the steps.</p>
+<ol>
+<li>Choose a datatype that allows the parser to do it's job.</li>
+<li>Implement <code>Parser</code> for it.</li>
+<li>Create a <em>constructor</em>.</li>
+<li>Create a factory.</li>
+</ol>
+<p>The <code>Character</code> parse was build of a struct. Implementing <code>Parser</code> was done by translating
+the parsing process into rust. And constructor and factory were created for ease of use.</p>
+<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
+<ol>
+<li>Implement the <code>Character</code> parser.</li>
+<li>Write some tests to check your implementation.</li>
+</ol>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../parser.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../parser/function.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../parser/type.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../interpreter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -202,13 +268,13 @@ expert Parser Combinatorist.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="../parser.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="../parser/function.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a href="../parser/type.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="../interpreter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

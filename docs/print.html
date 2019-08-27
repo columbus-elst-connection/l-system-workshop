@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li></ol></li><li><a href="interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li></ol></li><li><a href="interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -347,6 +347,102 @@ apply the function! </p>
 <h2><a class="header" href="#exercises-2" id="exercises-2">Exercises</a></h2>
 <ol>
 <li>Write the implementation of the <code>Parser</code> trait for <code>Fn(&amp;'a str) -&gt; Result&lt;(T, &amp;'a str), ParserError&gt;</code>.</li>
+</ol>
+<h1><a class="header" href="#parsing-a-char" id="parsing-a-char">Parsing a <code>char</code></a></h1>
+<p>In this chapter we will spend some time explaining how to create a <code>Parser</code>
+capable of parsing a <code>char</code>. We will go through all the motions and explain
+all the steps.</p>
+<p>Our goal for this chapter is to make the following test pass.</p>
+<pre><code>    fn parse_a_character() {
+        let input = &quot;ABCD&quot;;
+        let parser = character('A');
+
+        let actual = parser.parse(input);
+
+        let expected = Ok(('A', &quot;BCD&quot;));
+        assert_eq!(actual, expected);
+    }
+</code></pre>
+<p>So let's get started.</p>
+<h2><a class="header" href="#character" id="character">Character</a></h2>
+<p>Thinking about the challenge of parsing a <code>char</code> one could notice the following
+things. Giving a certain <code>&amp;str</code>, we need to</p>
+<ol>
+<li>Check if it starts with the correct character.</li>
+<li>If it does, return it and the rest of the <code>&amp;str</code>.</li>
+<li>If it does not, report an error.</li>
+</ol>
+<p>In order to be able to implement the <code>Parser</code> trait, there first needs to be
+something we can implement the <code>Parser</code> trait for. This thing will need to keep
+track of what character to parse.</p>
+<p>We will use a struct <code>Character</code> for that. We will give it a field that tracks
+the intended character to match.</p>
+<pre><code>pub struct Character {
+  character_to_match: char,
+}
+</code></pre>
+<h2><a class="header" href="#impl-parser" id="impl-parser">Impl Parser</a></h2>
+<p>Let's implement <code>Parser</code> for the <code>Character</code> struct. We will be guided by the outline above</p>
+<pre><code>impl&lt;'a&gt; Parser&lt;'a, char&gt; for Character {
+    fn parse(&amp;self, input: &amp;'a str) -&gt; Result&lt;(char, &amp;'a str), ParseError&gt; {
+        if input.starts_with(self.character_to_match) {
+            Ok((self.character_to_match, &amp;input[1..]))
+        } else {
+            Err(ParseError::ExpectingCharacter(self.character_to_match))
+        }
+    }
+}
+</code></pre>
+<p>The first two lines are the signature needed to adhere to the traits contract.
+Next we check if the input starts with the character to match. If it does, we
+return a succesful parse with the matched character and the remaining input.
+Otherwise we announce an error, which we also need to add to our <code>ParseError</code>
+enum.</p>
+<pre><code>#[derive(Debug, PartialEq)]
+pub enum ParseError {
+    GenericError,
+    ExpectingCharacter(char),
+}
+</code></pre>
+<h2><a class="header" href="#constructor" id="constructor">Constructor</a></h2>
+<p>It is convenient to create a <em>constructor</em> for our <code>Character</code> struct. This eases the
+burden of creating a <code>Character</code> parser.</p>
+<pre><code>impl Character {
+    pub fn new&lt;'a&gt;(character_to_match: char) -&gt; impl Parser&lt;'a, char&gt; {
+        Self { character_to_match }
+    }
+}
+</code></pre>
+<p>Notice the return type of our constructor. It hides the implementation details.
+It only tells you that you can expect to get something that implements a <code>Parser</code>
+that returns a <code>char</code> on success.</p>
+<p>This allows us greater flexibility in the future. We can easily change the structure
+of Character without changing the constructor, or code that relies on it.</p>
+<h2><a class="header" href="#factory" id="factory">Factory</a></h2>
+<p>An other convience is the use of a <a href="https://en.wikipedia.org/wiki/Factory_method_pattern">factory</a>. A factory is a pattern that hides the
+details of how an struct is created. It serves yet an other purpose, to use a name that
+reflects the intention, instead of exposing the mechanism of construction.</p>
+<p>So instead of writing <code>Character::new('a')</code>, we want to write <code>character('a')</code>. Under
+the covers this is done by using the constructor for <code>Character</code>.</p>
+<pre><code>pub fn character&lt;'a&gt;(character_to_match: char) -&gt; impl Parser&lt;'a, char&gt; {
+    Character::new(character_to_match)
+}
+</code></pre>
+<h2><a class="header" href="#summary" id="summary">Summary</a></h2>
+<p>Since the <code>Character</code> parser is an example of how parser can be created we are going to
+summarize the steps.</p>
+<ol>
+<li>Choose a datatype that allows the parser to do it's job.</li>
+<li>Implement <code>Parser</code> for it.</li>
+<li>Create a <em>constructor</em>.</li>
+<li>Create a factory.</li>
+</ol>
+<p>The <code>Character</code> parse was build of a struct. Implementing <code>Parser</code> was done by translating
+the parsing process into rust. And constructor and factory were created for ease of use.</p>
+<h2><a class="header" href="#exercises-3" id="exercises-3">Exercises</a></h2>
+<ol>
+<li>Implement the <code>Character</code> parser.</li>
+<li>Write some tests to check your implementation.</li>
 </ol>
 <h1><a class="header" href="#interpreter-1" id="interpreter-1">Interpreter</a></h1>
 <p>In the Parser section we created a parser for <code>.ls</code> files that could return a

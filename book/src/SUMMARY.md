@@ -9,6 +9,7 @@
     - [What is a Parser?](./parser/what.md)
     - [Looking at the type](./parser/type.md)
     - [Functions are Parsers!](./parser/function.md)
+    - [Parsing a `char`](./parser/character.md)
 - [Interpreter](./interpreter.md)
     - [What is an Interpreter](./interpreter/what.md)
 - [Renderer](./renderer.md)
