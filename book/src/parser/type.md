@@ -38,7 +38,7 @@ With this goal in mind, we would like to pass information about what part of the
 input still needs parsing. Because we want to feed that into a different parser,
 that type should be `&str`, our input type.
 
-So our second guess is `Result<(T, &str), ParserError>`.
+So our second guess is `Result<(T, &str), ParseError>`.
 
 A Parser returns either a tuple of the parsed result and the rest of the
 input, or it returns an error. 
@@ -55,3 +55,6 @@ pub trait Parser<'a, T> {
 ```
 
 So a Parser is anything that has a `parse` method of the right signature.
+
+## Exercises
+1. Implement the `Parser` trait and the `ParseError` enum.

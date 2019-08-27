@@ -179,7 +179,7 @@ more complex one.</p>
 <p>With this goal in mind, we would like to pass information about what part of the
 input still needs parsing. Because we want to feed that into a different parser,
 that type should be <code>&amp;str</code>, our input type.</p>
-<p>So our second guess is <code>Result&lt;(T, &amp;str), ParserError&gt;</code>.</p>
+<p>So our second guess is <code>Result&lt;(T, &amp;str), ParseError&gt;</code>.</p>
 <p>A Parser returns either a tuple of the parsed result and the rest of the
 input, or it returns an error. </p>
 <h2><a class="header" href="#trait" id="trait">Trait</a></h2>
@@ -194,6 +194,10 @@ pub trait Parser&lt;'a, T&gt; {
 }
 #}</code></pre></pre>
 <p>So a Parser is anything that has a <code>parse</code> method of the right signature.</p>
+<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
+<ol>
+<li>Implement the <code>Parser</code> trait and the <code>ParseError</code> enum.</li>
+</ol>
 
                     </main>
 

@@ -243,7 +243,7 @@ With the current word in the series, we replace each symbol with a sequence of s
 <li>Does this property, i.e. \(W_{k} = W_{k-1}W_{k-2}\) always hold?</li>
 </ul>
 <h1><a class="header" href="#parser-1" id="parser-1">Parser</a></h1>
-<p>In the L-system section you have the opportunity to learn about and play with
+<p>In the L-system section you have had the opportunity to learn about and play with
 Lindenmayer systems. The Parser section starts our journey of creating our own
 software to explore L-systems.</p>
 <p>The journey starts with teaching the computer about <code>.ls</code> files and what we
@@ -311,7 +311,7 @@ more complex one.</p>
 <p>With this goal in mind, we would like to pass information about what part of the
 input still needs parsing. Because we want to feed that into a different parser,
 that type should be <code>&amp;str</code>, our input type.</p>
-<p>So our second guess is <code>Result&lt;(T, &amp;str), ParserError&gt;</code>.</p>
+<p>So our second guess is <code>Result&lt;(T, &amp;str), ParseError&gt;</code>.</p>
 <p>A Parser returns either a tuple of the parsed result and the rest of the
 input, or it returns an error. </p>
 <h2><a class="header" href="#trait" id="trait">Trait</a></h2>
@@ -326,6 +326,10 @@ pub trait Parser&lt;'a, T&gt; {
 }
 #}</code></pre></pre>
 <p>So a Parser is anything that has a <code>parse</code> method of the right signature.</p>
+<h2><a class="header" href="#exercises-1" id="exercises-1">Exercises</a></h2>
+<ol>
+<li>Implement the <code>Parser</code> trait and the <code>ParseError</code> enum.</li>
+</ol>
 <h1><a class="header" href="#functions-are-parsers" id="functions-are-parsers">Functions are Parsers!</a></h1>
 <p>With our <code>Parser</code> trait in place we can start implementing it. Thinking about
 the trait one implementation springs to mind.</p>
@@ -340,11 +344,23 @@ apply the function! </p>
     }
 }
 </code></pre>
+<h2><a class="header" href="#exercises-2" id="exercises-2">Exercises</a></h2>
+<ol>
+<li>Write the implementation of the <code>Parser</code> trait for <code>Fn(&amp;'a str) -&gt; Result&lt;(T, &amp;'a str), ParserError&gt;</code>.</li>
+</ol>
 <h1><a class="header" href="#interpreter-1" id="interpreter-1">Interpreter</a></h1>
+<p>In the Parser section we created a parser for <code>.ls</code> files that could return a
+L-system data structure. We would now like to interpret this data structure in
+order to evolve the L-system a number of iterations.</p>
+<p>The Interpreter section will guide use along that path and describes how to
+create software that can interpret our L-system and evolve the start word.</p>
 <p>Make sure to look in to <a href="dependencies.html">working with dependencies</a> to find out
 how to incorporate your code into the project.</p>
 <h1><a class="header" href="#what-is-an-interpreter" id="what-is-an-interpreter">What is an Interpreter</a></h1>
 <h1><a class="header" href="#renderer-1" id="renderer-1">Renderer</a></h1>
+<p>With a working parser and interpreter for L-systems, it is time to work on
+rendering. Rendering concerns itself providing a translation between the 
+L-systems words that occur from the start word and some kind of visualization.</p>
 <p>Make sure to look in to <a href="dependencies.html">working with dependencies</a> to find out
 how to incorporate your code into the project.</p>
 <h1><a class="header" href="#what-is-a-renderer" id="what-is-a-renderer">What is a Renderer</a></h1>

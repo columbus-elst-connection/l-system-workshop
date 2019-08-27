@@ -16,3 +16,6 @@ impl <'a, T, F> Parser<'a, T> for F where F: Fn(&'a str) -> Result<(T, &'a str),
     }
 }
 ```
+
+## Exercises 
+1. Write the implementation of the `Parser` trait for `Fn(&'a str) -> Result<(T, &'a str), ParserError>`.
