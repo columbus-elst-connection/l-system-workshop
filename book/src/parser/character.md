@@ -6,6 +6,7 @@ all the steps.
 Our goal for this chapter is to make the following test pass.
 
 ```
+    #[test]
     fn parse_a_character() {
         let input = "ABCD";
         let parser = character('A');

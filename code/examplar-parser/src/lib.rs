@@ -6,6 +6,8 @@ pub fn parse(_input: &str) -> Result<(), ParseError> {
 pub enum ParseError {
     GenericError,
     ExpectingCharacter(char),
+    ExpectingPredicate,
+    EndOfInput,
 }
 
 pub trait Parser<'a, T> {
@@ -42,6 +44,39 @@ pub fn character<'a>(character_to_match: char) -> impl Parser<'a, char> {
   Character::new(character_to_match)
 }
 
+pub struct Any<F> where F: Fn(char) -> bool + Sized {
+    predicate: F,
+}
+
+impl<'a, F> Parser<'a, char> for Any<F> where F: Fn(char) -> bool + Sized {
+    fn parse(&self, input: &'a str) -> Result<(char, &'a str), ParseError> {
+        let character = input.chars().next();
+        match character {
+            Some(c) => {
+                if (self.predicate)(c) {
+                    Ok((c, &input[1..]))
+                } else {
+                    Err(ParseError::ExpectingPredicate)
+                }
+            },
+
+            None => {
+                Err(ParseError::EndOfInput)
+            }
+        }
+    }
+}
+
+impl<F> Any<F> where F: Fn(char) -> bool + Sized {
+    pub fn new(predicate: F) -> Self {
+        Any { predicate }
+    }
+}
+
+pub fn any<'a, F>(predicate: F) -> impl Parser<'a, char> where F: Fn(char) -> bool + Sized {
+    Any::new(predicate)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -54,6 +89,17 @@ mod tests {
         let actual = parser.parse(input);
 
         let expected = Ok(('A', "BCD"));
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn parse_any_digit() {
+        let input = "0123";
+        let parser = any(|c: char| c.is_ascii_digit());
+
+        let actual = parser.parse(input);
+
+        let expected = Ok(('0', "123"));
         assert_eq!(actual, expected);
     }
 }
