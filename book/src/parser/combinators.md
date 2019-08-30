@@ -53,7 +53,7 @@ pattern. I.e. the [combinator pattern][pattern]. It says
 If you squint hard you can find our explanation of the phenomenon
 for parser in the description.
 
-So the next few chapters will concentrate on the descriptio of
+So the next few chapters will concentrate on the description of
 various combinators.
 
 [pattern]: https://wiki.haskell.org/Combinator_pattern 
