@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Aristid Lindenmayer - L-Systems</title>
+        <title>Combinators - L-Systems</title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html" class="active"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="../parser/combinators.html"><strong aria-hidden="true">4.6.</strong> Combinators</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="../dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="../parser/combinators.html" class="active"><strong aria-hidden="true">4.6.</strong> Combinators</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="../dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,26 +148,67 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#aristid-lindenmayer" id="aristid-lindenmayer">Aristid Lindenmayer</a></h1>
-<p><a href="https://en.wikipedia.org/wiki/Aristid_Lindenmayer">Aristid Lindenmayer</a> was a Hungarian biologist. He lived from 1925
-until 1989. He studied biology and chemistry at the university of Budapest.
-Lindenmayer got his Ph.D. from the University of Michigan before accepting a
-position as professor in Philosophy of Life Sciences and Biology at the
-University of Utrecht.</p>
-<p><img src="/image/lindenmayer.jpg" alt="Aristid Lindenmayer" /></p>
+                        <h1><a class="header" href="#combinators" id="combinators">Combinators</a></h1>
+<p>We havee implemented a few parser. Each followed the same pattern.</p>
+<ol>
+<li>Choose a datatype that allows the parser to do it's job.</li>
+<li>Implement <code>Parser</code> for it.</li>
+<li>Create a <em>constructor</em>.</li>
+<li>Create a factory.</li>
+</ol>
+<p>This pattern suffices, but it get's tedious. Instead we would rather
+use the power of <em>abstraction</em>. Rather than to depend on the manual
+work to create a parser for each situation, we want to have some 
+primitive parser that we can combine into a more elaborate parser.</p>
+<p>This chapter introduces you to the concept and some considerations
+we will meet along the way.</p>
+<h2><a class="header" href="#what-is-a-combinator" id="what-is-a-combinator">What is a combinator</a></h2>
+<p>In our case a combinator is a <em>higher order</em> parser. It takes one or
+more parsers and <em>combines</em> them into a new parser.</p>
+<p>Let's stare into the future together, in order to better understand
+combinators.</p>
+<p>Imagine that we have a parser that could parse a single rule of a 
+L-system. How we acquired this parser is of no concern. Just that
+we can use it.</p>
+<p>Now as you know, L-systems often have many rules. So we would like
+a parser that could parse many rules. We could use the rule parser
+and manually try to parse a rule, and when it succeed try for the
+next rule.</p>
+<p>This would certainly work! But it would not help in the situation
+where we have a parser to parse a single whitespace and would want
+a parser to parse a many whitespaces. This is a very similar 
+situation to the rule parser, the only difference being the kind
+of parser you want many of.</p>
+<p>Instead we are going to write a <em>combinator</em>. This is a parser that
+accepts as an argument one or more parsers, in our example the rule
+parser or the whitespace parser, and returns a parser that combines
+them in an interesting way. In our example that would be the many
+combinator.</p>
+<h2><a class="header" href="#combinator-pattern" id="combinator-pattern">Combinator Pattern</a></h2>
+<p>What we have described for parser is an example of a more general
+pattern. I.e. the <a href="https://wiki.haskell.org/Combinator_pattern">combinator pattern</a>. It says</p>
+<blockquote>
+<p>complex structures are built by defining a small set of very simple 
+'primitives', and a set of 'combinators' for combining them into 
+more complicated structures. </p>
+</blockquote>
+<p>If you squint hard you can find our explanation of the phenomenon
+for parser in the description.</p>
+<p>So the next few chapters will concentrate on the descriptio of
+various combinators.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../l-system.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../parser/any.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../lsystem/algae.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../interpreter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -179,13 +220,13 @@ University of Utrecht.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="../l-system.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="../parser/any.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a href="../lsystem/algae.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="../interpreter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

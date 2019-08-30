@@ -11,6 +11,7 @@
     - [Functions are Parsers!](./parser/function.md)
     - [Parsing a `char`](./parser/character.md)
     - [Parsing any `char`](./parser/any.md)
+    - [Combinators](./parser/combinators.md)
 - [Interpreter](./interpreter.md)
     - [What is an Interpreter](./interpreter/what.md)
 - [Renderer](./renderer.md)
