@@ -102,7 +102,82 @@ pub fn map<'a, I, O, P, F>(parser: P, map: F) -> impl Parser<'a, O> where I: 'a,
     Map::new(parser, map)
 }
 
+pub struct Between<'a, T, P> where T: 'a, P: Parser<'a, T> + Sized {
+    lower_limit: u8,
+    upper_limit: Limit,
+    parser: P,
+    phantom: PhantomData<&'a T>,
+}
 
+pub enum Limit {
+  At(u8),
+  Infinity,
+}
+
+impl Limit {
+  pub fn is_bigger_then(&self, n: u8) -> bool {
+    match self {
+      Limit::At(threshold) => threshold > &n,
+
+      Limit::Infinity => true,
+    }
+  }
+}
+
+impl<'a, T, P> Parser<'a, Vec<T>> for Between<'a, T, P> where P: Parser<'a, T> + Sized {
+    fn parse(&self, input: &'a str) -> Result<(Vec<T>, &'a str), ParseError> {
+        let mut result = vec![];
+        let mut source = input;
+        let mut count = 0;
+        while count < self.lower_limit {
+            let attempt = self.parser.parse(source);
+            match attempt {
+                Ok((value, rest)) => {
+                    result.push(value);
+                    source = rest;
+                }
+
+                Err(e) => {
+                    return Err(e);
+                }
+            }
+            count += 1;
+        }
+        while self.upper_limit.is_bigger_then(count) {
+            let attempt = self.parser.parse(source);
+            match attempt {
+                Ok((value, rest)) => {
+                    result.push(value);
+                    source = rest;
+                }
+
+                Err(_) => {
+                    break;
+                }
+            }
+            count += 1;
+        }
+        Ok((result, source))
+    }
+}
+
+impl<'a, T, P> Between<'a, T, P> where T: 'a, P: Parser<'a, T> + Sized {
+    pub fn new(lower_limit: u8, upper_limit: Limit, parser: P) -> Self {
+        Between { lower_limit, upper_limit, parser, phantom: PhantomData }
+    }
+}
+
+pub fn between<'a, T>(lower_limit: u8, upper_limit: u8, parser: impl Parser<'a, T>) -> impl Parser<'a, Vec<T>> where T: 'a {
+    Between::new(lower_limit, Limit::At(upper_limit), parser)
+}
+
+pub fn at_least<'a, T>(lower_limit: u8, parser: impl Parser<'a, T>) -> impl Parser<'a, Vec<T>> where T: 'a {
+    Between::new(lower_limit, Limit::Infinity, parser)
+}
+
+pub fn many<'a, T>(parser: impl Parser<'a, T>) -> impl Parser<'a, Vec<T>> where T: 'a {
+    at_least(0, parser)
+}
 
 #[cfg(test)]
 mod tests {
@@ -140,6 +215,17 @@ mod tests {
         let actual = parser.parse(input);
 
         let expected = Ok((1, "230"));
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn parse_between_2_and_4_digits() {
+        let input = "12345";
+        let parser = between(2, 4, any(|c: char| c.is_ascii_digit()));
+
+        let actual = parser.parse(input);
+
+        let expected = Ok((vec!['1', '2', '3', '4'], "5"));
         assert_eq!(actual, expected);
     }
 }

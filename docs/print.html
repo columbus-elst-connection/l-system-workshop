@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="parser/combinators.html"><strong aria-hidden="true">4.6.</strong> Combinators</a></li><li><a href="parser/map.html"><strong aria-hidden="true">4.7.</strong> Map</a></li></ol></li><li><a href="interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="parser/combinators.html"><strong aria-hidden="true">4.6.</strong> Combinators</a></li><li><a href="parser/map.html"><strong aria-hidden="true">4.7.</strong> Map</a></li><li><a href="parser/between.html"><strong aria-hidden="true">4.8.</strong> Between</a></li></ol></li><li><a href="interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -694,6 +694,93 @@ its result into something different.</p>
 <ol>
 <li>Implement the <code>Map</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
+</ol>
+<h1><a class="header" href="#between" id="between">Between</a></h1>
+<p>We are capable of parsing, but all the parsers we have seen
+only parse a single character. Let's say we want to parse a
+number instead of a single digit.</p>
+<p>For that we our going to look at the <code>Between</code> parser. We
+expect it to work like the following.</p>
+<pre><code>    #[test]
+    fn parse_between_2_and_4_digits() {
+        let input = &quot;12345&quot;;
+        let parser = between(2, 4, any(|c: char| c.is_ascii_digit()));
+
+        let actual = parser.parse(input);
+
+        let expected = Ok((vec!['1', '2', '3', '4'], &quot;5&quot;));
+        assert_eq!(actual, expected);
+    }
+</code></pre>
+<h2><a class="header" href="#betwteen" id="betwteen">Betwteen</a></h2>
+<p>By now the strategy to creating a parser is not new. Now we have
+to think about what we need to represent this parser. We need
+some sort of lower bound, an upper bound and a parser that we
+want to parse between the lower and upper bound times.</p>
+<p>The lower bound can be just a number. Because you can not parse
+less than zero times, negative numbers are not necessary. The type
+for the lower bound can be any unsigned number. We will settle for
+<code>u8</code>.</p>
+<p>The upper bound is a little trickier. There is no natural limit,
+we could be interested in all characters that match a certain parser.</p>
+<p>To accomadate this we are going to introduce a custom enum <code>Limit</code>.</p>
+<pre><code>pub enum Limit {
+  At(u8),
+  Infinity,
+}
+</code></pre>
+<p>This way we can specify either an unlimited bound, or a bound at a
+specific value.</p>
+<p>Because we likely will want to check if the upper bound is reached,
+we introduce a method that allows use to check that.</p>
+<pre><code>impl Limit {
+  pub fn is_bigger_then(&amp;self, n: u8) -&gt; bool {
+    match self {
+      Limit::At(threshold) =&gt; threshold &gt; &amp;n,
+
+      Limit::Infinity =&gt; true,
+    }
+  }
+}
+</code></pre>
+<p>That are almost all the considerations for the <code>Between</code> struct we
+need. Let's see if you can come up with an implementation. Do note
+that you probably need to think about <code>PhantomData</code> at some point.</p>
+<h2><a class="header" href="#impl-parser-3" id="impl-parser-3">Impl Parser</a></h2>
+<p>So we have a struct that tracks the lower limit, the upper limit and
+the base parser. The implementation strategy is.</p>
+<ol>
+<li>Try to parse as many as the lower limit of items, accumulating the
+result.</li>
+<li>If that fails, report the error.</li>
+<li>If it succeeds, go on to the optional phase.</li>
+<li>Try to parse up to the upper limit of items.</li>
+<li>If that fails, cut your losses and return the accumulated result.</li>
+<li>If that succeeds, return the accumulated result. </li>
+</ol>
+<h2><a class="header" href="#constructor--factory-1" id="constructor--factory-1">Constructor &amp; Factory</a></h2>
+<p>Create an appropriate constructor and factories. See the exercises
+for some factory suggestions.</p>
+<h2><a class="header" href="#summary-3" id="summary-3">Summary</a></h2>
+<p>This combinator is very versatile. It can accomodate a lot of different
+scenarios, depending on how you construct it. Writing factories that
+reflect your needs is always a good strategy.</p>
+<p>On should write code that one wants and write implementations to make
+that happen.</p>
+<h2><a class="header" href="#exercises-6" id="exercises-6">Exercises</a></h2>
+<ol>
+<li>Implement the <code>Between</code> parser.</li>
+<li>Write some tests to check your implementation.</li>
+<li>Introduce some other factories in terms of <code>Between</code></li>
+</ol>
+<ul>
+<li><code>atleast</code>, will parse at least a certain number of items, but
+tries to parse as many as it can from the input.</li>
+<li><code>many</code>, will parse as many items as it can from the input.</li>
+</ul>
+<ol start="4">
+<li>Think and discuss how to do better error reporting. Implement
+your strategy.</li>
 </ol>
 <h1><a class="header" href="#interpreter-1" id="interpreter-1">Interpreter</a></h1>
 <p>In the Parser section we created a parser for <code>.ls</code> files that could return a
