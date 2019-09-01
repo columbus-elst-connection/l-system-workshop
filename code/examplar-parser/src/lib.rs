@@ -71,7 +71,7 @@ impl<'a, F> Parser<'a, char> for Any<F> where F: Fn(char) -> bool + Sized {
 
 impl<F> Any<F> where F: Fn(char) -> bool + Sized {
     pub fn new(predicate: F) -> Self {
-        Any { predicate }
+        Self { predicate }
     }
 }
 
@@ -94,7 +94,7 @@ impl<'a, I, O, P, F> Parser<'a, O> for Map<'a, I, O, P, F> where I: 'a, P: Parse
 
 impl<'a, I, O, P, F> Map<'a, I, O, P, F> where I: 'a, P: Parser<'a, I> + Sized, F: Fn(I) -> O + Sized {
     pub fn new(parser: P, map: F) -> Self {
-        Map { parser, map, phantom: PhantomData }
+        Self { parser, map, phantom: PhantomData }
     }
 }
 
@@ -163,7 +163,7 @@ impl<'a, T, P> Parser<'a, Vec<T>> for Between<'a, T, P> where P: Parser<'a, T> +
 
 impl<'a, T, P> Between<'a, T, P> where T: 'a, P: Parser<'a, T> + Sized {
     pub fn new(lower_limit: u8, upper_limit: Limit, parser: P) -> Self {
-        Between { lower_limit, upper_limit, parser, phantom: PhantomData }
+        Self { lower_limit, upper_limit, parser, phantom: PhantomData }
     }
 }
 

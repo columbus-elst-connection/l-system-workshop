@@ -92,7 +92,7 @@ The final two steps are to create a constructor and a convenient factory.
 ```
 impl<F> Any<F> where F: Fn(char) -> bool + Sized {
     pub fn new(predicate: F) -> Self {
-        Any { predicate }
+        Self { predicate }
     }
 }
 
