@@ -149,6 +149,108 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#map" id="map">Map</a></h1>
+<p>The first combinator we are going describe is the <code>Map</code> combinator.
+Let's say we have a parser to parse a digit, i.e.
+<code>any(|c: char| c.is_ascii_digit())</code>. But we are not interested in the
+character, but in the integer.</p>
+<p><code>char</code> has a method that can return the numeric value of a digit
+character. It has the following signature. </p>
+<pre><code>pub fn to_digit(self, radix: u32) -&gt; Option&lt;u32&gt;
+</code></pre>
+<p>Notice that the return type is an <code>Option</code>, because if all you have is
+a character, you are not sure how to turn it into a number. E.g. What
+is the value of <code>Y</code>?</p>
+<p>So the code we would like to run is something along the lines of</p>
+<pre><code>    #[test]
+    fn parse_any_digit_as_number() {
+        let input = &quot;1230&quot;;
+        let parser = map(
+          any(|c: char| c.is_ascii_digit()), 
+          |c: char| c.to_digit(10).unwrap_or(0));
+
+        let actual = parser.parse(input);
+
+        let expected = Ok((1, &quot;230&quot;));
+        assert_eq!(actual, expected);
+    }
+</code></pre>
+<p>During the mapping we are unwrapping the option with a default value of
+zero.</p>
+<h2><a class="header" href="#map-1" id="map-1">Map</a></h2>
+<p>With our goal clear, we still are following our strategy. So, let's first
+create a struct.</p>
+<pre><code>pub struct Map&lt;'a, I, O, P, F&gt; where I: 'a, P: Parser&lt;'a, I&gt; + Sized, F: Fn(I) -&gt; O + Sized {
+    parser: P,
+    map: F,
+}
+</code></pre>
+<p>Woah, that signature has a lot of stuff in it. Let's break it done step by step.</p>
+<h3><a class="header" href="#lifetimes--generics" id="lifetimes--generics">Lifetimes &amp; Generics</a></h3>
+<p>First of all there is a lifetime ``a<code>parameter. This lifetime is needed by</code>Parser` and keeps track of the lifetime of the input.</p>
+<p>Next are generic parameters <code>I</code> and <code>O</code>. They are used by the other generic
+parameters <code>P</code> and <code>F</code>.  Almost all of these are aliases.</p>
+<p><code>I</code> is restricted to <code>I: 'a</code>. It should live as long as our input. Together
+with the chosen letter <code>I</code>, it probably stands for some form of input.</p>
+<p><code>P</code> is restricted to <code>P: Parser&lt;'a, I&gt; + Sized</code>. So <code>P</code> is a parser that
+produces an <code>I</code>. For example our <code>any</code> parser is a produces an <code>char</code>.</p>
+<p><code>F</code> is restricted to <code>F: Fn(I) -&gt; O + Sized</code>. Now it becomes clear would
+<code>I</code> and <code>O</code> are. They are the input and output for the function <code>F</code>. So
+<code>F</code> is a function that is used to map the result of parser <code>P</code>, which is
+of type <code>I</code>, into type <code>O</code>.</p>
+<p>Pfew, that was a lot to take in. But with an overview all the parts make
+sense.</p>
+<h3><a class="header" href="#phantomdata" id="phantomdata"><code>PhantomData</code></a></h3>
+<p>Unfortunatly, this will not compile. The compiler warns us of several
+unused parameters. E.g.</p>
+<pre><code class="language-plain">82 | pub struct Map&lt;'a, I, O, P, F&gt; where I: 'a, P: Parser&lt;'a, I&gt; + Sized, F: Fn(I) -&gt; O + Sized {
+   |                ^^ unused parameter
+   |
+   = help: consider removing `'a` or using a marker such as `std::marker::PhantomData`
+</code></pre>
+<p>The advice of removing the lifetime parameter is not an option for us.
+We need it for our parser <code>P</code>. Maybe the other advice is viable.</p>
+<p>The doccumentation of <code>PhantomData</code> reads</p>
+<blockquote>
+<p>Zero-sized type used to mark things that &quot;act like&quot; they own a T.</p>
+<p>Adding a PhantomData<T> field to your type tells the compiler that 
+your type acts as though it stores a value of type T, even though
+it doesn't really. This information is used when computing certain 
+safety properties.</p>
+</blockquote>
+<p>That is precisely our case. What a good compiler our compiler is. So
+we will follow our compilers advice and add a phantom field to our
+struct.</p>
+<pre><code>    phantom: PhantomData&lt;&amp;'a I&gt;,
+</code></pre>
+<p>Which satisfies the compiler.</p>
+<h2><a class="header" href="#impl-parser" id="impl-parser">Impl Parser</a></h2>
+<p>With our struct out of the way, we should focus on the implementation.
+What we want to achieve is</p>
+<ol>
+<li>Try the parser.</li>
+<li>Map the result with our function, keeping the rest of our input.</li>
+</ol>
+<p>Besides the verbose type signatures this translates very well into Rust.</p>
+<pre><code>impl&lt;'a, I, O, P, F&gt; Parser&lt;'a, O&gt; for Map&lt;'a, I, O, P, F&gt; where I: 'a, P: Parser&lt;'a, I&gt; + Sized, F: Fn(I) -&gt; O + Sized {
+    fn parse(&amp;self, input: &amp;'a str) -&gt; Result&lt;(O, &amp;'a str), ParseError&gt; {
+        let attempt = self.parser.parse(input);
+        attempt.map(|(v, rest)|{ ((self.map)(v), rest)})
+    }
+}
+</code></pre>
+<h2><a class="header" href="#constructor--factory" id="constructor--factory">Constructor &amp; Factory</a></h2>
+<p>Creating the constructor and factory is almost straight forward, albeit
+verbose. Accept the parameters you need and create the <code>Map</code>. The only
+snag is that <code>PhantomData</code>.</p>
+<p>Luckily the way to assign a <code>PhantomData</code> is by doing just that.</p>
+<h2><a class="header" href="#summary" id="summary">Summary</a></h2>
+<p>We have just created our first combinator! It takes a parser and transforms
+its result into something different.</p>
+<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
+<ol>
+<li>Implement the <code>Map</code> parser.</li>
+<li>Write some tests to check your implementation.</li>
+</ol>
 
                     </main>
 

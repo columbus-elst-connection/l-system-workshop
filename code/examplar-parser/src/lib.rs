@@ -1,3 +1,5 @@
+use std::marker::PhantomData;
+
 pub fn parse(_input: &str) -> Result<(), ParseError> {
   Ok(())
 }
@@ -77,6 +79,31 @@ pub fn any<'a, F>(predicate: F) -> impl Parser<'a, char> where F: Fn(char) -> bo
     Any::new(predicate)
 }
 
+pub struct Map<'a, I, O, P, F> where I: 'a, P: Parser<'a, I> + Sized, F: Fn(I) -> O + Sized {
+    parser: P,
+    map: F,
+    phantom: PhantomData<&'a I>,
+}
+
+impl<'a, I, O, P, F> Parser<'a, O> for Map<'a, I, O, P, F> where I: 'a, P: Parser<'a, I> + Sized, F: Fn(I) -> O + Sized {
+    fn parse(&self, input: &'a str) -> Result<(O, &'a str), ParseError> {
+        let attempt = self.parser.parse(input);
+        attempt.map(|(v, rest)|{ ((self.map)(v), rest)})
+    }
+}
+
+impl<'a, I, O, P, F> Map<'a, I, O, P, F> where I: 'a, P: Parser<'a, I> + Sized, F: Fn(I) -> O + Sized {
+    pub fn new(parser: P, map: F) -> Self {
+        Map { parser, map, phantom: PhantomData }
+    }
+}
+
+pub fn map<'a, I, O, P, F>(parser: P, map: F) -> impl Parser<'a, O> where I: 'a, P: Parser<'a, I> + Sized, F: Fn(I) -> O + Sized {
+    Map::new(parser, map)
+}
+
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -100,6 +127,19 @@ mod tests {
         let actual = parser.parse(input);
 
         let expected = Ok(('0', "123"));
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn parse_any_digit_as_number() {
+        let input = "1230";
+        let parser = map(
+          any(|c: char| c.is_ascii_digit()), 
+          |c: char| c.to_digit(10).unwrap_or(0));
+
+        let actual = parser.parse(input);
+
+        let expected = Ok((1, "230"));
         assert_eq!(actual, expected);
     }
 }
