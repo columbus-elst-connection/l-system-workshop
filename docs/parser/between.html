@@ -165,7 +165,7 @@ expect it to work like the following.</p>
         assert_eq!(actual, expected);
     }
 </code></pre>
-<h2><a class="header" href="#betwteen" id="betwteen">Betwteen</a></h2>
+<h2><a class="header" href="#between-1" id="between-1">Between</a></h2>
 <p>By now the strategy to creating a parser is not new. Now we have
 to think about what we need to represent this parser. We need
 some sort of lower bound, an upper bound and a parser that we
@@ -273,6 +273,21 @@ your strategy.</li>
 
         </div>
 
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3001");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload(true); // force reload from server (not from cache)
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
         
 
         
