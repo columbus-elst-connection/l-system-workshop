@@ -11,6 +11,7 @@
     - [Functions are Parsers!](./parser/function.md)
     - [Parsing a `char`](./parser/character.md)
     - [Parsing any `char`](./parser/any.md)
+    - [Literal](./parser/literal.md)
     - [Combinators](./parser/combinators.md)
     - [Map](./parser/map.md)
     - [Between](./parser/between.md)

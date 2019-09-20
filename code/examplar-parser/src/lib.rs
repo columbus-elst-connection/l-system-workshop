@@ -10,6 +10,7 @@ pub enum ParseError {
     ExpectingCharacter(char),
     ExpectingPredicate,
     ExpectingOneOfToParse,
+    ExpectingLiteral(String),
     EndOfInput,
 }
 
@@ -79,6 +80,26 @@ impl<F> Any<F> where F: Fn(char) -> bool + Sized {
 pub fn any<'a, F>(predicate: F) -> impl Parser<'a, char> where F: Fn(char) -> bool + Sized {
     Any::new(predicate)
 }
+
+pub struct Literal<'p>(&'p str);
+
+impl <'a, 'p> Parser<'a, &'a str> for Literal<'p> {
+    fn parse(&self, input: &'a str) -> Result<(&'a str, &'a str), ParseError> {
+        if input.starts_with(self.0) {
+            let len = self.0.len();
+            let substr = &input[..len];
+            let rem = &input[len..];
+            Ok((substr, rem))
+        } else {
+            Err(ParseError::ExpectingLiteral(self.0.to_owned()))
+        }
+    }
+}
+
+pub fn literal(match_exactly: &str) -> Literal {
+    Literal(match_exactly)
+}
+
 
 pub struct Map<'a, I, O, P, F> where I: 'a, P: Parser<'a, I> + Sized, F: Fn(I) -> O + Sized {
     parser: P,
@@ -243,6 +264,17 @@ mod tests {
         let actual = parser.parse(input);
 
         let expected = Ok((1, "230"));
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn parse_literal_arrow() {
+        let input = "=> FF";
+        let parser = literal("=>");
+
+        let actual = parser.parse(input);
+
+        let expected = Ok(("=>", " FF"));
         assert_eq!(actual, expected);
     }
 

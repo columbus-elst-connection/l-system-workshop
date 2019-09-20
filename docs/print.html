@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="parser/combinators.html"><strong aria-hidden="true">4.6.</strong> Combinators</a></li><li><a href="parser/map.html"><strong aria-hidden="true">4.7.</strong> Map</a></li><li><a href="parser/between.html"><strong aria-hidden="true">4.8.</strong> Between</a></li><li><a href="parser/oneof.html"><strong aria-hidden="true">4.9.</strong> OneOf</a></li></ol></li><li><a href="interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="parser/literal.html"><strong aria-hidden="true">4.6.</strong> Literal</a></li><li><a href="parser/combinators.html"><strong aria-hidden="true">4.7.</strong> Combinators</a></li><li><a href="parser/map.html"><strong aria-hidden="true">4.8.</strong> Map</a></li><li><a href="parser/between.html"><strong aria-hidden="true">4.9.</strong> Between</a></li><li><a href="parser/oneof.html"><strong aria-hidden="true">4.10.</strong> OneOf</a></li></ol></li><li><a href="interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -544,6 +544,70 @@ pub fn any&lt;'a, F&gt;(predicate: F) -&gt; impl Parser&lt;'a, char&gt; where F:
 <li>Implement the <code>Any</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
 </ol>
+<h1><a class="header" href="#parsing-a-literal-string" id="parsing-a-literal-string">Parsing a Literal String</a></h1>
+<p>Often you know exactly what you are looking for. E.g. when separating the the
+symbol for its production we use <code>=&gt;</code>. I would come in handy if there was a
+parser that could do that job.</p>
+<pre><code>    #[test]
+    fn parse_literal_arrow() {
+        let input = &quot;=&gt; FF&quot;;
+        let parser = literal(&quot;=&gt;&quot;);
+
+        let actual = parser.parse(input);
+
+        let expected = Ok((&quot;=&gt;&quot;, &quot; FF&quot;));
+        assert_eq!(actual, expected);
+    }
+</code></pre>
+<h2><a class="header" href="#literal" id="literal">Literal</a></h2>
+<p>The only thing that we need to keep track of is the string that we are
+interested in. Rust provides various ways to model your data. <a href="https://doc.rust-lang.org/book/ch05-01-defining-structs.html#using-tuple-structs-without-named-fields-to-create-different-types">Tuple
+structs</a>
+are a convenient way for our use case. It allows one to name a structure by
+describing the fields in a tuple.</p>
+<pre><code>pub struct Literal&lt;'p&gt;(&amp;'p str);
+</code></pre>
+<p>Note that we have a tuple with only one field. It does not have a name so we
+need to reference it by index.</p>
+<h2><a class="header" href="#impl-parser-2" id="impl-parser-2">Impl Parser</a></h2>
+<p>Parsing with a <code>Literal</code> amounts to the following steps</p>
+<ol>
+<li>Check if the input starts with our literal.</li>
+<li>If it does, chop of the parsed string and return it together with the
+remaining input</li>
+<li>If it does not, report an error.</li>
+</ol>
+<p>This translate into code as follows.</p>
+<pre><code>impl &lt;'a, 'p&gt; Parser&lt;'a, &amp;'a str&gt; for Literal&lt;'p&gt; {
+    fn parse(&amp;self, input: &amp;'a str) -&gt; Result&lt;(&amp;'a str, &amp;'a str), ParseError&gt; {
+        if input.starts_with(self.0) {
+            let len = self.0.len();
+            let substr = &amp;input[..len];
+            let rem = &amp;input[len..];
+            Ok((substr, rem))
+        } else {
+            Err(ParseError::ExpectingLiteral(self.0.to_owned()))
+        }
+    }
+}
+</code></pre>
+<p>Take a look at the expected result. It has type <code>&amp;'a str</code>. We will return a
+slice of the input, so the lifetime should match up.</p>
+<h2><a class="header" href="#constructor-1" id="constructor-1">Constructor</a></h2>
+<p>Since tuple structs come with a build int constructor, we do not need to do
+anything here.</p>
+<h2><a class="header" href="#factory-1" id="factory-1">Factory</a></h2>
+<p>The factory for the <code>Literal</code> parser can just be a function <code>literal</code> to returns
+the parser</p>
+<pre><code>pub fn literal(match_exactly: &amp;str) -&gt; Literal {
+    Literal(match_exactly)
+}
+</code></pre>
+<h2><a class="header" href="#exercises-5" id="exercises-5">Exercises</a></h2>
+<ol>
+<li>Implement the <code>Literal</code> parser.</li>
+<li>Create some tests to verify your implementation.</li>
+</ol>
 <h1><a class="header" href="#combinators" id="combinators">Combinators</a></h1>
 <p>We havee implemented a few parser. Each followed the same pattern.</p>
 <ol>
@@ -667,7 +731,7 @@ struct.</p>
 <pre><code>    phantom: PhantomData&lt;&amp;'a I&gt;,
 </code></pre>
 <p>Which satisfies the compiler.</p>
-<h2><a class="header" href="#impl-parser-2" id="impl-parser-2">Impl Parser</a></h2>
+<h2><a class="header" href="#impl-parser-3" id="impl-parser-3">Impl Parser</a></h2>
 <p>With our struct out of the way, we should focus on the implementation.
 What we want to achieve is</p>
 <ol>
@@ -690,7 +754,7 @@ snag is that <code>PhantomData</code>.</p>
 <h2><a class="header" href="#summary-2" id="summary-2">Summary</a></h2>
 <p>We have just created our first combinator! It takes a parser and transforms
 its result into something different.</p>
-<h2><a class="header" href="#exercises-5" id="exercises-5">Exercises</a></h2>
+<h2><a class="header" href="#exercises-6" id="exercises-6">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Map</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
@@ -746,7 +810,7 @@ we introduce a method that allows use to check that.</p>
 <p>That are almost all the considerations for the <code>Between</code> struct we
 need. Let's see if you can come up with an implementation. Do note
 that you probably need to think about <code>PhantomData</code> at some point.</p>
-<h2><a class="header" href="#impl-parser-3" id="impl-parser-3">Impl Parser</a></h2>
+<h2><a class="header" href="#impl-parser-4" id="impl-parser-4">Impl Parser</a></h2>
 <p>So we have a struct that tracks the lower limit, the upper limit and
 the base parser. The implementation strategy is.</p>
 <ol>
@@ -767,7 +831,7 @@ scenarios, depending on how you construct it. Writing factories that
 reflect your needs is always a good strategy.</p>
 <p>On should write code that one wants and write implementations to make
 that happen.</p>
-<h2><a class="header" href="#exercises-6" id="exercises-6">Exercises</a></h2>
+<h2><a class="header" href="#exercises-7" id="exercises-7">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Between</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
@@ -801,14 +865,14 @@ a number or variable.</p>
 <h2><a class="header" href="#considerations-1" id="considerations-1">Considerations</a></h2>
 <p>Since the <code>Parser</code> trait can return only a single thing, all of our options in
 the <code>OneOf</code> parser should adhere to the same contract.</p>
-<h2><a class="header" href="#impl-parser-4" id="impl-parser-4">Impl Parser</a></h2>
+<h2><a class="header" href="#impl-parser-5" id="impl-parser-5">Impl Parser</a></h2>
 <p>Once you have your options our parse strategy would be to try each of our
 options in turn until one of them succeed. If it succeed return the parsed
 result and the remaining input. If none of the options succeed, report an error.</p>
 <h2><a class="header" href="#constructor--factories" id="constructor--factories">Constructor &amp; Factories</a></h2>
 <p>Since there is not very much going on with constructors or factories. From now
 on we will not mention them any more.</p>
-<h2><a class="header" href="#exercises-7" id="exercises-7">Exercises</a></h2>
+<h2><a class="header" href="#exercises-8" id="exercises-8">Exercises</a></h2>
 <ol>
 <li>Implement the <code>OneOf</code> parser.</li>
 <li>Write some test to check your implementation.</li>
