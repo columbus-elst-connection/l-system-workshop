@@ -9,6 +9,7 @@ pub enum ParseError {
     GenericError,
     ExpectingCharacter(char),
     ExpectingPredicate,
+    ExpectingOneOfToParse,
     EndOfInput,
 }
 
@@ -179,6 +180,33 @@ pub fn many<'a, T>(parser: impl Parser<'a, T>) -> impl Parser<'a, Vec<T>> where 
     at_least(0, parser)
 }
 
+pub struct OneOf<'a, T, P> where T: 'a, P: Parser<'a, T> + Sized {
+    options: Vec<P>,
+    phantom: PhantomData<&'a T>,
+}
+
+impl<'a, T, P> Parser<'a, T> for OneOf<'a, T, P> where T: 'a, P: Parser<'a, T> + Sized {
+    fn parse(&self, input: &'a str) -> Result<(T, &'a str), ParseError> {
+        for ref parser in &self.options {
+            let attempt = parser.parse(input);
+            if attempt.is_ok() {
+                return attempt
+            }
+        }
+        Err(ParseError::ExpectingOneOfToParse)
+    }
+}
+
+impl<'a, T, P> OneOf<'a, T, P> where T: 'a, P: Parser<'a, T> + Sized {
+    pub fn new(options: Vec<P>) -> Self {
+        Self { options, phantom: PhantomData }
+    }
+}
+
+pub fn one_of<'a, T, P>(options: Vec<P>) -> impl Parser<'a, T> where T: 'a, P: Parser<'a, T> + Sized {
+    OneOf::new(options)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -226,6 +254,17 @@ mod tests {
         let actual = parser.parse(input);
 
         let expected = Ok((vec!['1', '2', '3', '4'], "5"));
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn parse_one_of_a_or_b() {
+        let input = "a1";
+        let parser = one_of(vec![character('a'), character('b')]);
+
+        let actual = parser.parse(input);
+
+        let expected = Ok(('a', "1"));
         assert_eq!(actual, expected);
     }
 }

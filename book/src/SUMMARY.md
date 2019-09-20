@@ -14,6 +14,7 @@
     - [Combinators](./parser/combinators.md)
     - [Map](./parser/map.md)
     - [Between](./parser/between.md)
+    - [OneOf](./parser/oneof.md)
 - [Interpreter](./interpreter.md)
     - [What is an Interpreter](./interpreter/what.md)
 - [Renderer](./renderer.md)

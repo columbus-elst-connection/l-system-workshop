@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Between - L-Systems</title>
+        <title>OneOf - L-Systems</title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="../parser/combinators.html"><strong aria-hidden="true">4.6.</strong> Combinators</a></li><li><a href="../parser/map.html"><strong aria-hidden="true">4.7.</strong> Map</a></li><li><a href="../parser/between.html" class="active"><strong aria-hidden="true">4.8.</strong> Between</a></li><li><a href="../parser/oneof.html"><strong aria-hidden="true">4.9.</strong> OneOf</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="../dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="../parser/combinators.html"><strong aria-hidden="true">4.6.</strong> Combinators</a></li><li><a href="../parser/map.html"><strong aria-hidden="true">4.7.</strong> Map</a></li><li><a href="../parser/between.html"><strong aria-hidden="true">4.8.</strong> Between</a></li><li><a href="../parser/oneof.html" class="active"><strong aria-hidden="true">4.9.</strong> OneOf</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="../dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,92 +148,37 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#between" id="between">Between</a></h1>
-<p>We are capable of parsing, but all the parsers we have seen
-only parse a single character. Let's say we want to parse a
-number instead of a single digit.</p>
-<p>For that we our going to look at the <code>Between</code> parser. We
-expect it to work like the following.</p>
+                        <h1><a class="header" href="#oneof" id="oneof">OneOf</a></h1>
+<p>Sometimes you want to have a choice. E.g. an expression could either be a number
+or a variable. So when parsing an expression you want the option to parse one of
+a number or variable.</p>
+<p>This is where the <code>OneOf</code> parser comes in. It will pass the following test.</p>
 <pre><code>    #[test]
-    fn parse_between_2_and_4_digits() {
-        let input = &quot;12345&quot;;
-        let parser = between(2, 4, any(|c: char| c.is_ascii_digit()));
+    fn parse_one_of_a_or_b() {
+        let input = &quot;a1&quot;;
+        let parser = one_of(vec![character('a'), character('b')]);
 
         let actual = parser.parse(input);
 
-        let expected = Ok((vec!['1', '2', '3', '4'], &quot;5&quot;));
+        let expected = Ok(('a', &quot;1&quot;));
         assert_eq!(actual, expected);
     }
 </code></pre>
 <h2><a class="header" href="#considerations" id="considerations">Considerations</a></h2>
-<p>By now the strategy to creating a parser is not new. Now we have
-to think about what we need to represent this parser. We need
-some sort of lower bound, an upper bound and a parser that we
-want to parse between the lower and upper bound times.</p>
-<p>The lower bound can be just a number. Because you can not parse
-less than zero times, negative numbers are not necessary. The type
-for the lower bound can be any unsigned number. We will settle for
-<code>u8</code>.</p>
-<p>The upper bound is a little trickier. There is no natural limit,
-we could be interested in all characters that match a certain parser.</p>
-<p>To accomadate this we are going to introduce a custom enum <code>Limit</code>.</p>
-<pre><code>pub enum Limit {
-  At(u8),
-  Infinity,
-}
-</code></pre>
-<p>This way we can specify either an unlimited bound, or a bound at a
-specific value.</p>
-<p>Because we likely will want to check if the upper bound is reached,
-we introduce a method that allows use to check that.</p>
-<pre><code>impl Limit {
-  pub fn is_bigger_then(&amp;self, n: u8) -&gt; bool {
-    match self {
-      Limit::At(threshold) =&gt; threshold &gt; &amp;n,
-
-      Limit::Infinity =&gt; true,
-    }
-  }
-}
-</code></pre>
-<p>That are almost all the considerations for the <code>Between</code> struct we
-need. Let's see if you can come up with an implementation. Do note
-that you probably need to think about <code>PhantomData</code> at some point.</p>
+<p>Since the <code>Parser</code> trait can return only a single thing, all of our options in
+the <code>OneOf</code> parser should adhere to the same contract.</p>
 <h2><a class="header" href="#impl-parser" id="impl-parser">Impl Parser</a></h2>
-<p>So we have a struct that tracks the lower limit, the upper limit and
-the base parser. The implementation strategy is.</p>
-<ol>
-<li>Try to parse as many as the lower limit of items, accumulating the
-result.</li>
-<li>If that fails, report the error.</li>
-<li>If it succeeds, go on to the optional phase.</li>
-<li>Try to parse up to the upper limit of items.</li>
-<li>If that fails, cut your losses and return the accumulated result.</li>
-<li>If that succeeds, return the accumulated result. </li>
-</ol>
-<h2><a class="header" href="#constructor--factory" id="constructor--factory">Constructor &amp; Factory</a></h2>
-<p>Create an appropriate constructor and factories. See the exercises
-for some factory suggestions.</p>
-<h2><a class="header" href="#summary" id="summary">Summary</a></h2>
-<p>This combinator is very versatile. It can accomodate a lot of different
-scenarios, depending on how you construct it. Writing factories that
-reflect your needs is always a good strategy.</p>
-<p>On should write code that one wants and write implementations to make
-that happen.</p>
+<p>Once you have your options our parse strategy would be to try each of our
+options in turn until one of them succeed. If it succeed return the parsed
+result and the remaining input. If none of the options succeed, report an error.</p>
+<h2><a class="header" href="#constructor--factories" id="constructor--factories">Constructor &amp; Factories</a></h2>
+<p>Since there is not very much going on with constructors or factories. From now
+on we will not mention them any more.</p>
 <h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
 <ol>
-<li>Implement the <code>Between</code> parser.</li>
-<li>Write some tests to check your implementation.</li>
-<li>Introduce some other factories in terms of <code>Between</code></li>
-</ol>
-<ul>
-<li><code>atleast</code>, will parse at least a certain number of items, but
-tries to parse as many as it can from the input.</li>
-<li><code>many</code>, will parse as many items as it can from the input.</li>
-</ul>
-<ol start="4">
-<li>Think and discuss how to do better error reporting. Implement
-your strategy.</li>
+<li>Implement the <code>OneOf</code> parser.</li>
+<li>Write some test to check your implementation.</li>
+<li>Think and discuss to do better error handling.</li>
 </ol>
 
                     </main>
@@ -241,13 +186,13 @@ your strategy.</li>
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../parser/map.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../parser/between.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../parser/oneof.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../interpreter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -259,13 +204,13 @@ your strategy.</li>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="../parser/map.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="../parser/between.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a href="../parser/oneof.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="../interpreter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

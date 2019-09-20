@@ -19,7 +19,7 @@ expect it to work like the following.
     }
 ```
 
-## Between
+## Considerations
 By now the strategy to creating a parser is not new. Now we have
 to think about what we need to represent this parser. We need
 some sort of lower bound, an upper bound and a parser that we
