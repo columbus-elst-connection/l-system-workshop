@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Looking at the type - L-Systems</title>
+        <title>Macros - L-Systems</title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html" class="active"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="../parser/literal.html"><strong aria-hidden="true">4.6.</strong> Literal</a></li><li><a href="../parser/combinators.html"><strong aria-hidden="true">4.7.</strong> Combinators</a></li><li><a href="../parser/map.html"><strong aria-hidden="true">4.8.</strong> Map</a></li><li><a href="../parser/between.html"><strong aria-hidden="true">4.9.</strong> Between</a></li><li><a href="../parser/oneof.html"><strong aria-hidden="true">4.10.</strong> OneOf</a></li><li><a href="../parser/utilities.html"><strong aria-hidden="true">4.11.</strong> Utilities</a></li><li><a href="../parser/macros.html"><strong aria-hidden="true">4.12.</strong> Macros</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="../dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="../parser/literal.html"><strong aria-hidden="true">4.6.</strong> Literal</a></li><li><a href="../parser/combinators.html"><strong aria-hidden="true">4.7.</strong> Combinators</a></li><li><a href="../parser/map.html"><strong aria-hidden="true">4.8.</strong> Map</a></li><li><a href="../parser/between.html"><strong aria-hidden="true">4.9.</strong> Between</a></li><li><a href="../parser/oneof.html"><strong aria-hidden="true">4.10.</strong> OneOf</a></li><li><a href="../parser/utilities.html"><strong aria-hidden="true">4.11.</strong> Utilities</a></li><li><a href="../parser/macros.html" class="active"><strong aria-hidden="true">4.12.</strong> Macros</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="../dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,69 +148,58 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#looking-at-the-type" id="looking-at-the-type">Looking at the type</a></h1>
-<p>Before we start out it is good to think what we want to achieve. This allows us
-to reason about the constraints and capture those in our types.</p>
-<p>A parser reads input and transforms that into some data structure. This already
-provides us with a decision. I.e. what type is our input?</p>
-<p>We want to make things easy for our selves and since string literals have type
-<code>&amp;str</code> we our going to pick that as our input type.</p>
-<p>We don't really know what output type is going to be, put we do know that the
-parser could fail. Take a look at the following code</p>
-<pre><code class="language-lsystem">F -&gt; FF
+                        <h1><a class="header" href="#macros" id="macros">Macros</a></h1>
+<p>We have a fair amount of basic parsers and lovely combinators for them. But
+there is one thing missing. All the parsers we have so far can only parse one
+thing.</p>
+<p>Give a parser an input, it will try do its job, return the result and the rest
+of the input. But if we want to parse complex structures, we need to be able to
+proceed parsing an that rest of the input. We need to be able to chain different
+parser together, one after the other.</p>
+<h2><a class="header" href="#what-we-want-to-achieve" id="what-we-want-to-achieve">What we want to achieve</a></h2>
+<p>Let's say we want to parse something that looks like a L-system rule. Remember,
+it starts with a symbol, followed by a literal <code>=&gt;</code> and at last a sequence of
+symbols.</p>
+<p>What needs to be done is that we feed the remainder of one parser into the next.
+Something along the lines of</p>
+<pre><code>let rem = input;
+let (symbol, rem) = symbol_parser(rem)?
+let (_, rem) = literal('=&gt;')(rem)?
+let (production, rem) = at_least(1, symbol_parser)(rem)?
 </code></pre>
-<p>Although it looks like an L-system, it not quite an L-system. At least not in
-the form we expect in the L-system section. The arrow is wrong!</p>
-<p>Because the data-structure could be anything, we better make it a generic
-parameter. So our first guess for the output type could be
-<code>Result&lt;T, ParserError&gt;</code>, where <code>ParserError</code> is defined as</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-#[derive(Debug, PartialEq)]
-pub enum ParseError {
-    GenericError,
-}
-#}</code></pre></pre>
-<h2><a class="header" href="#combinator" id="combinator">Combinator</a></h2>
-<p>Although our first guess isn't that far off, it is lacking some flexibility.
-What we like to achieve is to easily combine different kind of parsers into a
-more complex one.</p>
-<p>With this goal in mind, we would like to pass information about what part of the
-input still needs parsing. Because we want to feed that into a different parser,
-that type should be <code>&amp;str</code>, our input type.</p>
-<p>So our second guess is <code>Result&lt;(T, &amp;str), ParseError&gt;</code>.</p>
-<p>A Parser returns either a tuple of the parsed result and the rest of the
-input, or it returns an error. </p>
-<h2><a class="header" href="#trait" id="trait">Trait</a></h2>
-<p>We now can create a <code>trait</code> that describes the contract our parsers have. It is
-little more than our consideration, with the correct use of lifetimes to keep
-the compiler happy.</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-pub trait Parser&lt;'a, T&gt; {
-    fn parse(&amp;self, input: &amp;'a str) -&gt; Result&lt;(T, &amp;'a str), ParseError&gt;;
-}
-#}</code></pre></pre>
-<p>So a Parser is anything that has a <code>parse</code> method of the right signature.</p>
-<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
-<ol>
-<li>Implement the <code>Parser</code> trait and the <code>ParseError</code> enum.</li>
-</ol>
+<p>Once we have the symbol and its production we can combine them to form a rule.</p>
+<p>Although this is not hard, there is a lot of plumbing that is neither
+interesting or exciting. We would rather focus on chaining the parsers and
+combing their results.</p>
+<h2><a class="header" href="#declarative-macros" id="declarative-macros">Declarative Macros</a></h2>
+<p>Rust has a great mechanism to aid in our search for expressiveness. It are
+<a href="https://doc.rust-lang.org/book/ch19-06-macros.html#declarative-macros-with-macro_rules-for-general-metaprogramming">declarative macros</a>.</p>
+<p>Declarative macros</p>
+<blockquote>
+<p>allow you to write something similar to a Rust match expression. As discussed
+in Chapter 6, match expressions are control structures that take an
+expression, compare the resulting value of the expression to patterns, and
+then run the code associated with the matching pattern. Macros also compare a
+value to patterns that are associated with particular code: in this situation,
+the value is the literal Rust source code passed to the macro; the patterns
+are compared with the structure of that source code; and the code associated
+with each pattern, when matched, replaces the code passed to the macro. This
+all happens during compilation </p>
+</blockquote>
+<p>They are ideal for our situation.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../parser/what.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../parser/utilities.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../parser/function.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../interpreter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -222,13 +211,13 @@ pub trait Parser&lt;'a, T&gt; {
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="../parser/what.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="../parser/utilities.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a href="../parser/function.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="../interpreter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
