@@ -228,6 +228,10 @@ pub fn one_of<'a, T, P>(options: Vec<P>) -> impl Parser<'a, T> where T: 'a, P: P
     OneOf::new(options)
 }
 
+pub fn skip<'a, T, P>(parser: P) -> impl Parser<'a, ()> where T: 'a, P: Parser<'a, T> + Sized {
+    map(parser, |_|{()})
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -297,6 +301,17 @@ mod tests {
         let actual = parser.parse(input);
 
         let expected = Ok(('a', "1"));
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn parse_skip_many_spaces() {
+        let input = "           next";
+        let parser = skip(many(character(' ')));
+
+        let actual = parser.parse(input);
+
+        let expected = Ok(((), "next"));
         assert_eq!(actual, expected);
     }
 }
