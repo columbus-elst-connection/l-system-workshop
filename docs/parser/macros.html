@@ -163,9 +163,9 @@ symbols.</p>
 <p>What needs to be done is that we feed the remainder of one parser into the next.
 Something along the lines of</p>
 <pre><code>let rem = input;
-let (symbol, rem) = symbol_parser(rem)?
-let (_, rem) = literal('=&gt;')(rem)?
-let (production, rem) = at_least(1, symbol_parser)(rem)?
+let (symbol, rem) = symbol_parser.parse(rem)?
+let (_, rem) = literal('=&gt;').parse(rem)?
+let (production, rem) = at_least(1, symbol_parser).parse(rem)?
 </code></pre>
 <p>Once we have the symbol and its production we can combine them to form a rule.</p>
 <p>Although this is not hard, there is a lot of plumbing that is neither

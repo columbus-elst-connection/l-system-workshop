@@ -18,9 +18,9 @@ Something along the lines of
 
 ```
 let rem = input;
-let (symbol, rem) = symbol_parser(rem)?
-let (_, rem) = literal('=>')(rem)?
-let (production, rem) = at_least(1, symbol_parser)(rem)?
+let (symbol, rem) = symbol_parser.parse(rem)?
+let (_, rem) = literal('=>').parse(rem)?
+let (production, rem) = at_least(1, symbol_parser).parse(rem)?
 ```
 
 Once we have the symbol and its production we can combine them to form a rule.

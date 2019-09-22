@@ -246,7 +246,7 @@ macro_rules! sequence {
         |input| {
             let rem = input;
             $(
-                let ($name, rem) =$parser.parse(rem)?;
+                let ($name, rem) = $parser.parse(rem)?;
             )*
             let result = $finish;
             Ok((result, rem))
@@ -260,10 +260,10 @@ macro_rules! sequence_ignore_spaces {
         |input| {
             let rem = input;
             $(
-                let (_, rem) = $crate::framework::spaces(rem)?;
-                let ($name, rem) =$parser.parse(rem)?;
+                let (_, rem) = $crate::framework::spaces().parse(rem)?;
+                let ($name, rem) = $parser.parse(rem)?;
             )*
-            let (_, rem) = $crate::framework::spaces(rem)?;
+            let (_, rem) = $crate::framework::spaces().parse(rem)?;
             let result = $finish;
             Ok((result, rem))
         }
@@ -366,7 +366,6 @@ mod tests {
         assert_eq!(actual, expected);
     }
 
-    #[ignore]
     #[test]
     fn parse_a_sequence_of_parsers() {
         let parser = sequence!{
@@ -375,9 +374,27 @@ mod tests {
             =>
             (a, b)
         };
+
         let (result, rem) = parser.parse("Ab").expect("failed to parse");
+        
         assert_eq!(('A', 'b'), result);
         assert!(rem.is_empty());
     }
+
+    #[test]
+    fn parse_a_sequence_of_parsers_ignoring_spaces() {
+        let parser = sequence_ignore_spaces!{
+            let a = character('A'),
+            let b = character('b')
+            =>
+            (a, b)
+        };
+        
+        let (result, rem) = parser.parse("   A\tb").expect("failed to parse");
+        
+        assert_eq!(('A', 'b'), result);
+        assert!(rem.is_empty());
+    }
+
 
 }

@@ -933,9 +933,9 @@ symbols.</p>
 <p>What needs to be done is that we feed the remainder of one parser into the next.
 Something along the lines of</p>
 <pre><code>let rem = input;
-let (symbol, rem) = symbol_parser(rem)?
-let (_, rem) = literal('=&gt;')(rem)?
-let (production, rem) = at_least(1, symbol_parser)(rem)?
+let (symbol, rem) = symbol_parser.parse(rem)?
+let (_, rem) = literal('=&gt;').parse(rem)?
+let (production, rem) = at_least(1, symbol_parser).parse(rem)?
 </code></pre>
 <p>Once we have the symbol and its production we can combine them to form a rule.</p>
 <p>Although this is not hard, there is a lot of plumbing that is neither
@@ -970,10 +970,45 @@ remedy that.</p>
             =&gt;
             (a, b)
         };
+
         let (result, rem) = parser.parse(&quot;Ab&quot;).expect(&quot;failed to parse&quot;);
+        
         assert_eq!(('A', 'b'), result);
         assert!(rem.is_empty());
     }
+</code></pre>
+<h2><a class="header" href="#what-do-we-want" id="what-do-we-want">What do we want</a></h2>
+<p>As stated in the Macros chapter, we want to sequence parsers without having to
+write all the boilerplate. As detailed in the test code above, we want to focus
+on the result of parsers and combine those results in interesting ways.</p>
+<p>The pattern that we picked is, one or more lines of</p>
+<pre><code>let identifier = parser,
+</code></pre>
+<p>We would like to translate the above lines into something like</p>
+<pre><code>let (identifier, remainder) = parser.parse(remainder)?
+</code></pre>
+<p>I.e. pass the remaining input to the parser to parse, collect the result and
+bind it to the identifier and rebind the remainder.</p>
+<p>Once all the parser sequences have done their job, we would like to collect all
+the parse results in some meaningful manner. E.g. if we have parsed an <code>'A'</code>
+followed by a <code>'b'</code>, we would return a tuple containing both results. More
+general we want to return some form of expression involving the parse results.</p>
+<h2><a class="header" href="#macros-to-the-rescue" id="macros-to-the-rescue">Macros to the rescue</a></h2>
+<p>Luckily macros are well suited for the task. Look at the following code. We will
+explain it in detail.</p>
+<pre><code>#[macro_export]
+macro_rules! sequence {
+    ($(let $name:ident = $parser:expr),+ =&gt; $finish:expr ) =&gt; {{
+        |input| {
+            let rem = input;
+            $(
+                let ($name, rem) = $parser.parse(rem)?;
+            )*
+            let result = $finish;
+            Ok((result, rem))
+        }
+    }};
+}
 </code></pre>
 <h1><a class="header" href="#interpreter-1" id="interpreter-1">Interpreter</a></h1>
 <p>In the Parser section we created a parser for <code>.ls</code> files that could return a
