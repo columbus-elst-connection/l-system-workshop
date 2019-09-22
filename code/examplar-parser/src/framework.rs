@@ -232,6 +232,46 @@ pub fn skip<'a, T, P>(parser: P) -> impl Parser<'a, ()> where T: 'a, P: Parser<'
     map(parser, |_|{()})
 }
 
+pub fn space<'a>() -> impl Parser<'a, ()> {
+    skip(one_of(vec![character(' '), character('\t')]))
+}
+
+pub fn spaces<'a>() -> impl Parser<'a, ()> {
+    skip(many(space()))
+}
+
+#[macro_export]
+macro_rules! sequence {
+    ($(let $name:ident = $parser:expr),+ => $finish:expr ) => {{
+        |input| {
+            let rem = input;
+            $(
+                let ($name, rem) =$parser.parse(rem)?;
+            )*
+            let result = $finish;
+            Ok((result, rem))
+        }
+    }};
+}
+
+#[macro_export]
+macro_rules! sequence_ignore_spaces {
+    ($(let $name:ident = $parser:expr),+ => $finish:expr ) => {{
+        |input| {
+            let rem = input;
+            $(
+                let (_, rem) = $crate::framework::spaces(rem)?;
+                let ($name, rem) =$parser.parse(rem)?;
+            )*
+            let (_, rem) = $crate::framework::spaces(rem)?;
+            let result = $finish;
+            Ok((result, rem))
+        }
+    }};
+}
+
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -314,4 +354,30 @@ mod tests {
         let expected = Ok(((), "next"));
         assert_eq!(actual, expected);
     }
+
+    #[test]
+    fn parse_spaces() {
+        let input = "          \tnext";
+        let parser = spaces();
+
+        let actual = parser.parse(input);
+
+        let expected = Ok(((), "next"));
+        assert_eq!(actual, expected);
+    }
+
+    #[ignore]
+    #[test]
+    fn parse_a_sequence_of_parsers() {
+        let parser = sequence!{
+            let a = character('A'),
+            let b = character('b')
+            =>
+            (a, b)
+        };
+        let (result, rem) = parser.parse("Ab").expect("failed to parse");
+        assert_eq!(('A', 'b'), result);
+        assert!(rem.is_empty());
+    }
+
 }

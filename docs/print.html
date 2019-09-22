@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="parser/literal.html"><strong aria-hidden="true">4.6.</strong> Literal</a></li><li><a href="parser/combinators.html"><strong aria-hidden="true">4.7.</strong> Combinators</a></li><li><a href="parser/map.html"><strong aria-hidden="true">4.8.</strong> Map</a></li><li><a href="parser/between.html"><strong aria-hidden="true">4.9.</strong> Between</a></li><li><a href="parser/oneof.html"><strong aria-hidden="true">4.10.</strong> OneOf</a></li><li><a href="parser/utilities.html"><strong aria-hidden="true">4.11.</strong> Utilities</a></li><li><a href="parser/macros.html"><strong aria-hidden="true">4.12.</strong> Macros</a></li></ol></li><li><a href="interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="parser/literal.html"><strong aria-hidden="true">4.6.</strong> Literal</a></li><li><a href="parser/combinators.html"><strong aria-hidden="true">4.7.</strong> Combinators</a></li><li><a href="parser/map.html"><strong aria-hidden="true">4.8.</strong> Map</a></li><li><a href="parser/between.html"><strong aria-hidden="true">4.9.</strong> Between</a></li><li><a href="parser/oneof.html"><strong aria-hidden="true">4.10.</strong> OneOf</a></li><li><a href="parser/utilities.html"><strong aria-hidden="true">4.11.</strong> Utilities</a></li><li><a href="parser/macros.html"><strong aria-hidden="true">4.12.</strong> Macros</a></li><li><a href="parser/sequence.html"><strong aria-hidden="true">4.13.</strong> Parsing a sequence</a></li></ol></li><li><a href="interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -328,7 +328,7 @@ pub trait Parser&lt;'a, T&gt; {
 <p>So a Parser is anything that has a <code>parse</code> method of the right signature.</p>
 <h2><a class="header" href="#exercises-1" id="exercises-1">Exercises</a></h2>
 <ol>
-<li>Implement the <code>Parser</code> trait and the <code>ParseError</code> enum.</li>
+<li>Implement the <code>Parser</code> trait and the <code>ParseError</code> enum in <code>src/framework.rs</code>.</li>
 </ol>
 <h1><a class="header" href="#functions-are-parsers" id="functions-are-parsers">Functions are Parsers!</a></h1>
 <p>With our <code>Parser</code> trait in place we can start implementing it. Thinking about
@@ -881,7 +881,7 @@ on we will not mention them any more.</p>
 <h1><a class="header" href="#utilities" id="utilities">Utilities</a></h1>
 <p>This chapter introduces some convenient parsers that we will use when we will be
 parsing more complex structures.</p>
-<h2><a class="header" href="#skip" id="skip">Skip</a></h2>
+<h2><a class="header" href="#skip" id="skip">skip</a></h2>
 <p>You are not always interested in what you are parsing. Whitespace is a good
 example. The <code>skip</code> factory creates a parser that allows you to transform a
 parser into one that ignores the result.</p>
@@ -898,9 +898,25 @@ parser into one that ignores the result.</p>
 </code></pre>
 <p>An implementation can be given in terms of the primitives and the combinators
 already given.</p>
+<h2><a class="header" href="#space--spaces" id="space--spaces">space &amp; spaces</a></h2>
+<p>A useful building block, to ignore, are white space. The following would be a
+nice addition to our utility belt. </p>
+<pre><code>    #[test]
+    fn parse_spaces() {
+        let input = &quot;           \tnext&quot;;
+        let parser = spaces();
+
+        let actual = parser.parse(input);
+
+        let expected = Ok(((), &quot;next&quot;));
+        assert_eq!(actual, expected);
+    }
+</code></pre>
+<p>Don't forget about the fact that a <em>tab</em> character also counts as white space.</p>
 <h2><a class="header" href="#exercises-9" id="exercises-9">Exercises</a></h2>
 <ol>
 <li>Implement <code>skip</code> parser. Hint: take a look at <code>map</code></li>
+<li>Implement <code>space</code> and <code>spaces</code> parser. Hint: don't forget about <code>skip</code>.</li>
 </ol>
 <h1><a class="header" href="#macros" id="macros">Macros</a></h1>
 <p>We have a fair amount of basic parsers and lovely combinators for them. But
@@ -941,6 +957,24 @@ with each pattern, when matched, replaces the code passed to the macro. This
 all happens during compilation </p>
 </blockquote>
 <p>They are ideal for our situation.</p>
+<h1><a class="header" href="#parsing-a-sequence" id="parsing-a-sequence">Parsing a sequence</a></h1>
+<p>We would like to parse a sequence of things. First this, followed by that and
+finally this thing again. At the moment we have no way of describing that. Let's
+remedy that.</p>
+<p>What we want to achieve is to make the following test pass.</p>
+<pre><code>    #[test]
+    fn parse_a_sequence_of_parsers() {
+        let parser = sequence!{
+            let a = character('A'),
+            let b = character('b')
+            =&gt;
+            (a, b)
+        };
+        let (result, rem) = parser.parse(&quot;Ab&quot;).expect(&quot;failed to parse&quot;);
+        assert_eq!(('A', 'b'), result);
+        assert!(rem.is_empty());
+    }
+</code></pre>
 <h1><a class="header" href="#interpreter-1" id="interpreter-1">Interpreter</a></h1>
 <p>In the Parser section we created a parser for <code>.ls</code> files that could return a
 L-system data structure. We would now like to interpret this data structure in

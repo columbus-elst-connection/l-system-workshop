@@ -18,6 +18,7 @@
     - [OneOf](./parser/oneof.md)
     - [Utilities](./parser/utilities.md)
     - [Macros](./parser/macros.md)
+    - [Parsing a sequence](./parser/sequence.md)
 - [Interpreter](./interpreter.md)
     - [What is an Interpreter](./interpreter/what.md)
 - [Renderer](./renderer.md)
