@@ -10,3 +10,11 @@ world of exploration.
 Don't take it as a travelers guide. We ourselves are as oblivious as the next
 person when it comes to what you want to delve into. Feel free to follow your
 own interest and amaze us with your thoughts and creations.
+
+## L-System Parser
+Currently the parser for the `RenderConfig` only allows to define the step size
+and the angle. One way to change how the L-system interacts is to change the
+step size depending on the level of iteration.
+
+Extend the L-system parser so that the step multiplication can be provided as
+well. 
