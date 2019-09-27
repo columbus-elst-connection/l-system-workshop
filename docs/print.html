@@ -998,7 +998,7 @@ general we want to return some form of expression involving the parse results.</
 explain it in detail.</p>
 <pre><code>#[macro_export]
 macro_rules! sequence {
-    ($(let $name:ident = $parser:expr),+ =&gt; $finish:expr ) =&gt; {{
+    ( $(let $name:ident = $parser:expr),+ =&gt; $finish:expr ) =&gt; {{
         |input| {
             let rem = input;
             $(
@@ -1010,6 +1010,62 @@ macro_rules! sequence {
     }};
 }
 </code></pre>
+<h3><a class="header" href="#macro_export-attribute" id="macro_export-attribute"><code>macro_export</code> attribute</a></h3>
+<p>Let's start at the top. The <code>macro_export</code> attribute tells us that we would like
+to make this macro available whenever the crate is in scope.</p>
+<h3><a class="header" href="#macro_rules-macro" id="macro_rules-macro"><code>macro_rules!</code> macro</a></h3>
+<p>The way to define a macro is by using the <code>macro_rule</code> macro. It will accept a
+name and shapes that the macro should accepts and how they are translated.</p>
+<p>In our case are creating a macro called <code>sequence</code>.</p>
+<h3><a class="header" href="#the-pattern" id="the-pattern">The pattern</a></h3>
+<p>The pattern our macro accepts is defined next. It is </p>
+<pre><code>( $(let $name:ident = $parser:expr),+ =&gt; $finish:expr )
+</code></pre>
+<p>First let's focus on <code>let $name:ident = $parser:expr</code>. It expresses how we want
+to string a results of parser. This pattern will try to match expressions like</p>
+<pre><code>let a = character('A')
+</code></pre>
+<p>first the literal <code>let</code> next something that looks like an identifier, <code>a</code> in this
+case. if it succeeds bind the identifier to the <code>$name</code> variable. Next comes a
+literal <code>=</code> followed by something that looks like any Rust expression,
+<code>characcter('A')</code> in our example, and bind that expression to the <code>$parser</code>
+variable.</p>
+<p>Notice that that entire pattern is surrounded by <code>$( ),+</code>. The plus tells us
+that we need at least one, but are allowed more repetition of what ever pattern
+is between the brackets, separated by an (final optional) comma.</p>
+<p>Next there is a literal <code>=&gt;</code> followed by something that looks like any rust
+expression. If that matches bind the expression to the <code>$finish</code> expression.</p>
+<h3><a class="header" href="#the-substitutions" id="the-substitutions">The substitutions</a></h3>
+<p>Declarative macros in Rust work by taking the pattern and providing a
+substitution, that needs to adhere to some rules. </p>
+<pre><code>    {{
+        |input| {
+            let rem = input;
+            $(
+                let ($name, rem) = $parser.parse(rem)?;
+            )*
+            let result = $finish;
+            Ok((result, rem))
+        }
+    }};
+</code></pre>
+<p>Now this substitution will be replaced with the data that is gathered when
+matching the syntax. We notice that it will return a lambda expression that
+accepts input, and returns a pair of result and the remaining input. I.e. it is
+a parser.</p>
+<p>What is returned is in effect handled by 
+</p>
+<pre><code>            $(
+                let ($name, rem) = $parser.parse(rem)?;
+            )*
+</code></pre>
+<p>The <code>$( )*</code> will output its contents for each of the matching parts.</p>
+<h2><a class="header" href="#exercises-10" id="exercises-10">Exercises</a></h2>
+<ol>
+<li>Implement and test the <code>sequence!</code> macro.</li>
+<li>Often white space is not that interesting. Create a macro that allows and
+ignores whitespace between the different parsers.</li>
+</ol>
 <h1><a class="header" href="#interpreter-1" id="interpreter-1">Interpreter</a></h1>
 <p>In the Parser section we created a parser for <code>.ls</code> files that could return a
 L-system data structure. We would now like to interpret this data structure in
