@@ -24,6 +24,7 @@
     - [What is an Interpreter](./interpreter/what.md)
 - [Renderer](./renderer.md)
     - [What is a Renderer](./renderer/what.md)
+- [Why stop here](./extensions.md)
 
 [Working with Dependencies](./dependencies.md)
 
