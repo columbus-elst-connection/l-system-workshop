@@ -19,6 +19,7 @@
     - [Utilities](./parser/utilities.md)
     - [Macros](./parser/macros.md)
     - [Parsing a sequence](./parser/sequence.md)
+    - [Use the framework](./parser/framework.md)
 - [Interpreter](./interpreter.md)
     - [What is an Interpreter](./interpreter/what.md)
 - [Renderer](./renderer.md)

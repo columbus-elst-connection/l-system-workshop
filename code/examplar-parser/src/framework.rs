@@ -270,8 +270,6 @@ macro_rules! sequence_ignore_spaces {
     }};
 }
 
-
-
 #[cfg(test)]
 mod tests {
     use super::*;

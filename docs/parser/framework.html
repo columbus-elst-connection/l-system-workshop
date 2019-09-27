@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Parsing a sequence - L-Systems</title>
+        <title>Use the framework - L-Systems</title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="../parser/literal.html"><strong aria-hidden="true">4.6.</strong> Literal</a></li><li><a href="../parser/combinators.html"><strong aria-hidden="true">4.7.</strong> Combinators</a></li><li><a href="../parser/map.html"><strong aria-hidden="true">4.8.</strong> Map</a></li><li><a href="../parser/between.html"><strong aria-hidden="true">4.9.</strong> Between</a></li><li><a href="../parser/oneof.html"><strong aria-hidden="true">4.10.</strong> OneOf</a></li><li><a href="../parser/utilities.html"><strong aria-hidden="true">4.11.</strong> Utilities</a></li><li><a href="../parser/macros.html"><strong aria-hidden="true">4.12.</strong> Macros</a></li><li><a href="../parser/sequence.html" class="active"><strong aria-hidden="true">4.13.</strong> Parsing a sequence</a></li><li><a href="../parser/framework.html"><strong aria-hidden="true">4.14.</strong> Use the framework</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="../dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="../parser/literal.html"><strong aria-hidden="true">4.6.</strong> Literal</a></li><li><a href="../parser/combinators.html"><strong aria-hidden="true">4.7.</strong> Combinators</a></li><li><a href="../parser/map.html"><strong aria-hidden="true">4.8.</strong> Map</a></li><li><a href="../parser/between.html"><strong aria-hidden="true">4.9.</strong> Between</a></li><li><a href="../parser/oneof.html"><strong aria-hidden="true">4.10.</strong> OneOf</a></li><li><a href="../parser/utilities.html"><strong aria-hidden="true">4.11.</strong> Utilities</a></li><li><a href="../parser/macros.html"><strong aria-hidden="true">4.12.</strong> Macros</a></li><li><a href="../parser/sequence.html"><strong aria-hidden="true">4.13.</strong> Parsing a sequence</a></li><li><a href="../parser/framework.html" class="active"><strong aria-hidden="true">4.14.</strong> Use the framework</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li></ol></li><li><a href="../dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,128 +148,24 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#parsing-a-sequence" id="parsing-a-sequence">Parsing a sequence</a></h1>
-<p>We would like to parse a sequence of things. First this, followed by that and
-finally this thing again. At the moment we have no way of describing that. Let's
-remedy that.</p>
-<p>What we want to achieve is to make the following test pass.</p>
-<pre><code>    #[test]
-    fn parse_a_sequence_of_parsers() {
-        let parser = sequence!{
-            let a = character('A'),
-            let b = character('b')
-            =&gt;
-            (a, b)
-        };
-
-        let (result, rem) = parser.parse(&quot;Ab&quot;).expect(&quot;failed to parse&quot;);
-        
-        assert_eq!(('A', 'b'), result);
-        assert!(rem.is_empty());
-    }
-</code></pre>
-<h2><a class="header" href="#what-do-we-want" id="what-do-we-want">What do we want</a></h2>
-<p>As stated in the Macros chapter, we want to sequence parsers without having to
-write all the boilerplate. As detailed in the test code above, we want to focus
-on the result of parsers and combine those results in interesting ways.</p>
-<p>The pattern that we picked is, one or more lines of</p>
-<pre><code>let identifier = parser,
-</code></pre>
-<p>We would like to translate the above lines into something like</p>
-<pre><code>let (identifier, remainder) = parser.parse(remainder)?
-</code></pre>
-<p>I.e. pass the remaining input to the parser to parse, collect the result and
-bind it to the identifier and rebind the remainder.</p>
-<p>Once all the parser sequences have done their job, we would like to collect all
-the parse results in some meaningful manner. E.g. if we have parsed an <code>'A'</code>
-followed by a <code>'b'</code>, we would return a tuple containing both results. More
-general we want to return some form of expression involving the parse results.</p>
-<h2><a class="header" href="#macros-to-the-rescue" id="macros-to-the-rescue">Macros to the rescue</a></h2>
-<p>Luckily macros are well suited for the task. Look at the following code. We will
-explain it in detail.</p>
-<pre><code>#[macro_export]
-macro_rules! sequence {
-    ( $(let $name:ident = $parser:expr),+ =&gt; $finish:expr ) =&gt; {{
-        |input| {
-            let rem = input;
-            $(
-                let ($name, rem) = $parser.parse(rem)?;
-            )*
-            let result = $finish;
-            Ok((result, rem))
-        }
-    }};
-}
-</code></pre>
-<h3><a class="header" href="#macro_export-attribute" id="macro_export-attribute"><code>macro_export</code> attribute</a></h3>
-<p>Let's start at the top. The <code>macro_export</code> attribute tells us that we would like
-to make this macro available whenever the crate is in scope.</p>
-<h3><a class="header" href="#macro_rules-macro" id="macro_rules-macro"><code>macro_rules!</code> macro</a></h3>
-<p>The way to define a macro is by using the <code>macro_rule</code> macro. It will accept a
-name and shapes that the macro should accepts and how they are translated.</p>
-<p>In our case are creating a macro called <code>sequence</code>.</p>
-<h3><a class="header" href="#the-pattern" id="the-pattern">The pattern</a></h3>
-<p>The pattern our macro accepts is defined next. It is </p>
-<pre><code>( $(let $name:ident = $parser:expr),+ =&gt; $finish:expr )
-</code></pre>
-<p>First let's focus on <code>let $name:ident = $parser:expr</code>. It expresses how we want
-to string a results of parser. This pattern will try to match expressions like</p>
-<pre><code>let a = character('A')
-</code></pre>
-<p>first the literal <code>let</code> next something that looks like an identifier, <code>a</code> in this
-case. if it succeeds bind the identifier to the <code>$name</code> variable. Next comes a
-literal <code>=</code> followed by something that looks like any Rust expression,
-<code>characcter('A')</code> in our example, and bind that expression to the <code>$parser</code>
-variable.</p>
-<p>Notice that that entire pattern is surrounded by <code>$( ),+</code>. The plus tells us
-that we need at least one, but are allowed more repetition of what ever pattern
-is between the brackets, separated by an (final optional) comma.</p>
-<p>Next there is a literal <code>=&gt;</code> followed by something that looks like any rust
-expression. If that matches bind the expression to the <code>$finish</code> expression.</p>
-<h3><a class="header" href="#the-substitutions" id="the-substitutions">The substitutions</a></h3>
-<p>Declarative macros in Rust work by taking the pattern and providing a
-substitution, that needs to adhere to some rules. </p>
-<pre><code>    {{
-        |input| {
-            let rem = input;
-            $(
-                let ($name, rem) = $parser.parse(rem)?;
-            )*
-            let result = $finish;
-            Ok((result, rem))
-        }
-    }};
-</code></pre>
-<p>Now this substitution will be replaced with the data that is gathered when
-matching the syntax. We notice that it will return a lambda expression that
-accepts input, and returns a pair of result and the remaining input. I.e. it is
-a parser.</p>
-<p>What is returned is in effect handled by 
-</p>
-<pre><code>            $(
-                let ($name, rem) = $parser.parse(rem)?;
-            )*
-</code></pre>
-<p>The <code>$( )*</code> will output its contents for each of the matching parts.</p>
-<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
-<ol>
-<li>Implement and test the <code>sequence!</code> macro.</li>
-<li>Often white space is not that interesting. Create a macro that allows and
-ignores whitespace between the different parsers.</li>
-</ol>
+                        <h1><a class="header" href="#use-the-framework" id="use-the-framework">Use the framework</a></h1>
+<p>We have created a parser combinator framework that allows us to create a parser
+that parses the L-systems by combining primitive parser into more elaborate
+parsers.</p>
+<p>In this chapter we will work towards that goal.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../parser/macros.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../parser/sequence.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../parser/framework.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../interpreter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -281,13 +177,13 @@ ignores whitespace between the different parsers.</li>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="../parser/macros.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="../parser/sequence.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a href="../parser/framework.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="../interpreter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
