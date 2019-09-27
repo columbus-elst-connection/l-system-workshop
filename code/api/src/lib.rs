@@ -1,7 +1,5 @@
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
+#[derive(Debug, PartialEq)]
+pub struct RenderConfig {
+    pub step: f64,
+    pub angle: f64,
 }
