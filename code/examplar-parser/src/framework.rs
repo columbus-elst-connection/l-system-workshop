@@ -240,6 +240,23 @@ pub fn spaces<'a>() -> impl Parser<'a, ()> {
     skip(many(space()))
 }
 
+pub fn newline<'a>() -> impl Parser<'a, ()> {
+    skip(one_of(vec![literal("\n"), literal("\r\n"), literal("\r")]))
+}
+
+pub fn number<'a>() -> impl Parser<'a, u16> {
+    map(at_least(1, digit()), to_number)
+}
+
+fn to_number(digits: Vec<char>) -> u16 {
+    let number: String = digits.into_iter().collect();
+    u16::from_str_radix(&number, 10).unwrap_or(0)
+}
+
+pub fn digit<'a>() -> impl Parser<'a, char> {
+    any(|c| c.is_ascii_digit())
+}
+
 #[macro_export]
 macro_rules! sequence {
     ($(let $name:ident = $parser:expr),+ => $finish:expr ) => {{
@@ -253,6 +270,21 @@ macro_rules! sequence {
         }
     }};
 }
+
+#[macro_export]
+macro_rules! move_sequence {
+    ($(let $name:ident = $parser:expr),+ => $finish:expr ) => {{
+        move |input| {
+            let rem = input;
+            $(
+                let ($name, rem) = $parser.parse(rem)?;
+            )*
+            let result = $finish;
+            Ok((result, rem))
+        }
+    }};
+}
+
 
 #[macro_export]
 macro_rules! sequence_ignore_spaces {
@@ -269,6 +301,23 @@ macro_rules! sequence_ignore_spaces {
         }
     }};
 }
+
+#[macro_export]
+macro_rules! move_sequence_ignore_spaces {
+    ($(let $name:ident = $parser:expr),+ => $finish:expr ) => {{
+        move |input| {
+            let rem = input;
+            $(
+                let (_, rem) = $crate::framework::spaces().parse(rem)?;
+                let ($name, rem) = $parser.parse(rem)?;
+            )*
+            let (_, rem) = $crate::framework::spaces().parse(rem)?;
+            let result = $finish;
+            Ok((result, rem))
+        }
+    }};
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -363,6 +412,29 @@ mod tests {
         let expected = Ok(((), "next"));
         assert_eq!(actual, expected);
     }
+
+    #[test]
+    fn parse_newline() {
+        let input = "\n";
+        let parser = newline();
+
+        let actual = parser.parse(input);
+
+        let expected = Ok(((), ""));
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn parse_number() {
+        let input = "1234";
+        let parser = number();
+
+        let actual = parser.parse(input);
+
+        let expected = Ok((1234, ""));
+        assert_eq!(actual, expected);
+    }
+
 
     #[test]
     fn parse_a_sequence_of_parsers() {

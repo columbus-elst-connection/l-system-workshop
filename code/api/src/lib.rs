@@ -1,5 +1,5 @@
 #[derive(Debug, PartialEq)]
 pub struct RenderConfig {
-    pub step: f64,
-    pub angle: f64,
+    pub step: u16,
+    pub angle: u16,
 }

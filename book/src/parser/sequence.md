@@ -139,3 +139,5 @@ The `$( )*` will output its contents for each of the matching parts.
 1. Implement and test the `sequence!` macro.
 2. Often white space is not that interesting. Create a macro that allows and
    ignores whitespace between the different parsers.
+3. Sometimes we want to create some variables and move them in the closure.
+   Create a `move_sequence` macro that moves the environment.

@@ -913,10 +913,21 @@ nice addition to our utility belt. </p>
     }
 </code></pre>
 <p>Don't forget about the fact that a <em>tab</em> character also counts as white space.</p>
+<h2><a class="header" href="#newline" id="newline">newline</a></h2>
+<p>It is nice to be able to know when a line ends. Line ends are signified by
+newline. Depending on the that could be one of <code>\n</code>, <code>\r</code> or <code>\r\n</code>.</p>
+<h2><a class="header" href="#digit" id="digit">digit</a></h2>
+<p>This parser is an intermediate parser for numbers. It would be nice to be able
+to parse a digit.</p>
+<h2><a class="header" href="#number" id="number">number</a></h2>
+<p>Many digits strung together form a number.</p>
 <h2><a class="header" href="#exercises-9" id="exercises-9">Exercises</a></h2>
 <ol>
 <li>Implement <code>skip</code> parser. Hint: take a look at <code>map</code></li>
 <li>Implement <code>space</code> and <code>spaces</code> parser. Hint: don't forget about <code>skip</code>.</li>
+<li>Implement <code>newline</code>. Hint: take a look at <code>one_of</code>.</li>
+<li>Implement <code>digit</code>. Hint: take a look at <code>any</code>.</li>
+<li>Implement <code>number</code>. Hint: take a look at <code>many</code> and don't forget about <code>digit</code>.</li>
 </ol>
 <h1><a class="header" href="#macros" id="macros">Macros</a></h1>
 <p>We have a fair amount of basic parsers and lovely combinators for them. But
@@ -1065,6 +1076,8 @@ a parser.</p>
 <li>Implement and test the <code>sequence!</code> macro.</li>
 <li>Often white space is not that interesting. Create a macro that allows and
 ignores whitespace between the different parsers.</li>
+<li>Sometimes we want to create some variables and move them in the closure.
+Create a <code>move_sequence</code> macro that moves the environment.</li>
 </ol>
 <h1><a class="header" href="#use-the-framework" id="use-the-framework">Use the framework</a></h1>
 <p>We have created a parser combinator framework that allows us to create a parser

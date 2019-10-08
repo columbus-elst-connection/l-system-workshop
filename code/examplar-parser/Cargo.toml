@@ -5,3 +5,4 @@ authors = ["Phil Fried <philfried@gmail.com>", "Daan van Berkel <daan.v.berkel.1
 edition = "2018"
 
 [dependencies]
+api = {path = "../api" }
