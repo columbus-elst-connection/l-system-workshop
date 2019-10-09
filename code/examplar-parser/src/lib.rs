@@ -2,8 +2,47 @@ extern crate api;
 
 mod framework;
 
-use api::RenderConfig;
-use self::framework::{Parser, ParseError, literal, character, newline, number};
+use std::collections::HashMap;
+use api::{Rule, RenderConfig, LSystemRules, LSystem, Symbol};
+use self::framework::{Parser, ParseError, literal, character, newline, number, at_least, many, any, whitelines};
+
+pub fn system<'a>() -> impl Parser<'a, LSystem<char>>  {
+    sequence!{
+        let config = render_config(),
+        let _ignore = whitelines(),
+        let rules = rules() 
+        =>
+       LSystem { render_config: config, axiom: rules.0, rules: rules.1 } 
+    }
+}
+
+pub fn rules<'a>() -> impl Parser<'a, (Vec<char>, LSystemRules<char>)>  {
+    sequence!{
+        let _header = header("rules"),
+        let axiom = key_value("axiom", at_least(1, symbol())),
+        let rules = many(rule())
+        =>
+       (axiom, LSystemRules::from_rules(rules)) 
+    }
+}
+
+pub fn symbol<'a>() -> impl Parser<'a, char> {
+    any(isSymbol)
+}
+
+fn isSymbol(character: char) -> bool {
+    character.is_ascii_alphabetic() || character == '[' || character == ']' || character == '+' || character == '-'
+}
+
+pub fn rule<'a> () -> impl Parser<'a, Rule<char>> {
+    sequence_ignore_spaces!{
+        let key = symbol(),
+        let _becomes = literal("=>"),
+        let production = at_least(1, symbol())
+        =>
+        Rule::new(key, production)
+    }
+}
 
 pub fn render_config<'a>() -> impl Parser<'a, RenderConfig>  {
     sequence!{
@@ -64,7 +103,6 @@ mod tests {
         assert_eq!(actual, expected);
     }
 
-
     #[test]
     fn valid_render_config_is_parsed() {
         let input = r##"config:
@@ -75,6 +113,50 @@ mod tests {
         let (actual, _rem) = render_config().parse(input).expect("to parse a configuration");
 
         let expected = RenderConfig { step: 8, angle: 45 };
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn valid_rule_is_parsed() {
+        let input = "F => FF";
+        let (actual, _rem) = rule().parse(input).expect("to parse rule");
+
+        let expected = Rule::new('F', vec!['F', 'F']);
+        assert_eq!(actual, expected);
+    }
+
+
+    #[test]
+    fn valid_rules_is_parsed() {
+        let input = r##"rules:
+        axiom = F
+        F => FF
+        "##;
+
+        let (actual, _rem) = rules().parse(input).expect("to parse rules");
+
+        let expected = (vec!['F'], LSystemRules::from_rules(vec![Rule::new('F', vec!['F', 'F'])]));
+        assert_eq!(actual, expected);
+    }
+
+    #[test]
+    fn valid_system_is_parsed() {
+        let input = r##"config:
+        step = 8
+        angle = 45
+
+        rules:
+        axiom = F
+        F => FF
+        "##;
+
+        let (actual, _rem) = system().parse(input).expect("to parse a system");
+
+        let expected = LSystem { 
+            render_config: RenderConfig { step: 8, angle: 45 },
+            axiom: vec!['F'],
+            rules: LSystemRules::from_rules(vec![Rule::new('F', vec!['F', 'F'])])
+        };
         assert_eq!(actual, expected);
     }
 }

@@ -318,6 +318,20 @@ macro_rules! move_sequence_ignore_spaces {
     }};
 }
 
+pub fn whitelines<'a>() -> impl Parser<'a, ()> {
+    skip(many(whiteline()))
+}
+
+pub fn whiteline<'a>() -> impl Parser<'a, ()> {
+    sequence!{
+        let _spaces = spaces(),
+        let _newline = newline()
+        =>
+        ()
+    }
+}
+
+
 
 #[cfg(test)]
 mod tests {
@@ -435,7 +449,6 @@ mod tests {
         assert_eq!(actual, expected);
     }
 
-
     #[test]
     fn parse_a_sequence_of_parsers() {
         let parser = sequence!{
@@ -466,5 +479,14 @@ mod tests {
         assert!(rem.is_empty());
     }
 
+    #[test]
+    fn parse_whitelines() {
+        let input = "\n \n\t\n \t \n";
+        let parser = whitelines();
 
+        let actual = parser.parse(input);
+
+        let expected = Ok(((), ""));
+        assert_eq!(actual, expected);
+    }
 }
