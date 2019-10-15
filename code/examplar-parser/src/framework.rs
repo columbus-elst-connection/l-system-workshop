@@ -318,11 +318,11 @@ macro_rules! move_sequence_ignore_spaces {
     }};
 }
 
-pub fn whitelines<'a>() -> impl Parser<'a, ()> {
-    skip(many(whiteline()))
+pub fn blank_lines<'a>() -> impl Parser<'a, ()> {
+    skip(many(blank_line()))
 }
 
-pub fn whiteline<'a>() -> impl Parser<'a, ()> {
+pub fn blank_line<'a>() -> impl Parser<'a, ()> {
     sequence!{
         let _spaces = spaces(),
         let _newline = newline()
@@ -330,8 +330,6 @@ pub fn whiteline<'a>() -> impl Parser<'a, ()> {
         ()
     }
 }
-
-
 
 #[cfg(test)]
 mod tests {
@@ -480,9 +478,9 @@ mod tests {
     }
 
     #[test]
-    fn parse_whitelines() {
+    fn parse_blank_lines() {
         let input = "\n \n\t\n \t \n";
-        let parser = whitelines();
+        let parser = blank_lines();
 
         let actual = parser.parse(input);
 

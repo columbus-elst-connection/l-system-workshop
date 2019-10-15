@@ -2,45 +2,16 @@ extern crate api;
 
 mod framework;
 
-use std::collections::HashMap;
-use api::{Rule, RenderConfig, LSystemRules, LSystem, Symbol};
-use self::framework::{Parser, ParseError, literal, character, newline, number, at_least, many, any, whitelines};
+use api::{Rule, RenderConfig, LSystemRules, LSystem};
+use self::framework::{Parser, literal, character, newline, number, at_least, many, any, blank_lines};
 
 pub fn system<'a>() -> impl Parser<'a, LSystem<char>>  {
     sequence!{
         let config = render_config(),
-        let _ignore = whitelines(),
+        let _ignore = blank_lines(),
         let rules = rules() 
         =>
        LSystem { render_config: config, axiom: rules.0, rules: rules.1 } 
-    }
-}
-
-pub fn rules<'a>() -> impl Parser<'a, (Vec<char>, LSystemRules<char>)>  {
-    sequence!{
-        let _header = header("rules"),
-        let axiom = key_value("axiom", at_least(1, symbol())),
-        let rules = many(rule())
-        =>
-       (axiom, LSystemRules::from_rules(rules)) 
-    }
-}
-
-pub fn symbol<'a>() -> impl Parser<'a, char> {
-    any(isSymbol)
-}
-
-fn isSymbol(character: char) -> bool {
-    character.is_ascii_alphabetic() || character == '[' || character == ']' || character == '+' || character == '-'
-}
-
-pub fn rule<'a> () -> impl Parser<'a, Rule<char>> {
-    sequence_ignore_spaces!{
-        let key = symbol(),
-        let _becomes = literal("=>"),
-        let production = at_least(1, symbol())
-        =>
-        Rule::new(key, production)
     }
 }
 
@@ -74,6 +45,34 @@ pub fn key_value<'a, S, T, P>(identifier: S, parser: P) -> impl Parser<'a, T> wh
         let _newline = newline()
         =>
         value
+    }
+}
+
+pub fn rules<'a>() -> impl Parser<'a, (Vec<char>, LSystemRules<char>)>  {
+    sequence!{
+        let _header = header("rules"),
+        let axiom = key_value("axiom", at_least(1, symbol())),
+        let rules = many(rule())
+        =>
+       (axiom, LSystemRules::from_rules(rules)) 
+    }
+}
+
+pub fn symbol<'a>() -> impl Parser<'a, char> {
+    any(is_symbol)
+}
+
+fn is_symbol(character: char) -> bool {
+    character.is_ascii_alphabetic() || character == '[' || character == ']' || character == '+' || character == '-'
+}
+
+pub fn rule<'a> () -> impl Parser<'a, Rule<char>> {
+    sequence_ignore_spaces!{
+        let key = symbol(),
+        let _becomes = literal("=>"),
+        let production = at_least(1, symbol())
+        =>
+        Rule::new(key, production)
     }
 }
 
@@ -144,7 +143,6 @@ mod tests {
         let input = r##"config:
         step = 8
         angle = 45
-
         rules:
         axiom = F
         F => FF
