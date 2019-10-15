@@ -1064,8 +1064,7 @@ substitution, that needs to adhere to some rules. </p>
 matching the syntax. We notice that it will return a lambda expression that
 accepts input, and returns a pair of result and the remaining input. I.e. it is
 a parser.</p>
-<p>What is returned is in effect handled by 
-</p>
+<p>What is returned is in effect handled by </p>
 <pre><code>            $(
                 let ($name, rem) = $parser.parse(rem)?;
             )*
@@ -1083,7 +1082,34 @@ Create a <code>move_sequence</code> macro that moves the environment.</li>
 <p>We have created a parser combinator framework that allows us to create a parser
 that parses the L-systems by combining primitive parser into more elaborate
 parsers.</p>
-<p>In this chapter we will work towards that goal.</p>
+<p>In this chapter we will work towards that goal. It will be one of the most
+challenging chapters in this book. You are asked to use your creative mind to
+fill in the gaps.</p>
+<h2><a class="header" href="#high-level-description" id="high-level-description">High level description</a></h2>
+<p>We will give a top down description of the structure of the L-system format.
+This identifies goals to reach and helps with achieving</p>
+<p>When seeing the L-system format from a mile away, it seems to consist of two
+parts. First is the configuration section, which defines common settings for the
+interpretation of the L-system.
+Next is some number of blank lines followed by the actual rules of the system.</p>
+<h3><a class="header" href="#config" id="config">Config</a></h3>
+<p>The <em>configuration</em> section is started with a <em>header</em>, i.e. a literal <code>config</code> followed
+by a colon and a newline.</p>
+<p>Next are two key value pairs. A key value pair is a an literal key followed by
+an equal sign and a certain value. The first key value pair is the <em>step</em>, which
+assigns the <em>number</em> of times the system needs to be iterated.
+After that the <em>angle</em> which determines the <em>number</em> of degrees a turtle should
+rotate.</p>
+<h3><a class="header" href="#rules" id="rules">Rules</a></h3>
+<p>Just like the configuration section is the <em>rules</em> section started with it's own
+header. This time the header identifier is <code>rules</code>.</p>
+<p>Next comes a the seed for the system, i.e the <em>axiom</em> which is a key value pair
+which should be at least 1 <em>symbol</em>.</p>
+<p>Following that are many <em>rules</em>. Each <em>rule</em> is described by a <em>symbol</em> that
+will be mapped onto its <em>production</em>, i.e. a sequence of at least 1 symbol.</p>
+<h2><a class="header" href="#exercises-11" id="exercises-11">Exercises</a></h2>
+<p>Use the parser combinator framework to create a parser that can parser system
+files. Make sure to test your parser building blocks.</p>
 <h1><a class="header" href="#interpreter-1" id="interpreter-1">Interpreter</a></h1>
 <p>In the Parser section we created a parser for <code>.ls</code> files that could return a
 L-system data structure. We would now like to interpret this data structure in

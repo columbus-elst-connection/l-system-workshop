@@ -244,8 +244,7 @@ substitution, that needs to adhere to some rules. </p>
 matching the syntax. We notice that it will return a lambda expression that
 accepts input, and returns a pair of result and the remaining input. I.e. it is
 a parser.</p>
-<p>What is returned is in effect handled by 
-</p>
+<p>What is returned is in effect handled by </p>
 <pre><code>            $(
                 let ($name, rem) = $parser.parse(rem)?;
             )*
