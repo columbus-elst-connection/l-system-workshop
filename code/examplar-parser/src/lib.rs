@@ -3,7 +3,15 @@ extern crate api;
 mod framework;
 
 use api::{Rule, RenderConfig, LSystemRules, LSystem};
-use self::framework::{Parser, literal, character, newline, number, at_least, many, any, blank_lines};
+use self::framework::{Parser, ParseError, literal, character, newline, number, at_least, many, any, blank_lines};
+
+pub fn parse(input: &str) -> Result<LSystem<char>, ParseError> {
+    let parser = system();
+    parser
+        .parse(input)
+        .map(|(l_system, _rest)| l_system)
+}
+
 
 pub fn system<'a>() -> impl Parser<'a, LSystem<char>>  {
     sequence!{

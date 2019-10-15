@@ -39,3 +39,5 @@ will be mapped onto its _production_, i.e. a sequence of at least 1 symbol.
 ## Exercises
 Use the parser combinator framework to create a parser that can parser system
 files. Make sure to test your parser building blocks.
+
+Don't forget to alter the `parse` function to use the parser you created.
