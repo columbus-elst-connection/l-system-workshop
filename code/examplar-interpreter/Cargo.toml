@@ -1,0 +1,8 @@
+[package]
+name = "examplar-interpreter"
+version = "0.1.0"
+authors = ["Phil Fried <philfried@gmail.com>", "Daan van Berkel <daan.van.berkel@alliander.com>"]
+edition = "2018"
+
+[dependencies]
+api = {path = "../api" }
