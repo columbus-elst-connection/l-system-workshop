@@ -4,5 +4,5 @@ angle = 45
 
 rules:
 axiom  = A
-A => BA
+A => AB
 B => A

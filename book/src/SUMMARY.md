@@ -5,6 +5,7 @@
 - [L-system](./l-system.md)
     - [Aristid Lindenmayer](./lsystem/Aristid.md)
     - [Algae](./lsystem/algae.md)
+    - [algae.ls](./lsystem/algae.ls.md)
 - [Overview](./overview.md)
     - [Command Line Interface](./cli.md)
     - [`api` Module](./api.md)
