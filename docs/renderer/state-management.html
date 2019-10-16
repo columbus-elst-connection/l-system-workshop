@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Use the framework - L-Systems</title>
+        <title>Renderer State Management - L-Systems</title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="../parser/literal.html"><strong aria-hidden="true">4.6.</strong> Literal</a></li><li><a href="../parser/combinators.html"><strong aria-hidden="true">4.7.</strong> Combinators</a></li><li><a href="../parser/map.html"><strong aria-hidden="true">4.8.</strong> Map</a></li><li><a href="../parser/between.html"><strong aria-hidden="true">4.9.</strong> Between</a></li><li><a href="../parser/oneof.html"><strong aria-hidden="true">4.10.</strong> OneOf</a></li><li><a href="../parser/utilities.html"><strong aria-hidden="true">4.11.</strong> Utilities</a></li><li><a href="../parser/macros.html"><strong aria-hidden="true">4.12.</strong> Macros</a></li><li><a href="../parser/sequence.html"><strong aria-hidden="true">4.13.</strong> Parsing a sequence</a></li><li><a href="../parser/framework.html" class="active"><strong aria-hidden="true">4.14.</strong> Use the framework</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li><li><a href="../renderer/initialization.html"><strong aria-hidden="true">6.2.</strong> Initialization</a></li><li><a href="../renderer/renderer-config.html"><strong aria-hidden="true">6.3.</strong> Renderer Configuration</a></li><li><a href="../renderer/crab-basics.html"><strong aria-hidden="true">6.4.</strong> Implementing Basic Instructions</a></li><li><a href="../renderer/state-management.html"><strong aria-hidden="true">6.5.</strong> Renderer State Management</a></li></ol></li><li><a href="../cli.html"><strong aria-hidden="true">7.</strong> Command Line Interface</a></li><li><a href="../extensions.html"><strong aria-hidden="true">8.</strong> Why stop here</a></li><li class="affix"><a href="../dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="../parser/literal.html"><strong aria-hidden="true">4.6.</strong> Literal</a></li><li><a href="../parser/combinators.html"><strong aria-hidden="true">4.7.</strong> Combinators</a></li><li><a href="../parser/map.html"><strong aria-hidden="true">4.8.</strong> Map</a></li><li><a href="../parser/between.html"><strong aria-hidden="true">4.9.</strong> Between</a></li><li><a href="../parser/oneof.html"><strong aria-hidden="true">4.10.</strong> OneOf</a></li><li><a href="../parser/utilities.html"><strong aria-hidden="true">4.11.</strong> Utilities</a></li><li><a href="../parser/macros.html"><strong aria-hidden="true">4.12.</strong> Macros</a></li><li><a href="../parser/sequence.html"><strong aria-hidden="true">4.13.</strong> Parsing a sequence</a></li><li><a href="../parser/framework.html"><strong aria-hidden="true">4.14.</strong> Use the framework</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li><li><a href="../renderer/initialization.html"><strong aria-hidden="true">6.2.</strong> Initialization</a></li><li><a href="../renderer/renderer-config.html"><strong aria-hidden="true">6.3.</strong> Renderer Configuration</a></li><li><a href="../renderer/crab-basics.html"><strong aria-hidden="true">6.4.</strong> Implementing Basic Instructions</a></li><li><a href="../renderer/state-management.html" class="active"><strong aria-hidden="true">6.5.</strong> Renderer State Management</a></li></ol></li><li><a href="../cli.html"><strong aria-hidden="true">7.</strong> Command Line Interface</a></li><li><a href="../extensions.html"><strong aria-hidden="true">8.</strong> Why stop here</a></li><li class="affix"><a href="../dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -148,51 +148,31 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#use-the-framework" id="use-the-framework">Use the framework</a></h1>
-<p>We have created a parser combinator framework that allows us to create a parser
-that parses the L-systems by combining primitive parser into more elaborate
-parsers.</p>
-<p>In this chapter we will work towards that goal. It will be one of the most
-challenging chapters in this book. You are asked to use your creative mind to
-fill in the gaps.</p>
-<h2><a class="header" href="#high-level-description" id="high-level-description">High level description</a></h2>
-<p>We will give a top down description of the structure of the L-system format.
-This identifies goals to reach and helps with achieving</p>
-<p>When seeing the L-system format from a mile away, it seems to consist of two
-parts. First is the configuration section, which defines common settings for the
-interpretation of the L-system.
-Next is some number of blank lines followed by the actual rules of the system.</p>
-<h3><a class="header" href="#config" id="config">Config</a></h3>
-<p>The <em>configuration</em> section is started with a <em>header</em>, i.e. a literal <code>config</code> followed
-by a colon and a newline.</p>
-<p>Next are two key value pairs. A key value pair is a an literal key followed by
-an equal sign and a certain value. The first key value pair is the <em>step</em>, which
-assigns the <em>number</em> of times the system needs to be iterated.
-After that the <em>angle</em> which determines the <em>number</em> of degrees a turtle should
-rotate.</p>
-<h3><a class="header" href="#rules" id="rules">Rules</a></h3>
-<p>Just like the configuration section is the <em>rules</em> section started with it's own
-header. This time the header identifier is <code>rules</code>.</p>
-<p>Next comes a the seed for the system, i.e the <em>axiom</em> which is a key value pair
-which should be at least 1 <em>symbol</em>.</p>
-<p>Following that are many <em>rules</em>. Each <em>rule</em> is described by a <em>symbol</em> that
-will be mapped onto its <em>production</em>, i.e. a sequence of at least 1 symbol.</p>
-<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
-<p>Use the parser combinator framework to create a parser that can parser system
-files. Make sure to test your parser building blocks.</p>
+                        <h1><a class="header" href="#renderer-state-management" id="renderer-state-management">Renderer State Management</a></h1>
+<p>You'll notice that our <code>RendererInstruction</code> enum includes operations for <code>Push</code> and <code>Pop</code>. These instructions are important for rendering more complex shapes because they allow us to &quot;save&quot; the state of the renderer and go back to it later. As you probably guessed, the renderer states are &quot;saved&quot; by pushing them onto a stack using the <code>Push</code> instruction. We can then re-load that saved state by <code>Pop</code>ing from the stack.</p>
+<h3><a class="header" href="#state" id="state">State</a></h3>
+<p>Here's an example of how we can represent this state:</p>
+<pre><code>struct State {
+    position: turtle::Point,
+    heading: turtle::Angle,
+    step: f64,
+    line_width: f64,
+}
+</code></pre>
+<p>Our <code>Crab</code> can use a <code>Vec&lt;State&gt;</code> as a stack. Whenever a <code>Push</code> instruction is executed, we capture the current state and push it onto the stack. Whenever a <code>Pop</code> instrution is executed, we'll pop a State from the stack and set the location, heading, etc. of our crab. Simple! Using <code>Push</code> and <code>Pop</code> instructions is what allows for some really complex and interesting images.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../parser/sequence.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../renderer/crab-basics.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../interpreter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../cli.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -204,13 +184,13 @@ files. Make sure to test your parser building blocks.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="../parser/sequence.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="../renderer/crab-basics.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a href="../interpreter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="../cli.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 

@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Use the framework - L-Systems</title>
+        <title>Command Line Interface - L-Systems</title>
         
 
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -11,21 +11,21 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#ffffff" />
 
-        <link rel="shortcut icon" href="../favicon.png">
-        <link rel="stylesheet" href="../css/variables.css">
-        <link rel="stylesheet" href="../css/general.css">
-        <link rel="stylesheet" href="../css/chrome.css">
-        <link rel="stylesheet" href="../css/print.css" media="print">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
 
         <!-- Fonts -->
-        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
 
         <!-- Highlight.js Stylesheets -->
-        <link rel="stylesheet" href="../highlight.css">
-        <link rel="stylesheet" href="../tomorrow-night.css">
-        <link rel="stylesheet" href="../ayu-highlight.css">
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
 
         <!-- Custom theme stylesheets -->
         
@@ -38,7 +38,7 @@
     <body class="light">
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
-            var path_to_root = "../";
+            var path_to_root = "";
             var default_theme = "light";
         </script>
 
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="../parser/literal.html"><strong aria-hidden="true">4.6.</strong> Literal</a></li><li><a href="../parser/combinators.html"><strong aria-hidden="true">4.7.</strong> Combinators</a></li><li><a href="../parser/map.html"><strong aria-hidden="true">4.8.</strong> Map</a></li><li><a href="../parser/between.html"><strong aria-hidden="true">4.9.</strong> Between</a></li><li><a href="../parser/oneof.html"><strong aria-hidden="true">4.10.</strong> OneOf</a></li><li><a href="../parser/utilities.html"><strong aria-hidden="true">4.11.</strong> Utilities</a></li><li><a href="../parser/macros.html"><strong aria-hidden="true">4.12.</strong> Macros</a></li><li><a href="../parser/sequence.html"><strong aria-hidden="true">4.13.</strong> Parsing a sequence</a></li><li><a href="../parser/framework.html" class="active"><strong aria-hidden="true">4.14.</strong> Use the framework</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li><li><a href="../renderer/initialization.html"><strong aria-hidden="true">6.2.</strong> Initialization</a></li><li><a href="../renderer/renderer-config.html"><strong aria-hidden="true">6.3.</strong> Renderer Configuration</a></li><li><a href="../renderer/crab-basics.html"><strong aria-hidden="true">6.4.</strong> Implementing Basic Instructions</a></li><li><a href="../renderer/state-management.html"><strong aria-hidden="true">6.5.</strong> Renderer State Management</a></li></ol></li><li><a href="../cli.html"><strong aria-hidden="true">7.</strong> Command Line Interface</a></li><li><a href="../extensions.html"><strong aria-hidden="true">8.</strong> Why stop here</a></li><li class="affix"><a href="../dependencies.html">Working with Dependencies</a></li></ol>
+                <ol class="chapter"><li><a href="introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li></ol></li><li><a href="parser.html"><strong aria-hidden="true">4.</strong> Parsers</a></li><li><ol class="section"><li><a href="parser/what.html"><strong aria-hidden="true">4.1.</strong> What is a Parser?</a></li><li><a href="parser/type.html"><strong aria-hidden="true">4.2.</strong> Looking at the type</a></li><li><a href="parser/function.html"><strong aria-hidden="true">4.3.</strong> Functions are Parsers!</a></li><li><a href="parser/character.html"><strong aria-hidden="true">4.4.</strong> Parsing a char</a></li><li><a href="parser/any.html"><strong aria-hidden="true">4.5.</strong> Parsing any char</a></li><li><a href="parser/literal.html"><strong aria-hidden="true">4.6.</strong> Literal</a></li><li><a href="parser/combinators.html"><strong aria-hidden="true">4.7.</strong> Combinators</a></li><li><a href="parser/map.html"><strong aria-hidden="true">4.8.</strong> Map</a></li><li><a href="parser/between.html"><strong aria-hidden="true">4.9.</strong> Between</a></li><li><a href="parser/oneof.html"><strong aria-hidden="true">4.10.</strong> OneOf</a></li><li><a href="parser/utilities.html"><strong aria-hidden="true">4.11.</strong> Utilities</a></li><li><a href="parser/macros.html"><strong aria-hidden="true">4.12.</strong> Macros</a></li><li><a href="parser/sequence.html"><strong aria-hidden="true">4.13.</strong> Parsing a sequence</a></li><li><a href="parser/framework.html"><strong aria-hidden="true">4.14.</strong> Use the framework</a></li></ol></li><li><a href="interpreter.html"><strong aria-hidden="true">5.</strong> Interpreter</a></li><li><ol class="section"><li><a href="interpreter/what.html"><strong aria-hidden="true">5.1.</strong> What is an Interpreter</a></li></ol></li><li><a href="renderer.html"><strong aria-hidden="true">6.</strong> Renderer</a></li><li><ol class="section"><li><a href="renderer/what.html"><strong aria-hidden="true">6.1.</strong> What is a Renderer</a></li><li><a href="renderer/initialization.html"><strong aria-hidden="true">6.2.</strong> Initialization</a></li><li><a href="renderer/renderer-config.html"><strong aria-hidden="true">6.3.</strong> Renderer Configuration</a></li><li><a href="renderer/crab-basics.html"><strong aria-hidden="true">6.4.</strong> Implementing Basic Instructions</a></li><li><a href="renderer/state-management.html"><strong aria-hidden="true">6.5.</strong> Renderer State Management</a></li></ol></li><li><a href="cli.html" class="active"><strong aria-hidden="true">7.</strong> Command Line Interface</a></li><li><a href="extensions.html"><strong aria-hidden="true">8.</strong> Why stop here</a></li><li class="affix"><a href="dependencies.html">Working with Dependencies</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -116,7 +116,7 @@
                         <h1 class="menu-title">L-Systems</h1>
 
                         <div class="right-buttons">
-                            <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <a href="print.html" title="Print this book" aria-label="Print this book">
                                 <i id="print-button" class="fa fa-print"></i>
                             </a>
                             
@@ -148,51 +148,25 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#use-the-framework" id="use-the-framework">Use the framework</a></h1>
-<p>We have created a parser combinator framework that allows us to create a parser
-that parses the L-systems by combining primitive parser into more elaborate
-parsers.</p>
-<p>In this chapter we will work towards that goal. It will be one of the most
-challenging chapters in this book. You are asked to use your creative mind to
-fill in the gaps.</p>
-<h2><a class="header" href="#high-level-description" id="high-level-description">High level description</a></h2>
-<p>We will give a top down description of the structure of the L-system format.
-This identifies goals to reach and helps with achieving</p>
-<p>When seeing the L-system format from a mile away, it seems to consist of two
-parts. First is the configuration section, which defines common settings for the
-interpretation of the L-system.
-Next is some number of blank lines followed by the actual rules of the system.</p>
-<h3><a class="header" href="#config" id="config">Config</a></h3>
-<p>The <em>configuration</em> section is started with a <em>header</em>, i.e. a literal <code>config</code> followed
-by a colon and a newline.</p>
-<p>Next are two key value pairs. A key value pair is a an literal key followed by
-an equal sign and a certain value. The first key value pair is the <em>step</em>, which
-assigns the <em>number</em> of times the system needs to be iterated.
-After that the <em>angle</em> which determines the <em>number</em> of degrees a turtle should
-rotate.</p>
-<h3><a class="header" href="#rules" id="rules">Rules</a></h3>
-<p>Just like the configuration section is the <em>rules</em> section started with it's own
-header. This time the header identifier is <code>rules</code>.</p>
-<p>Next comes a the seed for the system, i.e the <em>axiom</em> which is a key value pair
-which should be at least 1 <em>symbol</em>.</p>
-<p>Following that are many <em>rules</em>. Each <em>rule</em> is described by a <em>symbol</em> that
-will be mapped onto its <em>production</em>, i.e. a sequence of at least 1 symbol.</p>
-<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
-<p>Use the parser combinator framework to create a parser that can parser system
-files. Make sure to test your parser building blocks.</p>
+                        <h1><a class="header" href="#command-line-interface" id="command-line-interface">Command Line Interface</a></h1>
+<p>The entrypoint to our program is a good place to start, so that we can get a sense for how all the pieces will fit together. The interface we're looking for is something like this:</p>
+<pre><code>l-system -f &lt;l-system-file&gt; -a &lt;axiom&gt; -n &lt;iterations&gt;
+</code></pre>
+<p>We need three main pieces in order to render an l-system. First is a file containing the description of our l-system. This will have the rules for token replacements, and it will also contain some starting configuration for our renderer. Next is the <em>axiom</em>, which is a string of starting tokens to feed into our l-system. Lastly we have the number of iterations, which is the number of times that we should apply the token substitution rules.</p>
+<p>The <code>main</code> function should parse these arguments, parse the l-system described in the file, then get the final productions and pass them to the renderer as individual instructions. Once that is complete, it should call finalize on the renderer.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
                         
-                            <a rel="prev" href="../parser/sequence.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="renderer/state-management.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
                         
 
                         
-                            <a rel="next" href="../interpreter.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="extensions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         
@@ -204,13 +178,13 @@ files. Make sure to test your parser building blocks.</p>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
                 
-                    <a href="../parser/sequence.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a href="renderer/state-management.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
                 
 
                 
-                    <a href="../interpreter.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a href="extensions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
                 
@@ -240,14 +214,14 @@ files. Make sure to test your parser building blocks.</p>
         
 
         
-        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
         
 
-        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
-        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
 
         <!-- Custom JS scripts -->
         
