@@ -14,6 +14,14 @@ various sub-directories to work on different topics.
 * [book][]
 * [code][]
 
+In order to work on the `code`, one needs to run
+
+```sh
+cargo vendor
+```
+
+from the `code` directory.
+
 ## Collecting the material
 There is a `Makefile` in this directory that collects all the material in a
 compressed archive.
