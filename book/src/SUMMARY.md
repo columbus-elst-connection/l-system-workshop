@@ -6,6 +6,7 @@
     - [Aristid Lindenmayer](./lsystem/Aristid.md)
     - [Algae](./lsystem/algae.md)
     - [algae.ls](./lsystem/algae.ls.md)
+    - [koch.ls](./lsystem/koch.ls.md)
 - [Overview](./overview.md)
     - [Command Line Interface](./cli.md)
     - [`api` Module](./api.md)

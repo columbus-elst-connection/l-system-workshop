@@ -2,7 +2,7 @@ use interpreter::Interpreter;
 use parser::parse;
 use api::{LSystem, Symbol};
 use renderer::{ Renderer, StringRenderer };
-//use renderer::crab::Crab // Uncomment to use the Crab renderer
+//use renderer::crab::Crab; // Uncomment to use the Crab renderer
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::fs::{read_to_string};
