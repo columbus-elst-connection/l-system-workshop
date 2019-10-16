@@ -18,3 +18,8 @@ step size depending on the level of iteration.
 
 Extend the L-system parser so that the step multiplication can be provided as
 well. 
+
+## Parser Framework
+Maybe you have discovered some recurring pattern while writing your parsers.
+This is an ideal target for create your own combinators. Go back and examine
+your code to see where some form of abstraction could be teased from it.
