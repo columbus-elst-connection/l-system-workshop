@@ -5,6 +5,9 @@
 - [L-system](./l-system.md)
     - [Aristid Lindenmayer](./lsystem/Aristid.md)
     - [Algae](./lsystem/algae.md)
+- [Overview](./overview.md)
+    - [Command Line Interface](./cli.md)
+    - [`api` Module](./api.md)
 - [Parsers](./parser.md)
     - [What is a Parser?](./parser/what.md)
     - [Looking at the type](./parser/type.md)
@@ -30,9 +33,7 @@
     - [Renderer Configuration](./renderer/renderer-config.md)
     - [Implementing Basic Instructions](./renderer/crab-basics.md)
     - [Renderer State Management](./renderer/state-management.md)
-- [Command Line Interface](./cli.md)
 - [Why stop here](./extensions.md)
 
 [Working with Dependencies](./dependencies.md)
-[`api` Module](./api.md)
 
