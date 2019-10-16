@@ -36,3 +36,25 @@ pub struct Interpreter<T> where T: Symbol {
 We create a struct that will be the target for all of our dreams. It keeps track
 of a `LSystem`. If you need a refresher about the api module, go read that
 section.
+
+## Impl Interpreter
+We can make a start with implementing the interpreter.
+
+```
+impl <T> Interpreter<T> where T: Symbol {
+    pub fn new(lsystem: LSystem<T>) -> Self {
+        Self { lsystem }
+    }
+
+    pub fn level(&self, n : usize) -> Vec<T> {
+        vec![] // TODO actual interpret the system
+    }
+}
+```
+
+the `new` constructor accepts an `LSystem`, making sure to take ownership of it.
+Other than the `level` function. There is not much going on. Note that we still
+have something to do.
+
+## Exercises
+1. Implement the `Interpreter` struct.

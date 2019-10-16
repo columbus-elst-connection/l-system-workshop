@@ -1160,6 +1160,25 @@ pub struct Interpreter&lt;T&gt; where T: Symbol {
 <p>We create a struct that will be the target for all of our dreams. It keeps track
 of a <code>LSystem</code>. If you need a refresher about the api module, go read that
 section.</p>
+<h2><a class="header" href="#impl-interpreter" id="impl-interpreter">Impl Interpreter</a></h2>
+<p>We can make a start with implementing the interpreter.</p>
+<pre><code>impl &lt;T&gt; Interpreter&lt;T&gt; where T: Symbol {
+    pub fn new(lsystem: LSystem&lt;T&gt;) -&gt; Self {
+        Self { lsystem }
+    }
+
+    pub fn level(&amp;self, n : usize) -&gt; Vec&lt;T&gt; {
+        vec![] // TODO actual interpret the system
+    }
+}
+</code></pre>
+<p>the <code>new</code> constructor accepts an <code>LSystem</code>, making sure to take ownership of it.
+Other than the <code>level</code> function. There is not much going on. Note that we still
+have something to do.</p>
+<h2><a class="header" href="#exercises-12" id="exercises-12">Exercises</a></h2>
+<ol>
+<li>Implement the <code>Interpreter</code> struct.</li>
+</ol>
 <h1><a class="header" href="#renderer-1" id="renderer-1">Renderer</a></h1>
 <p>With a working parser and interpreter for L-systems, it is time to work on
 rendering. Rendering concerns itself providing a translation between the 
