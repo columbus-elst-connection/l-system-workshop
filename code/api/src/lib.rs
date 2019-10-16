@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use std::hash::Hash;
-use std::fmt::Debug;
+use std::fmt::{Debug, Display};
 
 #[derive(Debug, PartialEq)]
 pub struct RenderConfig {
@@ -21,7 +21,7 @@ pub enum RendererInstruction {
     NoOp,
 }
 
-pub trait Symbol: Debug + Eq + Hash + Copy {
+pub trait Symbol: Display + Debug + Eq + Hash + Copy {
     fn to_rendering_instruction(&self) -> RendererInstruction;
 }
 
