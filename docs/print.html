@@ -1120,6 +1120,17 @@ create software that can interpret our L-system and evolve the start word.</p>
 <p>Make sure to look in to <a href="dependencies.html">working with dependencies</a> to find out
 how to incorporate your code into the project.</p>
 <h1><a class="header" href="#what-is-an-interpreter" id="what-is-an-interpreter">What is an Interpreter</a></h1>
+<p>One could view an L-system as a kind of programming language. It describes in a
+declarative way how to produce a series of symbols. What we will do in this
+section is write an interpreter.</p>
+<p>An <a href="https://en.wikipedia.org/wiki/Interpreter_(computing)">interpreter</a> is</p>
+<blockquote>
+<p>is a computer program that directly executes instructions written in a
+programming or scripting language, without requiring them previously to have
+been compiled into a machine language program</p>
+</blockquote>
+<p>In our case the instructions is the L-system, as parsed by our parser. Execution
+is producing the series of symbols for a certain level.</p>
 <h1><a class="header" href="#renderer-1" id="renderer-1">Renderer</a></h1>
 <p>With a working parser and interpreter for L-systems, it is time to work on
 rendering. Rendering concerns itself providing a translation between the 
