@@ -24,6 +24,11 @@
     - [What is an Interpreter](./interpreter/what.md)
 - [Renderer](./renderer.md)
     - [What is a Renderer](./renderer/what.md)
+    - [Initialization](./renderer/initialization.md)
+    - [Renderer Configuration](./renderer/renderer-config.md)
+    - [Implementing Basic Instructions](./renderer/crab-basics.md)
+    - [Renderer State Management](./renderer/state-management.md)
+- [Command Line Interface](./cli.md)
 - [Why stop here](./extensions.md)
 
 [Working with Dependencies](./dependencies.md)
