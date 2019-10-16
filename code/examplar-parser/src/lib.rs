@@ -3,7 +3,7 @@ extern crate api;
 mod framework;
 
 use api::{Rule, RenderConfig, LSystemRules, LSystem};
-use self::framework::{Parser, ParseError, literal, character, newline, number, at_least, many, any, blank_lines};
+use self::framework::{Parser, ParseError, literal, character, newline, number, at_least, many, any, blank_lines, end};
 
 pub fn parse(input: &str) -> Result<LSystem<char>, ParseError> {
     let parser = system();
@@ -14,13 +14,14 @@ pub fn parse(input: &str) -> Result<LSystem<char>, ParseError> {
 
 
 pub fn system<'a>() -> impl Parser<'a, LSystem<char>>  {
-    sequence!{
+    end(sequence!{
         let config = render_config(),
-        let _ignore = blank_lines(),
-        let rules = rules()
+        let _ignore1 = blank_lines(),
+        let rules = rules(),
+        let _ignore2 = blank_lines()
         =>
        LSystem { render_config: config, axiom: rules.0, rules: rules.1 }
-    }
+    })
 }
 
 pub fn render_config<'a>() -> impl Parser<'a, RenderConfig>  {
