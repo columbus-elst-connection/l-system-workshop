@@ -24,6 +24,6 @@ we can answer them. Try one of the following means of communication
 * [Mail][mail]
 
 [l-system]: https://en.wikipedia.org/wiki/L-system
-[slack]: https://join.slack.com/t/col-els-con/shared_invite/enQtNjUzNTYyNDY2ODIxLTRjZTBkMzlkNzMyNjMwNzg0Njg3MzhlZDQ3ZjE0OWI2OGFhMWYyNDhiZTVmZTFiMzI5NmZhOWQ2ZWIxZjUwZTQ
+[slack]: https://join.slack.com/t/col-els-con/shared_invite/enQtNjUzNTYyNDY2ODIxLWQ1ZGRlZjg1YzM1NmNjMWE2Y2MxNWE4YjZmY2M5YjUyYmFmMjZhNWU3ZTEwYmU2M2ViNzc4YzFhYzdjNTExOWI
 [issues]: https://github.com/columbus-elst-connection/workshop/issues
 [mail]: mailto://daan.v.berkel.1980+l-system@gmail.com
