@@ -1,5 +1,8 @@
+pub mod crab;
+
 use api::{RendererInstruction, Symbol};
 use std::io::Write;
+
 
 pub trait Renderer {
     fn global_init() where Self: Sized {}

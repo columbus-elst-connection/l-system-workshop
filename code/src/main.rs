@@ -1,13 +1,17 @@
 use interpreter::Interpreter;
 use parser::parse;
 use api::{LSystem, Symbol};
-use renderer::{Renderer, StringRenderer};
+use renderer::{ Renderer, StringRenderer };
+//use renderer::crab::Crab // Uncomment to use the Crab renderer
 use std::fmt::Debug;
 use std::hash::Hash;
 use std::fs::{read_to_string};
 use clap::{App, Arg};
 
 fn main() {
+    // Uncomment to use the Crab renderer
+    //Crab::global_init();
+
     let parsed_args = App::new("l-sysem")
             .about("Renders an l-system")
             .arg(Arg::with_name("iterations")
@@ -36,6 +40,8 @@ fn main() {
 
     let writer = std::io::stdout();
     let mut renderer = StringRenderer::new(writer);
+    // uncomment to use the crab renderer
+    // let mut renderer = Crab::new(system.render_config.clone());
 
     render(system, iterations, &mut renderer);
 }

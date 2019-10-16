@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 api = { path = "../api" }
+turtle = "^1.0.0-rc.2"
