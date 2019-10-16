@@ -12,6 +12,7 @@ pub enum ParseError {
     ExpectingOneOfToParse,
     ExpectingLiteral(String),
     EndOfInput,
+    ExpectingToBeAtEndOfInput
 }
 
 pub trait Parser<'a, T> {
@@ -257,6 +258,18 @@ pub fn digit<'a>() -> impl Parser<'a, char> {
     any(|c| c.is_ascii_digit())
 }
 
+pub fn end<'a, T, P>(parser: P) -> impl Parser<'a, T> where T: 'a, P: Parser<'a, T> + Sized {
+    move |input| {
+        parser.parse(input).and_then(|(result, rem)|{
+            if !rem.is_empty() {
+                return Err(ParseError::ExpectingToBeAtEndOfInput)
+            }
+            Ok((result, rem))
+        })
+    }
+}
+
+
 #[macro_export]
 macro_rules! sequence {
     ($(let $name:ident = $parser:expr),+ => $finish:expr ) => {{
@@ -446,6 +459,18 @@ mod tests {
         let expected = Ok((1234, ""));
         assert_eq!(actual, expected);
     }
+
+    #[test]
+    fn end_parser_should_not_allow_any_input() {
+        let input = "1234 ";
+        let parser = end(number());
+
+        let actual = parser.parse(input);
+
+        let expected = Err(ParseError::ExpectingToBeAtEndOfInput);
+        assert_eq!(actual, expected);
+    }
+
 
     #[test]
     fn parse_a_sequence_of_parsers() {
