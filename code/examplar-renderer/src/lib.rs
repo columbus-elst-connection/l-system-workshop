@@ -53,8 +53,20 @@ impl <T: Write> Renderer for StringRenderer<T> {
 
 #[cfg(test)]
 mod tests {
+    use super::*;
+
     #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+    fn string_renderer_prints_each_symbol() {
+        let input = "ABCDEFGABCDEFG";
+        let mut output = Vec::new();
+        {
+            let mut renderer = StringRenderer::new(&mut output);
+            for symbol in input.chars() {
+                renderer.render(symbol);
+            }
+            renderer.finish();
+        }
+        let result_string = String::from_utf8(output).unwrap();
+        assert_eq!(input, &result_string);
     }
 }
