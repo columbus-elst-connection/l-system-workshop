@@ -17,9 +17,9 @@ pub fn system<'a>() -> impl Parser<'a, LSystem<char>>  {
     sequence!{
         let config = render_config(),
         let _ignore = blank_lines(),
-        let rules = rules() 
+        let rules = rules()
         =>
-       LSystem { render_config: config, axiom: rules.0, rules: rules.1 } 
+       LSystem { render_config: config, axiom: rules.0, rules: rules.1 }
     }
 }
 
@@ -36,7 +36,7 @@ pub fn render_config<'a>() -> impl Parser<'a, RenderConfig>  {
 pub fn header<'a, S>(identifier: S) -> impl Parser<'a, ()> where S: Into<String> {
     let header_name = identifier.into();
     move_sequence!{
-        let _identifier = literal(&header_name), 
+        let _identifier = literal(&header_name),
         let _colon = character(':'),
         let _newline = newline()
         =>
@@ -62,7 +62,7 @@ pub fn rules<'a>() -> impl Parser<'a, (Vec<char>, LSystemRules<char>)>  {
         let axiom = key_value("axiom", at_least(1, symbol())),
         let rules = many(rule())
         =>
-       (axiom, LSystemRules::from_rules(rules)) 
+       (axiom, LSystemRules::from_rules(rules))
     }
 }
 
@@ -78,7 +78,8 @@ pub fn rule<'a> () -> impl Parser<'a, Rule<char>> {
     sequence_ignore_spaces!{
         let key = symbol(),
         let _becomes = literal("=>"),
-        let production = at_least(1, symbol())
+        let production = at_least(1, symbol()),
+        let _newline = newline()
         =>
         Rule::new(key, production)
     }
@@ -125,7 +126,7 @@ mod tests {
 
     #[test]
     fn valid_rule_is_parsed() {
-        let input = "F => FF";
+        let input = "F => FF\n";
         let (actual, _rem) = rule().parse(input).expect("to parse rule");
 
         let expected = Rule::new('F', vec!['F', 'F']);
@@ -152,16 +153,17 @@ mod tests {
         step = 8
         angle = 45
         rules:
-        axiom = F
-        F => FF
+        axiom = A
+        A => BA
+        B => A
         "##;
 
         let (actual, _rem) = system().parse(input).expect("to parse a system");
 
-        let expected = LSystem { 
+        let expected = LSystem {
             render_config: RenderConfig { step: 8, angle: 45 },
-            axiom: vec!['F'],
-            rules: LSystemRules::from_rules(vec![Rule::new('F', vec!['F', 'F'])])
+            axiom: vec!['A'],
+            rules: LSystemRules::from_rules(vec![Rule::new('A', vec!['B', 'A']), Rule::new('B', vec!['A'])])
         };
         assert_eq!(actual, expected);
     }
