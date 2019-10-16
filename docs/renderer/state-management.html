@@ -155,8 +155,7 @@
 <pre><code>struct State {
     position: turtle::Point,
     heading: turtle::Angle,
-    step: f64,
-    line_width: f64,
+    step: u16,
 }
 </code></pre>
 <p>Our <code>Crab</code> can use a <code>Vec&lt;State&gt;</code> as a stack. Whenever a <code>Push</code> instruction is executed, we capture the current state and push it onto the stack. Whenever a <code>Pop</code> instrution is executed, we'll pop a State from the stack and set the location, heading, etc. of our crab. Simple! Using <code>Push</code> and <code>Pop</code> instructions is what allows for some really complex and interesting images.</p>

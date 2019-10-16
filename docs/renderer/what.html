@@ -149,7 +149,8 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#renderer" id="renderer">Renderer</a></h1>
-<p>We're going to use turtle graphics to render our l-system. Turtle graphics is an approach that uses an API that's conceptually based on a <em>pen</em> that is controlled by giving it a sequence of instructions. For example, <code>go forward 2 steps, turn right, go forward 1 step, turn right, go forward 2 steps</code>. Of course a pen is an inanimate object and they're terrible at following instructions, so traditionally a turtle is in charge of the pen, though in our case it will be a crab instead. The crab will faithfully carry our each of the instructions in order to create our image.</p>
+<p>A Renderer takes the sequence of productions from the L-system and displays them in some way. We've included an example renderer that simply prints each symbol to stdout. This is really useful for debugging, but it's not very pretty to look at.</p>
+<p>In this workshop, we're going to create a new Renderer implementation that uses turtle graphics to render the productions from our l-system as two dimensional line drawings. Turtle graphics is an approach that uses an API that's conceptually based on a <em>pen</em> that is controlled by giving it a sequence of instructions. For example, <code>go forward 2 steps, turn right, go forward 1 step, turn right, go forward 2 steps</code>. Of course a pen is an inanimate object and they're terrible at following instructions, so traditionally a turtle is in charge of the pen, though in our case it will be a crab instead. The crab will faithfully carry our each of the instructions in order to create our image.</p>
 <h2><a class="header" href="#renderer-api" id="renderer-api">Renderer API</a></h2>
 <p>To start with, our renderer trait looks like this:</p>
 <pre><pre class="playpen"><code class="language-rust">
@@ -159,59 +160,14 @@ pub trait Renderer {
     /// Called at the very beginning of the entrypoint to our program so that the renderer can create a window if needed
     fn global_init() where Self: Sized {}
 
-    /// Creates a new instance of the renderer with the given configuration
-    fn new(renderer_config: RendererConfig) -&gt; Self;
-
-    /// Render the given instruction. This will get called repeatedly in order to create our images
-    fn render(&amp;mut self, instruction: RendererInstruction);
+    /// Render the given symbol. This will get called repeatedly in order to create our images
+    fn render(&amp;mut self, symbol: impl Symbol);
 
     /// Signals that the final instruction has been given and we can clean up and do any finalization that's required
     fn finish(&amp;mut self) {}
 }
 #}</code></pre></pre>
-<p>In the next sections, we'll go over each of these functions in more detail.</p>
-<p>After <code>global_init</code> is done, the application will focus on parsing it's arguments and the l-system. Parsing the l-system file successfully will result in a <code>RendererConfig</code> struct, which will be passed to <code>Renderer::new</code>. It's here that we can initialize things like the background color, the starting line width, and other such things. After this is done, we should be ready to execute render instructions to create our image.</p>
-<p>The <code>render</code> function is where the magic happens. <code>RendererInstruction</code> is an enum with a variant for each instruction. Each time it's invoked, we'll use pattern matching to determine what to do. This would look something like the following:</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-fn render(&amp;mut self, instruction: RendererInstruction) {
-    match instruction {
-        RendererInstruction::Forward =&gt; self.forward(),
-        RendererInstruction::RotateLeft =&gt; self.rotate_left(),
-        RendererInstruction::RotateRight =&gt; self.rotate_right(),
-        RendererInstruction::NoOp =&gt; { /* no-op */ },
-        /* .... remainder omitted for brevity */
-    }
-}
-#}</code></pre></pre>
-<p>Since this pattern matching isn't particularly interesting, we'll update our <code>Renderer</code> trait to provide the implementation on the trait itself, which will just delegate to named functions for each instruction. We'll add a function to the <code>Renderer</code> trait for each instruction so that the code will be more readable. So instead of implementing <code>render</code> directly, we'll just implemet each of the specific functions like <code>forward</code>, <code>rotate_left</code>, <code>rotate_right</code>, <code>push</code>, <code>pop</code>, etc. So now our <code>Renderer</code> trait will look more like this:</p>
-<pre><pre class="playpen"><code class="language-rust">
-# #![allow(unused_variables)]
-#fn main() {
-pub trait Renderer {
-    fn global_init() where Self: Sized {}
-
-    fn new(renderer_config: RendererConfig) -&gt; Self;
-
-    fn render(&amp;mut self, instruction: RendererInstruction) {
-        match instruction {
-            RendererInstruction::Push =&gt; self.push(),
-            RendererInstruction::Pop =&gt; self.pop(),
-            RendererInstruction::Forward =&gt; self.forward(),
-            RendererInstruction::NoOp =&gt; { /* no-op */ },
-            /* .... remainder omitted for brevity */
-        }
-    }
-
-    fn forward(&amp;mut self) {}
-    fn push(&amp;mut self) {}
-    fn pop(&amp;mut self) {}
-    /* .... remainder of functions omitted for brevity */
-
-    fn finish(&amp;mut self) {}
-}
-#}</code></pre></pre>
+<p>In the next sections, we'll go over each of the <code>Renderer</code> functions in more detail.</p>
 
                     </main>
 

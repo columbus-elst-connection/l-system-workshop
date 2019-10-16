@@ -149,8 +149,53 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#turtle-crab-rendering" id="turtle-crab-rendering">Turtle (Crab) Rendering</a></h1>
-<p>Ok, so we have a Crab that's brandishing a pen, and we've got everything initialized and configured. So how do we actually work with this thing?
-The <code>crab</code> API is pretty simple and straightforward. It's pretty easy to implement each individual rendering instruction. The complexity of how multiple instructions are combined to draw interesting shapes will be left to the L-systems.</p>
+<p>Ok, so we have a <code>Crab</code> that's brandishing a pen, and we've got everything initialized and configured. So how do we actually work with this thing?
+The <code>Turtle</code> API is pretty simple and straightforward. It's easy to implement each individual rendering instruction. The complexity of how multiple instructions are combined to draw interesting shapes will be left to the L-systems.</p>
+<p>The <code>render</code> function is where the magic happens. This function will be invoked many times, once for each <code>Symbol</code> that's produced by the L-system, based on the axiom and number of iterations. The first thing we need to do is to convert the <code>Symbol</code> into a  <code>RendererInstruction</code>. Then we can use pattern matching to determine what to do. This would look something like the following:</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+fn render(&amp;mut self, symbol: impl Symbol) {
+    match symbol.to_rendering_instruction() {
+        RendererInstruction::Forward =&gt; self.forward(),
+        RendererInstruction::RotateLeft =&gt; self.rotate_left(),
+        RendererInstruction::RotateRight =&gt; self.rotate_right(),
+        RendererInstruction::NoOp =&gt; { /* no-op just means that the Symbol didn't map to any particular rendering instruction */ },
+        /* .... remainder omitted for brevity */
+    }
+}
+#}</code></pre></pre>
+<p>Since this pattern matching isn't particularly interesting, we'll update our <code>Renderer</code> trait to provide the implementation on the trait itself, which will just delegate to named functions for each instruction. We'll add a function to the <code>Renderer</code> trait for each instruction so that the code will be more readable. So instead of implementing <code>render</code> directly, we'll just implemet each of the specific functions like <code>forward</code>, <code>rotate_left</code>, <code>rotate_right</code>, <code>push</code>, <code>pop</code>, etc. So now our <code>Renderer</code> trait will look more like this:</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+pub trait Renderer {
+    fn global_init() where Self: Sized {}
+
+    fn render(&amp;mut self, instruction: RendererInstruction) {
+        match instruction {
+            RendererInstruction::Forward =&gt; self.forward(),
+            RendererInstruction::RotateLeft =&gt; self.rotate_left(),
+            RendererInstruction::RotateRight =&gt; self.rotate_right(),
+            RendererInstruction::Push =&gt; self.push(),
+            RendererInstruction::Pop =&gt; self.pop(),
+            RendererInstruction::NoOp =&gt; { /* no-op */ },
+        }
+    }
+
+    fn forward(&amp;mut self) {}
+    fn push(&amp;mut self) {}
+    /* .... remainder of functions omitted for brevity */
+
+    fn finish(&amp;mut self) {}
+}
+
+impl Renderer for Crab {
+    fn forward(&amp;mut self) { /* move forward */ }
+    fn rotate_left(&amp;mut self) { /* ... */ }
+    fn forward(&amp;mut self) { /* ... */ }
+}
+#}</code></pre></pre>
 <h3><a class="header" href="#forward" id="forward">Forward</a></h3>
 <p>The <code>Forward</code> instruction moves the crab forward by the <code>step</code>, drawing a straight line along the way. Implementing this is quite simple. Just call the <a href="https://docs.rs/turtle/1.0.0-rc.2/turtle/struct.Turtle.html#method.forward"><code>Turtle::forward</code></a> function, passing in the current value for <code>step</code>.</p>
 <h3><a class="header" href="#rotation" id="rotation">Rotation</a></h3>

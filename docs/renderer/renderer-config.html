@@ -148,24 +148,18 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1><a class="header" href="#renderer-configuration" id="renderer-configuration">Renderer Configuration</a></h1>
-<p>Our renderer instructions are very simple and abstract. For example, to draw a straight line we would use the <code>Forward</code> instruction. The <code>Forward</code> instruction doesn't itself say <em>how far</em> to move. That is instead specified in a separate struct as the <code>step</code> field. Whenever we execute the <code>Forward</code> instruction, <code>step</code> tells us how far to move. Why would these be separate? The answer is that the language we use to describe the L-system has no way to maintain state. We can provide instructions to <em>modify</em> the state that we store, though. For example, we could have an instruction to multiply <code>step</code> by some global <code>step_multiplier</code>, and another instruction to divide it. This allows us to change the scale of our drawings, the line width, and things like that. The Renderer implementation is responsible for maintaining the state of the current <code>step</code>, <code>position</code>, <code>heading</code>, and <code>line_width</code>, but the initial values are specified in the <code>RendererConfig</code>. The <code>RendererConfig</code> also specifies the <code>pen_color</code>, <code>background_color</code>, and other things that will not be mutable in our implementation.</p>
-<p>The full <code>RendererConfig</code> struct looks something like:</p>
+                        <h1><a class="header" href="#basic-renderer-configuration" id="basic-renderer-configuration">Basic Renderer Configuration</a></h1>
+<p>Our renderer instructions are very simple and abstract. For example, to draw a straight line we would use the <code>Forward</code> instruction. The <code>Forward</code> instruction doesn't itself say <em>how far</em> to move. That is instead specified in a separate struct as the <code>step</code> field. Whenever we execute the <code>Forward</code> instruction, <code>step</code> tells us how far to move. Why would these be separate? The answer is that the language we use to describe the L-system has no way to maintain state. The Renderer implementation is responsible for maintaining the state of the current <code>step</code> and <code>angle</code>, but the initial values are specified in the <code>RendererConfig</code>.</p>
+<p>The basic <code>RendererConfig</code> struct looks something like:</p>
 <pre><pre class="playpen"><code class="language-rust">
 # #![allow(unused_variables)]
 #fn main() {
 pub struct RendererConfig {
-    pub starting_step: f64,
-    pub step_multiplier: f64,
-    pub starting_angle: f64,
-    pub angle_multiplier: f64,
-    pub starting_line_width: f64,
-    pub line_width_multiplier: f64,
-    pub background_color: String,
-    pub pen_color: String,
+    pub step: u16,
+    pub angle: u16,
 }
 #}</code></pre></pre>
-<p><code>background_color</code> and <code>pen_color</code> are both <code>String</code>s that can be any of the <a href="https://docs.rs/turtle/1.0.0-rc.2/turtle/color/static.COLOR_NAMES.html">color names</a> supported by the Turtle crate.</p>
+<p>We'll want a function that takes the configuration as a parameter and returns a new <code>Crab</code> struct that's ready to use.</p>
 
                     </main>
 

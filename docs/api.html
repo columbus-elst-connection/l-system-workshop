@@ -151,7 +151,18 @@
                         <h1><a class="header" href="#api-module" id="api-module"><code>api</code> Module</a></h1>
 <p>In this section we describe the api that is provided that forms the tapestries
 onto we weave our application.</p>
+<p>It is good to keep in mind that we are working toward a Crab renderer. I.e. a
+turtle graphics capable ferris that responds to our commands.</p>
 <h2><a class="header" href="#renderconfig" id="renderconfig">RenderConfig</a></h2>
+<pre><code>#[derive(Debug, PartialEq)]
+pub struct RenderConfig {
+    pub step: u16,
+    pub angle: u16,
+}
+</code></pre>
+<p>The <code>RenderConfig</code> is used to configure the Crab renderer. <code>step</code> refers to the
+distance the Crab will travel when stepping forward. <code>angle</code> refers to the
+number of degrees the Crab will turn when we ask her to.</p>
 <h2><a class="header" href="#renderinstruction" id="renderinstruction">RenderInstruction</a></h2>
 <h2><a class="header" href="#symbol" id="symbol">Symbol</a></h2>
 <h2><a class="header" href="#rule" id="rule">Rule</a></h2>
