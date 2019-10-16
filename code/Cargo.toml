@@ -9,3 +9,4 @@ clap = "2.33.0"
 api = { path = "api" }
 parser = { path = "examplar-parser" }
 interpreter = { path = "examplar-interpreter" }
+renderer = { path = "examplar-renderer"}
