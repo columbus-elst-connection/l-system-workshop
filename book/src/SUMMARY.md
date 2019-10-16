@@ -22,6 +22,7 @@
     - [Use the framework](./parser/framework.md)
 - [Interpreter](./interpreter.md)
     - [What is an Interpreter](./interpreter/what.md)
+    - [Signature](./interpreter/signature.md)
 - [Renderer](./renderer.md)
     - [What is a Renderer](./renderer/what.md)
     - [Initialization](./renderer/initialization.md)
