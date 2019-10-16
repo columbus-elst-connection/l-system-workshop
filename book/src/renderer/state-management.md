@@ -10,9 +10,9 @@ Here's an example of how we can represent this state:
 struct State {
     position: turtle::Point,
     heading: turtle::Angle,
-    step: f64,
-    line_width: f64,
+    step: u16,
 }
 ```
 
 Our `Crab` can use a `Vec<State>` as a stack. Whenever a `Push` instruction is executed, we capture the current state and push it onto the stack. Whenever a `Pop` instrution is executed, we'll pop a State from the stack and set the location, heading, etc. of our crab. Simple! Using `Push` and `Pop` instructions is what allows for some really complex and interesting images.
+
