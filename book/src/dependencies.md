@@ -4,8 +4,7 @@ with L-systems. Second is to allow you to code your own L-system, and then play
 with that.
 
 In order to facilitate that the code makes use of path dependencies. That way we
-use can easily transition from relying on provided code to relying on your own
-code.
+can easily transition from relying on provided code to relying on your own code.
 
 ## Mechanism
 If you take a look at the `Cargo.toml` file you will notice the `[dependencies]`
