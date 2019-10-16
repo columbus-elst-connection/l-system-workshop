@@ -5,6 +5,7 @@ authors = ["Phil Fried <philfried@gmail.com>", "Daan van Berkel <daan.v.berkel.1
 edition = "2018"
 
 [dependencies]
+clap = "2.33.0"
 api = { path = "api" }
 parser = { path = "examplar-parser" }
 interpreter = { path = "examplar-interpreter" }
