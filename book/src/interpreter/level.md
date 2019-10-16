@@ -82,7 +82,8 @@ One final trick can be found at the end. It uses the `nth` function on
 unwrap can be safely done.
 
 ## Exercises
-1. Implement the `level` function of our interpreter
+1. Implement the `level` function of our interpreter.
+2. Test your `Interpreter`.
 
 [iterator]: https://doc.rust-lang.org/std/iter/index.html
 [successors]: https://doc.rust-lang.org/std/iter/fn.successors.html
