@@ -7,3 +7,4 @@ edition = "2018"
 [dependencies]
 api = { path = "api" }
 parser = { path = "examplar-parser" }
+interpreter = { path = "examplar-interpreter" }
