@@ -53,9 +53,22 @@ to parse a digit.
 ## number
 Many digits strung together form a number.
 
+## end
+Sometimes we just want to make sure that we completely parsed a structure. I.e.
+nothing of the input should be left over after we are finished parsing.
+
+An `end` parser should come in handy with that. It accepts a parser and
+depending on that parser succeeds it will either
+
+* *when successful with an empty remainder* return the result and an empty
+  remainder.
+* *when successful with remaining input* report an error.
+* *when unsuccessful* report the corresponding error.
+
 ## Exercises
 1. Implement `skip` parser. Hint: take a look at `map`
 2. Implement `space` and `spaces` parser. Hint: don't forget about `skip`.
 3. Implement `newline`. Hint: take a look at `one_of`.
 4. Implement `digit`. Hint: take a look at `any`.
 5. Implement `number`. Hint: take a look at `many` and don't forget about `digit`.
+6. Implement `end`. Hint closure are parsers as well.

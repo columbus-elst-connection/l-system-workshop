@@ -191,6 +191,17 @@ newline. Depending on the that could be one of <code>\n</code>, <code>\r</code> 
 to parse a digit.</p>
 <h2><a class="header" href="#number" id="number">number</a></h2>
 <p>Many digits strung together form a number.</p>
+<h2><a class="header" href="#end" id="end">end</a></h2>
+<p>Sometimes we just want to make sure that we completely parsed a structure. I.e.
+nothing of the input should be left over after we are finished parsing.</p>
+<p>An <code>end</code> parser should come in handy with that. It accepts a parser and
+depending on that parser succeeds it will either</p>
+<ul>
+<li><em>when successful with an empty remainder</em> return the result and an empty
+remainder.</li>
+<li><em>when successful with remaining input</em> report an error.</li>
+<li><em>when unsuccessful</em> report the corresponding error.</li>
+</ul>
 <h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
 <ol>
 <li>Implement <code>skip</code> parser. Hint: take a look at <code>map</code></li>
@@ -198,6 +209,7 @@ to parse a digit.</p>
 <li>Implement <code>newline</code>. Hint: take a look at <code>one_of</code>.</li>
 <li>Implement <code>digit</code>. Hint: take a look at <code>any</code>.</li>
 <li>Implement <code>number</code>. Hint: take a look at <code>many</code> and don't forget about <code>digit</code>.</li>
+<li>Implement <code>end</code>. Hint closure are parsers as well.</li>
 </ol>
 
                     </main>
