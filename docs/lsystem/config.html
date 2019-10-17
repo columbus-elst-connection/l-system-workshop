@@ -149,7 +149,30 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#config" id="config">config</a></h1>
-<p>Describe what the <code>config</code> section is.</p>
+<p>While playing with different number of iterations for the Koch L-system. You
+probably noticed that sometimes the image would be drawn outside the borders of
+the screen.</p>
+<p>For example, the command </p>
+<pre><code>cargo run -- -f system/koch.ls -n 5
+</code></pre>
+<p>Will result in a picture similar to the one below.</p>
+<p><img src="/image/koch-cutoff.png" alt="The Koch curve drawn outside the boundary" /></p>
+<p>The <code>config</code> section in <code>koch.ls</code> will be enable us to remedy that.</p>
+<h2><a class="header" href="#step" id="step">step</a></h2>
+<p>The config section has a number of key value pairs. One of them is <code>step</code>. This
+controls how big the line segment is whenever line segment is drawn. When you
+change it to <code>2</code> and run the the command above, we will capture the Koch curve
+inside the window.</p>
+<p><img src="/image/koch.png" alt="The Koch curve in full glory" /></p>
+<h2><a class="header" href="#angle" id="angle">angle</a></h2>
+<p>There is an other option you can configure. I.e. <code>angle</code>. This determines the
+number of degrees through which a turn is made. Change the configuration to have
+a step of <code>30</code> and an angle of <code>80</code>. Next run the L-system for 4 iterations. </p>
+<p><img src="/image/pointy-koch.png" alt="A pointier Koch curve" /></p>
+<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
+<ol>
+<li>Play with the configuration to produce a variety of different images.</li>
+</ol>
 
                     </main>
 

@@ -326,7 +326,30 @@ Do that now and then run the following command</p>
 <li>Run the same command with different number of iterations.</li>
 </ol>
 <h1><a class="header" href="#config" id="config">config</a></h1>
-<p>Describe what the <code>config</code> section is.</p>
+<p>While playing with different number of iterations for the Koch L-system. You
+probably noticed that sometimes the image would be drawn outside the borders of
+the screen.</p>
+<p>For example, the command </p>
+<pre><code>cargo run -- -f system/koch.ls -n 5
+</code></pre>
+<p>Will result in a picture similar to the one below.</p>
+<p><img src="lsystem//image/koch-cutoff.png" alt="The Koch curve drawn outside the boundary" /></p>
+<p>The <code>config</code> section in <code>koch.ls</code> will be enable us to remedy that.</p>
+<h2><a class="header" href="#step" id="step">step</a></h2>
+<p>The config section has a number of key value pairs. One of them is <code>step</code>. This
+controls how big the line segment is whenever line segment is drawn. When you
+change it to <code>2</code> and run the the command above, we will capture the Koch curve
+inside the window.</p>
+<p><img src="lsystem//image/koch.png" alt="The Koch curve in full glory" /></p>
+<h2><a class="header" href="#angle" id="angle">angle</a></h2>
+<p>There is an other option you can configure. I.e. <code>angle</code>. This determines the
+number of degrees through which a turn is made. Change the configuration to have
+a step of <code>30</code> and an angle of <code>80</code>. Next run the L-system for 4 iterations. </p>
+<p><img src="lsystem//image/pointy-koch.png" alt="A pointier Koch curve" /></p>
+<h2><a class="header" href="#exercises-2" id="exercises-2">Exercises</a></h2>
+<ol>
+<li>Play with the configuration to produce a variety of different images.</li>
+</ol>
 <h1><a class="header" href="#plant" id="plant">Plant</a></h1>
 <p>Describe the plant L-system, which introduces <code>[</code> and <code>]</code>.</p>
 <h1><a class="header" href="#expose" id="expose">Expose</a></h1>
@@ -455,7 +478,7 @@ pub trait Parser&lt;'a, T&gt; {
 }
 #}</code></pre></pre>
 <p>So a Parser is anything that has a <code>parse</code> method of the right signature.</p>
-<h2><a class="header" href="#exercises-2" id="exercises-2">Exercises</a></h2>
+<h2><a class="header" href="#exercises-3" id="exercises-3">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Parser</code> trait and the <code>ParseError</code> enum in <code>src/framework.rs</code>.</li>
 </ol>
@@ -473,7 +496,7 @@ apply the function! </p>
     }
 }
 </code></pre>
-<h2><a class="header" href="#exercises-3" id="exercises-3">Exercises</a></h2>
+<h2><a class="header" href="#exercises-4" id="exercises-4">Exercises</a></h2>
 <ol>
 <li>Write the implementation of the <code>Parser</code> trait for <code>Fn(&amp;'a str) -&gt; Result&lt;(T, &amp;'a str), ParserError&gt;</code>.</li>
 </ol>
@@ -569,7 +592,7 @@ summarize the steps.</p>
 </ol>
 <p>The <code>Character</code> parse was build of a struct. Implementing <code>Parser</code> was done by translating
 the parsing process into rust. And constructor and factory were created for ease of use.</p>
-<h2><a class="header" href="#exercises-4" id="exercises-4">Exercises</a></h2>
+<h2><a class="header" href="#exercises-5" id="exercises-5">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Character</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
@@ -668,7 +691,7 @@ pub fn any&lt;'a, F&gt;(predicate: F) -&gt; impl Parser&lt;'a, char&gt; where F:
 <li>Create a factory.</li>
 </ol>
 <p>This pattern will be repeated many times.</p>
-<h2><a class="header" href="#exercises-5" id="exercises-5">Exercises</a></h2>
+<h2><a class="header" href="#exercises-6" id="exercises-6">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Any</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
@@ -732,7 +755,7 @@ the parser</p>
     Literal(match_exactly)
 }
 </code></pre>
-<h2><a class="header" href="#exercises-6" id="exercises-6">Exercises</a></h2>
+<h2><a class="header" href="#exercises-7" id="exercises-7">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Literal</code> parser.</li>
 <li>Create some tests to verify your implementation.</li>
@@ -883,7 +906,7 @@ snag is that <code>PhantomData</code>.</p>
 <h2><a class="header" href="#summary-2" id="summary-2">Summary</a></h2>
 <p>We have just created our first combinator! It takes a parser and transforms
 its result into something different.</p>
-<h2><a class="header" href="#exercises-7" id="exercises-7">Exercises</a></h2>
+<h2><a class="header" href="#exercises-8" id="exercises-8">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Map</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
@@ -960,7 +983,7 @@ scenarios, depending on how you construct it. Writing factories that
 reflect your needs is always a good strategy.</p>
 <p>On should write code that one wants and write implementations to make
 that happen.</p>
-<h2><a class="header" href="#exercises-8" id="exercises-8">Exercises</a></h2>
+<h2><a class="header" href="#exercises-9" id="exercises-9">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Between</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
@@ -1001,7 +1024,7 @@ result and the remaining input. If none of the options succeed, report an error.
 <h2><a class="header" href="#constructor--factories" id="constructor--factories">Constructor &amp; Factories</a></h2>
 <p>Since there is not very much going on with constructors or factories. From now
 on we will not mention them any more.</p>
-<h2><a class="header" href="#exercises-9" id="exercises-9">Exercises</a></h2>
+<h2><a class="header" href="#exercises-10" id="exercises-10">Exercises</a></h2>
 <ol>
 <li>Implement the <code>OneOf</code> parser.</li>
 <li>Write some test to check your implementation.</li>
@@ -1061,7 +1084,7 @@ remainder.</li>
 <li><em>when successful with remaining input</em> report an error.</li>
 <li><em>when unsuccessful</em> report the corresponding error.</li>
 </ul>
-<h2><a class="header" href="#exercises-10" id="exercises-10">Exercises</a></h2>
+<h2><a class="header" href="#exercises-11" id="exercises-11">Exercises</a></h2>
 <ol>
 <li>Implement <code>skip</code> parser. Hint: take a look at <code>map</code></li>
 <li>Implement <code>space</code> and <code>spaces</code> parser. Hint: don't forget about <code>skip</code>.</li>
@@ -1211,7 +1234,7 @@ a parser.</p>
             )*
 </code></pre>
 <p>The <code>$( )*</code> will output its contents for each of the matching parts.</p>
-<h2><a class="header" href="#exercises-11" id="exercises-11">Exercises</a></h2>
+<h2><a class="header" href="#exercises-12" id="exercises-12">Exercises</a></h2>
 <ol>
 <li>Implement and test the <code>sequence!</code> macro.</li>
 <li>Often white space is not that interesting. Create a macro that allows and
@@ -1248,7 +1271,7 @@ header. This time the header identifier is <code>rules</code>.</p>
 which should be at least 1 <em>symbol</em>.</p>
 <p>Following that are many <em>rules</em>. Each <em>rule</em> is described by a <em>symbol</em> that
 will be mapped onto its <em>production</em>, i.e. a sequence of at least 1 symbol.</p>
-<h2><a class="header" href="#exercises-12" id="exercises-12">Exercises</a></h2>
+<h2><a class="header" href="#exercises-13" id="exercises-13">Exercises</a></h2>
 <p>Use the parser combinator framework to create a parser that can parser system
 files. Make sure to test your parser building blocks.</p>
 <p>Don't forget to alter the <code>parse</code> function to use the parser you created.</p>
@@ -1316,7 +1339,7 @@ section.</p>
 <p>the <code>new</code> constructor accepts an <code>LSystem</code>, making sure to take ownership of it.
 Other than the <code>level</code> function. There is not much going on. Note that we still
 have something to do.</p>
-<h2><a class="header" href="#exercises-13" id="exercises-13">Exercises</a></h2>
+<h2><a class="header" href="#exercises-14" id="exercises-14">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Interpreter</code> struct.</li>
 </ol>
@@ -1384,7 +1407,7 @@ together.</p>
 <p>One final trick can be found at the end. It uses the <code>nth</code> function on
 <code>Iterator</code>s to pick the word we want. Since we always produce an next word, the
 unwrap can be safely done.</p>
-<h2><a class="header" href="#exercises-14" id="exercises-14">Exercises</a></h2>
+<h2><a class="header" href="#exercises-15" id="exercises-15">Exercises</a></h2>
 <ol>
 <li>Implement the <code>level</code> function of our interpreter.</li>
 <li>Test your <code>Interpreter</code>.</li>
