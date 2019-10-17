@@ -10,7 +10,7 @@
     - [config](./lsystem/config.md)
     - [Plant](./lsystem/plant.md)
     - [Crab graphics](./lsystem/crab.md)
-    - [Expose](./lsystem/expose.md)
+    - [Exposé](./lsystem/expose.md)
 - [Overview](./overview.md)
     - [Command Line Interface](./cli.md)
     - [`api` Module](./api.md)
