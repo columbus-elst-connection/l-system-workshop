@@ -11,6 +11,7 @@
     - [Plant](./lsystem/plant.md)
     - [Crab graphics](./lsystem/crab.md)
     - [Exposé](./lsystem/expose.md)
+    - [Have fun](./lsystem/fun.md)
 - [Overview](./overview.md)
     - [Command Line Interface](./cli.md)
     - [`api` Module](./api.md)
