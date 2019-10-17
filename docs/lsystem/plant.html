@@ -149,7 +149,42 @@
                 <div id="content" class="content">
                     <main>
                         <h1><a class="header" href="#plant" id="plant">Plant</a></h1>
-<p>Describe the plant L-system, which introduces <code>[</code> and <code>]</code>.</p>
+<p>We are going to write our own L-system. In this chapter you will go through the
+motions. The next chapter will explain in more detail how to rules are
+interpreted. </p>
+<h2><a class="header" href="#plantls" id="plantls">plant.ls</a></h2>
+<p>Create a file in the <code>system</code> directory called: <code>plant.ls</code>. This will will
+contain a description of our L-system.</p>
+<h2><a class="header" href="#config" id="config">config</a></h2>
+<p>Begin with a <code>config</code> header. As you know this starts the configuration section
+where you can configure the generation of the image. Configure the step to be
+<code>5</code> and the angle to be <code>25</code>.</p>
+<pre><code class="language-plain">config:
+step = 5
+angle = 25
+</code></pre>
+<h2><a class="header" href="#rules" id="rules">rules</a></h2>
+<p>Next comes the rules section which is started with a <code>rules</code> header. The first
+thing in a rules section should be the <em>axiom</em>. Make this to be <code>--X</code>.
+The axiom is followed by a number of rules. For this L-system there are two. One
+rule that tells us to transform <code>F</code> into <code>FF</code>. The other rule tells us to
+transform <code>X</code> into <code>F-[[X]+X]+F[+FX]-X</code>.</p>
+<pre><code class="language-plain">rules:
+axiom = --X
+X =&gt; F-[[X]+X]+F[+FX]-X
+F =&gt; FF
+</code></pre>
+<h2><a class="header" href="#execution" id="execution">Execution</a></h2>
+<p>With the <code>plant.ls</code> file in place, we can admire our work by executing the
+command</p>
+<pre><code class="language-sh">cargo run -- -f system/plant.ls -n 5
+</code></pre>
+<p><img src="/image/plant.png" alt="A delicate plant" /></p>
+<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
+<ol>
+<li>Create the <code>plant.ls</code> file as described in this chapter.</li>
+<li>Play with it's configuration.</li>
+</ol>
 
                     </main>
 

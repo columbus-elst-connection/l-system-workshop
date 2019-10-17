@@ -351,7 +351,42 @@ a step of <code>30</code> and an angle of <code>80</code>. Next run the L-system
 <li>Play with the configuration to produce a variety of different images.</li>
 </ol>
 <h1><a class="header" href="#plant" id="plant">Plant</a></h1>
-<p>Describe the plant L-system, which introduces <code>[</code> and <code>]</code>.</p>
+<p>We are going to write our own L-system. In this chapter you will go through the
+motions. The next chapter will explain in more detail how to rules are
+interpreted. </p>
+<h2><a class="header" href="#plantls" id="plantls">plant.ls</a></h2>
+<p>Create a file in the <code>system</code> directory called: <code>plant.ls</code>. This will will
+contain a description of our L-system.</p>
+<h2><a class="header" href="#config-1" id="config-1">config</a></h2>
+<p>Begin with a <code>config</code> header. As you know this starts the configuration section
+where you can configure the generation of the image. Configure the step to be
+<code>5</code> and the angle to be <code>25</code>.</p>
+<pre><code class="language-plain">config:
+step = 5
+angle = 25
+</code></pre>
+<h2><a class="header" href="#rules-1" id="rules-1">rules</a></h2>
+<p>Next comes the rules section which is started with a <code>rules</code> header. The first
+thing in a rules section should be the <em>axiom</em>. Make this to be <code>--X</code>.
+The axiom is followed by a number of rules. For this L-system there are two. One
+rule that tells us to transform <code>F</code> into <code>FF</code>. The other rule tells us to
+transform <code>X</code> into <code>F-[[X]+X]+F[+FX]-X</code>.</p>
+<pre><code class="language-plain">rules:
+axiom = --X
+X =&gt; F-[[X]+X]+F[+FX]-X
+F =&gt; FF
+</code></pre>
+<h2><a class="header" href="#execution" id="execution">Execution</a></h2>
+<p>With the <code>plant.ls</code> file in place, we can admire our work by executing the
+command</p>
+<pre><code class="language-sh">cargo run -- -f system/plant.ls -n 5
+</code></pre>
+<p><img src="lsystem//image/plant.png" alt="A delicate plant" /></p>
+<h2><a class="header" href="#exercises-3" id="exercises-3">Exercises</a></h2>
+<ol>
+<li>Create the <code>plant.ls</code> file as described in this chapter.</li>
+<li>Play with it's configuration.</li>
+</ol>
 <h1><a class="header" href="#expose" id="expose">Expose</a></h1>
 <p>Show some renderings of lsystems and invite the participants to recreate them.</p>
 <h1><a class="header" href="#overview" id="overview">Overview</a></h1>
@@ -478,7 +513,7 @@ pub trait Parser&lt;'a, T&gt; {
 }
 #}</code></pre></pre>
 <p>So a Parser is anything that has a <code>parse</code> method of the right signature.</p>
-<h2><a class="header" href="#exercises-3" id="exercises-3">Exercises</a></h2>
+<h2><a class="header" href="#exercises-4" id="exercises-4">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Parser</code> trait and the <code>ParseError</code> enum in <code>src/framework.rs</code>.</li>
 </ol>
@@ -496,7 +531,7 @@ apply the function! </p>
     }
 }
 </code></pre>
-<h2><a class="header" href="#exercises-4" id="exercises-4">Exercises</a></h2>
+<h2><a class="header" href="#exercises-5" id="exercises-5">Exercises</a></h2>
 <ol>
 <li>Write the implementation of the <code>Parser</code> trait for <code>Fn(&amp;'a str) -&gt; Result&lt;(T, &amp;'a str), ParserError&gt;</code>.</li>
 </ol>
@@ -592,7 +627,7 @@ summarize the steps.</p>
 </ol>
 <p>The <code>Character</code> parse was build of a struct. Implementing <code>Parser</code> was done by translating
 the parsing process into rust. And constructor and factory were created for ease of use.</p>
-<h2><a class="header" href="#exercises-5" id="exercises-5">Exercises</a></h2>
+<h2><a class="header" href="#exercises-6" id="exercises-6">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Character</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
@@ -691,7 +726,7 @@ pub fn any&lt;'a, F&gt;(predicate: F) -&gt; impl Parser&lt;'a, char&gt; where F:
 <li>Create a factory.</li>
 </ol>
 <p>This pattern will be repeated many times.</p>
-<h2><a class="header" href="#exercises-6" id="exercises-6">Exercises</a></h2>
+<h2><a class="header" href="#exercises-7" id="exercises-7">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Any</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
@@ -755,7 +790,7 @@ the parser</p>
     Literal(match_exactly)
 }
 </code></pre>
-<h2><a class="header" href="#exercises-7" id="exercises-7">Exercises</a></h2>
+<h2><a class="header" href="#exercises-8" id="exercises-8">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Literal</code> parser.</li>
 <li>Create some tests to verify your implementation.</li>
@@ -906,7 +941,7 @@ snag is that <code>PhantomData</code>.</p>
 <h2><a class="header" href="#summary-2" id="summary-2">Summary</a></h2>
 <p>We have just created our first combinator! It takes a parser and transforms
 its result into something different.</p>
-<h2><a class="header" href="#exercises-8" id="exercises-8">Exercises</a></h2>
+<h2><a class="header" href="#exercises-9" id="exercises-9">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Map</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
@@ -983,7 +1018,7 @@ scenarios, depending on how you construct it. Writing factories that
 reflect your needs is always a good strategy.</p>
 <p>On should write code that one wants and write implementations to make
 that happen.</p>
-<h2><a class="header" href="#exercises-9" id="exercises-9">Exercises</a></h2>
+<h2><a class="header" href="#exercises-10" id="exercises-10">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Between</code> parser.</li>
 <li>Write some tests to check your implementation.</li>
@@ -1024,7 +1059,7 @@ result and the remaining input. If none of the options succeed, report an error.
 <h2><a class="header" href="#constructor--factories" id="constructor--factories">Constructor &amp; Factories</a></h2>
 <p>Since there is not very much going on with constructors or factories. From now
 on we will not mention them any more.</p>
-<h2><a class="header" href="#exercises-10" id="exercises-10">Exercises</a></h2>
+<h2><a class="header" href="#exercises-11" id="exercises-11">Exercises</a></h2>
 <ol>
 <li>Implement the <code>OneOf</code> parser.</li>
 <li>Write some test to check your implementation.</li>
@@ -1084,7 +1119,7 @@ remainder.</li>
 <li><em>when successful with remaining input</em> report an error.</li>
 <li><em>when unsuccessful</em> report the corresponding error.</li>
 </ul>
-<h2><a class="header" href="#exercises-11" id="exercises-11">Exercises</a></h2>
+<h2><a class="header" href="#exercises-12" id="exercises-12">Exercises</a></h2>
 <ol>
 <li>Implement <code>skip</code> parser. Hint: take a look at <code>map</code></li>
 <li>Implement <code>space</code> and <code>spaces</code> parser. Hint: don't forget about <code>skip</code>.</li>
@@ -1234,7 +1269,7 @@ a parser.</p>
             )*
 </code></pre>
 <p>The <code>$( )*</code> will output its contents for each of the matching parts.</p>
-<h2><a class="header" href="#exercises-12" id="exercises-12">Exercises</a></h2>
+<h2><a class="header" href="#exercises-13" id="exercises-13">Exercises</a></h2>
 <ol>
 <li>Implement and test the <code>sequence!</code> macro.</li>
 <li>Often white space is not that interesting. Create a macro that allows and
@@ -1256,7 +1291,7 @@ This identifies goals to reach and helps with achieving</p>
 parts. First is the configuration section, which defines common settings for the
 interpretation of the L-system.
 Next is some number of blank lines followed by the actual rules of the system.</p>
-<h3><a class="header" href="#config-1" id="config-1">Config</a></h3>
+<h3><a class="header" href="#config-2" id="config-2">Config</a></h3>
 <p>The <em>configuration</em> section is started with a <em>header</em>, i.e. a literal <code>config</code> followed
 by a colon and a newline.</p>
 <p>Next are two key value pairs. A key value pair is a an literal key followed by
@@ -1264,14 +1299,14 @@ an equal sign and a certain value. The first key value pair is the <em>step</em>
 assigns the <em>number</em> of times the system needs to be iterated.
 After that the <em>angle</em> which determines the <em>number</em> of degrees a turtle should
 rotate.</p>
-<h3><a class="header" href="#rules-1" id="rules-1">Rules</a></h3>
+<h3><a class="header" href="#rules-2" id="rules-2">Rules</a></h3>
 <p>Just like the configuration section is the <em>rules</em> section started with it's own
 header. This time the header identifier is <code>rules</code>.</p>
 <p>Next comes a the seed for the system, i.e the <em>axiom</em> which is a key value pair
 which should be at least 1 <em>symbol</em>.</p>
 <p>Following that are many <em>rules</em>. Each <em>rule</em> is described by a <em>symbol</em> that
 will be mapped onto its <em>production</em>, i.e. a sequence of at least 1 symbol.</p>
-<h2><a class="header" href="#exercises-13" id="exercises-13">Exercises</a></h2>
+<h2><a class="header" href="#exercises-14" id="exercises-14">Exercises</a></h2>
 <p>Use the parser combinator framework to create a parser that can parser system
 files. Make sure to test your parser building blocks.</p>
 <p>Don't forget to alter the <code>parse</code> function to use the parser you created.</p>
@@ -1339,7 +1374,7 @@ section.</p>
 <p>the <code>new</code> constructor accepts an <code>LSystem</code>, making sure to take ownership of it.
 Other than the <code>level</code> function. There is not much going on. Note that we still
 have something to do.</p>
-<h2><a class="header" href="#exercises-14" id="exercises-14">Exercises</a></h2>
+<h2><a class="header" href="#exercises-15" id="exercises-15">Exercises</a></h2>
 <ol>
 <li>Implement the <code>Interpreter</code> struct.</li>
 </ol>
@@ -1407,7 +1442,7 @@ together.</p>
 <p>One final trick can be found at the end. It uses the <code>nth</code> function on
 <code>Iterator</code>s to pick the word we want. Since we always produce an next word, the
 unwrap can be safely done.</p>
-<h2><a class="header" href="#exercises-15" id="exercises-15">Exercises</a></h2>
+<h2><a class="header" href="#exercises-16" id="exercises-16">Exercises</a></h2>
 <ol>
 <li>Implement the <code>level</code> function of our interpreter.</li>
 <li>Test your <code>Interpreter</code>.</li>
