@@ -162,12 +162,41 @@ pub struct RenderConfig {
 </code></pre>
 <p>The <code>RenderConfig</code> is used to configure the Crab renderer. <code>step</code> refers to the
 distance the Crab will travel when stepping forward. <code>angle</code> refers to the
-number of degrees the Crab will turn when we ask her to.</p>
+number of degrees the Crab will turn when we ask her to. This is what you'll parse from the l-system file.</p>
 <h2><a class="header" href="#renderinstruction" id="renderinstruction">RenderInstruction</a></h2>
+<p>We define this enum just to give us a simple way to represent what we want our Renderer to do. Our basic definition looks like this:</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+#[derive(Debug, PartialEq, Eq)]
+pub enum RendererInstruction {
+    Forward,
+    RotateLeft,
+    RotateRight,
+    Push,
+    Pop,
+    NoOp,
+}
+#}</code></pre></pre>
+<p>This is a fairly minimal instruction set, but you can still do a lot with it. More full-featured L-system implementations may have <a href="./extensions.html">more instructions</a>, but we'll start simple for now.</p>
 <h2><a class="header" href="#symbol" id="symbol">Symbol</a></h2>
+<p>The heart of any L-system is Symbols. It is, afterall, a symbol substitution language. <code>Symbol</code> is defined as a trait with a few simple properties. First, it must implement <code>Eq</code> and <code>Hash</code> since we will need to compare them and potentially store them in a hashmap. Secondly, it must implement <code>Copy</code> to facilitate easily producing <code>Symbol</code>s based on the rules in our L-system. Lastly, we want it to also implement <code>Display</code> so that we can produce a nicer output when debugging. For this workshop we'll use <code>char</code>, since it already implements all of those traits.</p>
+<p>A <code>Symbol</code> must also implement the function <code>fn to_rendering_instruction(&amp;self) -&gt; RendererInstruction;</code>. This function maps each <code>Symbol</code> to an instruction for our renderer to execute. One important bit to point out is that our <code>RendererInstruction</code> enum includes a <code>NoOp</code> instruction, which instructs our Renderer to do nothing. We define this instruction so that it's clear when a <code>Symbol</code> does not map to any particular <code>RendererInstruction</code>. There are way more valid <code>char</code> values than there are <code>RendererInstruction</code> variants, so we need a clear way to represent the case when a <code>Symbol</code> is only used for matching substitutions.</p>
+<p>For our workshop, the mapping between <code>char</code> values and rendering instructions will be hard coded as part of the <code>Symbol::to_rendering_instruction</code> function. This mapping follows a fairly common convention, but other implementations will handle this differently. Some implementations even allow you do define this mapping yourself, but we'll leave all that for <a href="./extenstions.html">extra credit</a>.</p>
 <h2><a class="header" href="#rule" id="rule">Rule</a></h2>
+<p>The L-system file will contain a <code>rules:</code> section that has one or more rules for symbol replacement. In our API we'll represent each rule as a struct containing the <code>Symbol</code> to match and a <code>Vec&lt;Symbol&gt;</code> of replacements to produce. For example, the rule <code>F =&gt; F+F--F+F</code> would be represented by:</p>
+<pre><pre class="playpen"><code class="language-rust">
+# #![allow(unused_variables)]
+#fn main() {
+Rule {
+    match_input: 'F',
+    productions: vec!['F', '+', 'F', '-', '-', 'F', '+', 'F'],
+}
+#}</code></pre></pre>
 <h2><a class="header" href="#lsystemrules" id="lsystemrules">LSystemRules</a></h2>
+<p>Once we have all the <code>Rule</code>s parsed, we'll represent the complete set of rules as a <code>HashMap&lt;char, Vec&lt;char&gt;&gt;</code> where the keys are the <code>Symbol</code>s to match and the values are the productions for that symbol. This just facilitates easy lookups.</p>
 <h2><a class="header" href="#lsystem" id="lsystem">LSystem</a></h2>
+<p>This struct is just a holder for the complete set of data that's been parsed from an l-system file. This represents almost everything we need in order to render the final image. The only additional piece we'll need is the number of iterations, but we pass that as a command line argument.</p>
 
                     </main>
 

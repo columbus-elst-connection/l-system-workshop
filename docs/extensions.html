@@ -158,25 +158,53 @@ world of exploration.</p>
 <p>Don't take it as a travelers guide. We ourselves are as oblivious as the next
 person when it comes to what you want to delve into. Feel free to follow your
 own interest and amaze us with your thoughts and creations.</p>
-<h2><a class="header" href="#l-system-parser" id="l-system-parser">L-System Parser</a></h2>
-<p>Currently the parser for the <code>RenderConfig</code> only allows to define the step size
-and the angle. One way to change how the L-system interacts is to change the
-step size depending on the level of iteration.</p>
-<p>Extend the L-system parser so that the step multiplication can be provided as
-well. </p>
+<h2><a class="header" href="#more-rendering-instructions" id="more-rendering-instructions">More Rendering Instructions</a></h2>
+<p>We're able to create some awesome drawings, even with our basic set of rendering instructions. There's a lot of additional instructions that we could add in order to create increasingly complex images. Some of these instructions may also imply additional values in the <code>RenderConfig</code>.</p>
+<ul>
+<li>Instructions to increase and decrease the <code>step</code>
+<ul>
+<li>The amount to increase/decrease can be a configurable <code>step_multiplier</code> in the <code>RenderConfig</code></li>
+</ul>
+</li>
+<li>Instructions to increase and decrease the <code>angle</code>
+<ul>
+<li>The amount to increase/decrease can be a configurable <code>angle_multiplier</code> in the <code>RenderConfig</code></li>
+</ul>
+</li>
+<li>Instructions to increase and decrease the line width
+<ul>
+<li>The renderer config should include a starting value for the line width</li>
+<li>The amount to increase/decrease can be a configurable <code>line_width_multiplier</code> in the <code>RenderConfig</code></li>
+</ul>
+</li>
+<li>Instructions to change the pen color
+<ul>
+<li>The renderer config should include a starting value for the pen color</li>
+<li>How you change this could be simple or very complex. You could have separate instructions for each of a limited number of colors (e.g. <code>SetPenColorRed</code>), or you could create instructions for manipulating RGBA values independently. This could quickly get pretty complex, but it could also allow for some fancy coloring!</li>
+</ul>
+</li>
+</ul>
+<h2><a class="header" href="#additional-renderer-configuration" id="additional-renderer-configuration">Additional Renderer Configuration</a></h2>
+<p>Currently the parser for the <code>RenderConfig</code> only allows to define the step size and the angle. It may be good to add additional configuration items to support the new instructions suggested above.</p>
+<p>Also, there's a lot of things you may want to configure more statically, like:</p>
+<ul>
+<li>Configure the starting position and heading of the Crab</li>
+<li>Configure the size of the canvas</li>
+<li>Configure the background and pen colors</li>
+</ul>
+<h2><a class="header" href="#make-all-length-units-relative" id="make-all-length-units-relative">Make all length units relative</a></h2>
+<p>Our current implementation uses pixels as the unit for all distances, since that's what the turtle crate uses. This makes it sensitive to different resolutions. We could instead make these units relative to the size of the window, so that the images look good regardless of the size of the window or monitor.</p>
 <h2><a class="header" href="#parser-framework" id="parser-framework">Parser Framework</a></h2>
 <p>Maybe you have discovered some recurring pattern while writing your parsers.
 This is an ideal target for create your own combinators. Go back and examine
 your code to see where some form of abstraction could be teased from it.</p>
 <h2><a class="header" href="#improved-interpreter" id="improved-interpreter">Improved Interpreter</a></h2>
-<p>Currently the <code>Interpreter</code> returns the resulting word in one go. You also have
-learned that words in L-systems can grow very quickly. This is a recipe for
-disaster.</p>
-<p>Instead of returning the word in it's entirety, you could return an iterator
-over the word. This allows some flexibility how to iterate over the words.</p>
-<p>One other way is to use a stack with the parts of words to progress combined
-with the level of iteration. Once the level reached zero, we can push the
-symbols out.</p>
+<p>Currently the <code>Interpreter</code> returns the resulting word in one go, which requires storing the entire array of symbol productions in memory. You also have learned that words in L-systems can grow very quickly. This is a recipe for disaster.</p>
+<p>Instead of returning the word in it's entirety, you could return an iterator over the word. This allows some flexibility how to iterate over the words.</p>
+<p>One other way is to use a stack with the parts of words to progress combined with the level of iteration. Once the level reached zero, we can push the symbols out.</p>
+<h2><a class="header" href="#decouple-the-l-system-and-the-rendering" id="decouple-the-l-system-and-the-rendering">Decouple the L-system and the Rendering</a></h2>
+<p>The L-system itself if just about symbol substitution. The symbols themselves don't have any intrinsic meaning. The fact that there's a <code>config:</code> section in our l-system file is less than ideal because it couples the interpreter and the renderer. Ideally, the two would be totally separate.</p>
+<p>One idea to decouple these would be to write the interpreter and renderer as completely separate binaries. The interpreter would simply output a final sequence of symbols to stdout. The renderer would read a sequence of symbols from stdin and interpret them as rendering instructions. You could easily pipe the output of the interpreter into the renderer. This would make it really easy to try out different renderers for the same L-system!</p>
 
                     </main>
 
