@@ -6,23 +6,23 @@ recreate images.
 before you start, Take a look at the exercises. They might provide a hint.
 
 ## Tree
-![A tree](/image/tree.png)
+![A tree](../image/tree.png)
 
 
 ## Perspective
-![A road lined with trees](/image/perspective.png)
+![A road lined with trees](../image/perspective.png)
 
 ## Square
-![A square](/image/square.png)
+![A square](../image/square.png)
 
 ## Sqoch
-![Sqoch](/image/sqoch.png)
+![Sqoch](../image/sqoch.png)
 
 ## Koch Island
-![Koch Island](/image/koch-island.png)
+![Koch Island](../image/koch-island.png)
 
 ## Hilbert Curve
-![Hilbert Curve](/image/hilbert.png)
+![Hilbert Curve](../image/hilbert.png)
 
 ## Exercises
 1. What image corresponds with the L-system below. Try to make an educated guess
