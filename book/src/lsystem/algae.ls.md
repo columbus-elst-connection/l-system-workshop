@@ -13,10 +13,10 @@ A => AB
 B => A
 ```
 
-This this look familiar?
+Does this look familiar?
 
 ## Rules
-Take a closer look at the `rules` section. It defines an axiom just in the
+Take a closer look at the `rules` section. It defines an axiom just as in the
 preceding chapter.
 
 Furthermore it defines two rules. The first rule `A => AB` tells us to replace
