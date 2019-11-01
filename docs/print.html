@@ -252,12 +252,24 @@ examples, see the exercises.</p>
 <li>Extend the example with the a few iterations.</li>
 <li>Count the number of symbols in each word of the series. Guess what number comes next.</li>
 <li>Count the number of <em>A</em>'s and the number of <em>B</em>'s separately. What do you get.</li>
-<li>We will number the words in our series, \(W_{0}\) for our start word, \(W_{1}\), for the next, \(W_{2}\) for the one after that, etcetera. Pick any number, let's say 4. Notice how \(W_{4}\), i.e. <em>ABAAB</em> is the concatenation of <em>ABA</em>, which is \(W_{3}\), and <em>AB</em>, which is \(W_{2}\). In other words \(W_{4}=W_{3}W_{2}\).</li>
+<li>We will number the words in our series, \(W_{0}\) for our start word,
+\(W_{1}\), for the next, \(W_{2}\) for the one after that, etcetera. Pick
+any number, let's say 4. Notice how \(W_{4}\), i.e. <em>ABAAB</em> is the
+concatenation of <em>ABA</em>, which is \(W_{3}\), and <em>AB</em>, which is \(W_{2}\).
+In other words \(W_{4}=W_{3}W_{2}\).</li>
 </ol>
 <ul>
 <li>Check if something similar holds for \(W_{3}\) and \(W_{5}\).</li>
 <li>Does this property, i.e. \(W_{k} = W_{k-1}W_{k-2}\) always hold?</li>
 </ul>
+<ol start="5">
+<li>The above properties remind us of the Fibonacci sequence. For the Fibonacci
+sequence there is a formula that instantly calculates the the value in the
+sequences. Robert Dimartino found out that a similar property holds for our
+words. Search for
+<a href="https://en.wikipedia.org/wiki/Fibonacci_word"><em>Fibonacci word</em></a>  for more
+information.</li>
+</ol>
 <h1><a class="header" href="#algaels" id="algaels">algae.ls</a></h1>
 <p>Take a look at the <code>systems/algae.ls</code> file. For convenience it is reproduced
 here</p>
@@ -1763,6 +1775,21 @@ framework.</p>
 
         </div>
 
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3001");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload(true); // force reload from server (not from cache)
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
         
 
         

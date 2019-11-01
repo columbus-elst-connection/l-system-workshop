@@ -35,7 +35,17 @@ examples, see the exercises.
 1. Extend the example with the a few iterations.
 2. Count the number of symbols in each word of the series. Guess what number comes next.
 3. Count the number of *A*'s and the number of *B*'s separately. What do you get.
-4. We will number the words in our series, \\(W_{0}\\) for our start word, \\(W_{1}\\), for the next, \\(W_{2}\\) for the one after that, etcetera. Pick any number, let's say 4. Notice how \\(W_{4}\\), i.e. *ABAAB* is the concatenation of *ABA*, which is \\(W_{3}\\), and *AB*, which is \\(W_{2}\\). In other words \\(W_{4}=W_{3}W_{2}\\).
+4. We will number the words in our series, \\(W_{0}\\) for our start word,
+   \\(W_{1}\\), for the next, \\(W_{2}\\) for the one after that, etcetera. Pick
+   any number, let's say 4. Notice how \\(W_{4}\\), i.e. *ABAAB* is the
+   concatenation of *ABA*, which is \\(W_{3}\\), and *AB*, which is \\(W_{2}\\).
+   In other words \\(W_{4}=W_{3}W_{2}\\).
 
 * Check if something similar holds for \\(W_{3}\\) and \\(W_{5}\\).
 * Does this property, i.e. \\(W_{k} = W_{k-1}W_{k-2}\\) always hold?
+5. The above properties remind us of the Fibonacci sequence. For the Fibonacci
+   sequence there is a formula that instantly calculates the the value in the
+   sequences. Robert Dimartino found out that a similar property holds for our
+   words. Search for
+   [_Fibonacci word_](https://en.wikipedia.org/wiki/Fibonacci_word)  for more
+   information.
