@@ -10,6 +10,7 @@
     - [config](./lsystem/config.md)
     - [Plant](./lsystem/plant.md)
     - [Crab graphics](./lsystem/crab.md)
+    - [Synthesis](./lsystem/synthesis.md)
     - [Exposé](./lsystem/expose.md)
     - [Have fun](./lsystem/fun.md)
 - [Overview](./overview.md)

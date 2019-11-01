@@ -18,12 +18,12 @@ The forward command will make Ferris take a step forward, leaving a line in
 their trail. The step size is determined by the `step` value of the
 configuration.
 
-### TurnLeft `+`
+### TurnLeft `-`
 When the turn left command is issued Ferris will change heading accordingly. The
 angle through which Ferris will turn is configured with the `angle` value of the
 configuration.
 
-### TurnRight `-`
+### TurnRight `+`
 Correspondingly, Ferris knows about how to turn right.
 
 ### Push `[`

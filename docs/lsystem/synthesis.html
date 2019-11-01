@@ -1,0 +1,307 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Synthesis - L-Systems</title>
+        
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="A compendium to the L-Systems workshop">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500" rel="stylesheet" type="text/css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+        <!-- MathJax -->
+        <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        
+    </head>
+    <body class="light">
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            document.body.className = theme;
+            document.querySelector('html').className = theme + ' js';
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li><a href="../introduction.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li><a href="../outline.html"><strong aria-hidden="true">2.</strong> Outline</a></li><li><a href="../l-system.html"><strong aria-hidden="true">3.</strong> L-system</a></li><li><ol class="section"><li><a href="../lsystem/Aristid.html"><strong aria-hidden="true">3.1.</strong> Aristid Lindenmayer</a></li><li><a href="../lsystem/algae.html"><strong aria-hidden="true">3.2.</strong> Algae</a></li><li><a href="../lsystem/algae.ls.html"><strong aria-hidden="true">3.3.</strong> algae.ls</a></li><li><a href="../lsystem/koch.ls.html"><strong aria-hidden="true">3.4.</strong> koch.ls</a></li><li><a href="../lsystem/config.html"><strong aria-hidden="true">3.5.</strong> config</a></li><li><a href="../lsystem/plant.html"><strong aria-hidden="true">3.6.</strong> Plant</a></li><li><a href="../lsystem/crab.html"><strong aria-hidden="true">3.7.</strong> Crab graphics</a></li><li><a href="../lsystem/synthesis.html" class="active"><strong aria-hidden="true">3.8.</strong> Synthesis</a></li><li><a href="../lsystem/expose.html"><strong aria-hidden="true">3.9.</strong> Exposé</a></li><li><a href="../lsystem/fun.html"><strong aria-hidden="true">3.10.</strong> Have fun</a></li></ol></li><li><a href="../overview.html"><strong aria-hidden="true">4.</strong> Overview</a></li><li><ol class="section"><li><a href="../cli.html"><strong aria-hidden="true">4.1.</strong> Command Line Interface</a></li><li><a href="../api.html"><strong aria-hidden="true">4.2.</strong> api Module</a></li></ol></li><li><a href="../parser.html"><strong aria-hidden="true">5.</strong> Parsers</a></li><li><ol class="section"><li><a href="../parser/what.html"><strong aria-hidden="true">5.1.</strong> What is a Parser?</a></li><li><a href="../parser/type.html"><strong aria-hidden="true">5.2.</strong> Looking at the type</a></li><li><a href="../parser/function.html"><strong aria-hidden="true">5.3.</strong> Functions are Parsers!</a></li><li><a href="../parser/character.html"><strong aria-hidden="true">5.4.</strong> Parsing a char</a></li><li><a href="../parser/any.html"><strong aria-hidden="true">5.5.</strong> Parsing any char</a></li><li><a href="../parser/literal.html"><strong aria-hidden="true">5.6.</strong> Literal</a></li><li><a href="../parser/combinators.html"><strong aria-hidden="true">5.7.</strong> Combinators</a></li><li><a href="../parser/map.html"><strong aria-hidden="true">5.8.</strong> Map</a></li><li><a href="../parser/between.html"><strong aria-hidden="true">5.9.</strong> Between</a></li><li><a href="../parser/oneof.html"><strong aria-hidden="true">5.10.</strong> OneOf</a></li><li><a href="../parser/utilities.html"><strong aria-hidden="true">5.11.</strong> Utilities</a></li><li><a href="../parser/macros.html"><strong aria-hidden="true">5.12.</strong> Macros</a></li><li><a href="../parser/sequence.html"><strong aria-hidden="true">5.13.</strong> Parsing a sequence</a></li><li><a href="../parser/framework.html"><strong aria-hidden="true">5.14.</strong> Use the framework</a></li></ol></li><li><a href="../interpreter.html"><strong aria-hidden="true">6.</strong> Interpreter</a></li><li><ol class="section"><li><a href="../interpreter/what.html"><strong aria-hidden="true">6.1.</strong> What is an Interpreter</a></li><li><a href="../interpreter/signature.html"><strong aria-hidden="true">6.2.</strong> Signature</a></li><li><a href="../interpreter/level.html"><strong aria-hidden="true">6.3.</strong> level</a></li></ol></li><li><a href="../renderer.html"><strong aria-hidden="true">7.</strong> Renderer</a></li><li><ol class="section"><li><a href="../renderer/what.html"><strong aria-hidden="true">7.1.</strong> What is a Renderer</a></li><li><a href="../renderer/initialization.html"><strong aria-hidden="true">7.2.</strong> Initialization</a></li><li><a href="../renderer/renderer-config.html"><strong aria-hidden="true">7.3.</strong> Renderer Configuration</a></li><li><a href="../renderer/crab-basics.html"><strong aria-hidden="true">7.4.</strong> Implementing Basic Instructions</a></li><li><a href="../renderer/state-management.html"><strong aria-hidden="true">7.5.</strong> Renderer State Management</a></li></ol></li><li><a href="../extensions.html"><strong aria-hidden="true">8.</strong> Why stop here</a></li><li class="affix"><a href="../dependencies.html">Working with Dependencies</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar" class="menu-bar">
+                    <div id="menu-bar-sticky-container">
+                        <div class="left-buttons">
+                            <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                                <i class="fa fa-bars"></i>
+                            </button>
+                            <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                                <i class="fa fa-paint-brush"></i>
+                            </button>
+                            <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                                <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                                <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                            </ul>
+                            
+                            <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            
+                        </div>
+
+                        <h1 class="menu-title">L-Systems</h1>
+
+                        <div class="right-buttons">
+                            <a href="../print.html" title="Print this book" aria-label="Print this book">
+                                <i id="print-button" class="fa fa-print"></i>
+                            </a>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#synthesis" id="synthesis">Synthesis</a></h1>
+<p>L-systems are like a brush that allow you to paint beautiful forms. But like any
+form of art it takes practice to become proficient. This chapter will allow you
+to take a peek behind the curtain. It will provide a few hints and tips when
+trying to create an L-system to resemble an image.</p>
+<h2><a class="header" href="#target-image" id="target-image">Target image</a></h2>
+<p><img src="../image/tree.png" alt="A tree to recreate" /></p>
+<p>Look at the above image. How would an L-system look like that would recreate
+that image?</p>
+<h2><a class="header" href="#configuration" id="configuration">Configuration</a></h2>
+<h3><a class="header" href="#step" id="step">Step</a></h3>
+<p>Step is less critical for the image so any starting value that allows you to see
+forwards clearly will do. Usually I settle on 30 and work from there</p>
+<h3><a class="header" href="#angle" id="angle">Angle</a></h3>
+<p>Take a look at some of the angles in the image. The angle between the main trunk
+and the first branches seems to be 45 degrees. Looking at other junctions the
+angle of 45 degrees seems to be found a lot.</p>
+<p>Keep in mind that the configuration could have a different angle configured. It
+is only necessary that a series of plusses or minusses can create an angle of 45
+degrees. E.g. an angle of 90 degrees can be made with an base angle of 45 by
+turning twice in a row.</p>
+<h3><a class="header" href="#l-system-file" id="l-system-file">L-system file</a></h3>
+<p>Start a file <code>tree.ls</code> in the <code>system</code> directory. We can already provide one of
+the sections</p>
+<pre><code class="language-plain">config:
+step = 30
+angle = 45
+</code></pre>
+<h2><a class="header" href="#rules" id="rules">Rules</a></h2>
+<h3><a class="header" href="#axiom" id="axiom">Axiom</a></h3>
+<p>Ferris the crab will start heading to the right. Since the main trunk grows
+upward we need to first orient Ferris before they can start drawing. Luckily 90
+is a multiple of 45 so two left turns will start us off right away.</p>
+<p>To get some feedback if we are on the right track we could add the rules section
+and the following axiom.</p>
+<pre><code class="language-plain">rules:
+axiom = --F
+</code></pre>
+<p>Execute <code>cargo run -- -f system/tree.ls -n 0</code> to see a mighty trunk.</p>
+<h3><a class="header" href="#rules-1" id="rules-1">Rules</a></h3>
+<p>When we focus on the rules and look at the tree, we notice that from the trunk
+two branches sprout. Since Ferris can't lift the pen from the paper, we know
+from the junction that we need to branch.</p>
+<p>Let's try our hand. After each forward we will split in two. In one part we turn
+left and sprout an new tree. In the other part we turn right and sprout a new
+tree. After a moments thought we might come up with the following rule.</p>
+<pre><code class="language-plain">F =&gt; F[-F][+F]
+</code></pre>
+<p>Add the rule to the L-system and run it to see the result. Don't forget to
+change the number of iterations.</p>
+<h3><a class="header" href="#lengthening-the-stems" id="lengthening-the-stems">Lengthening the stems</a></h3>
+<p>Seeing the image being drawn be Ferris, we notice that the structure is correct,
+but the length of the stems are off. Taking a closer look the stems seem to grow
+shorter for each new branch.</p>
+<p>Thinking about this some more, this would occur naturally if each forward step
+would change into two ore more forwards step with each iteration. That would
+suggest </p>
+<pre><code class="language-plain">F =&gt; FF
+</code></pre>
+<p>Since we already used <code>F</code> we need to introduce a new symbol. Let's settle on <code>S</code>
+which will stand for seed.</p>
+<p>The axiom needs to change into <code>--S</code>, i.e. change orientation and plant a seed.
+Next, each seed will grow into a stem and sprout two new seeds, both growing in
+a different direction. I.e. <code>S =&gt; F[-S][+S]</code>.
+Lastly during each iteration the stems need to grow, which corresponds to the 
+<code>F =&gt; FF</code> rule.</p>
+<p>Change the rules and check the result.</p>
+<h2><a class="header" href="#optimization" id="optimization">Optimization</a></h2>
+<p>We have successfully recreated the image. But there is an optimization that
+could be performed. Think about the second pair of brackets in the 
+<code>S =&gt; F[-S][+S]</code> rule.</p>
+<p>We use a pair of brackets to return to the exact state Ferris was in when we
+opened the bracket upon closing the bracket pair. We usually do this because we
+want to draw something else from that location. But we aren't drawing anything
+after the second branch.</p>
+<p>Check that <code>S =&gt; F[-S]+S</code> results in the same image.</p>
+<h2><a class="header" href="#exercises" id="exercises">Exercises</a></h2>
+<ol>
+<li>Walk through this chapter and recreate the image.</li>
+<li>If you would want to delay the growth of the stems, how would you do that?</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+                            <a rel="prev" href="../lsystem/crab.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                        
+
+                        
+                            <a rel="next" href="../lsystem/expose.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+                    <a href="../lsystem/crab.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                
+
+                
+                    <a href="../lsystem/expose.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                
+            </nav>
+
+        </div>
+
+        
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3001");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload(true); // force reload from server (not from cache)
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+        
+
+        
+
+        
+
+        
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+
+    </body>
+</html>
