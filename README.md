@@ -1,4 +1,4 @@
-# workshop
+# L-system Workshop
 A comprehensive collection of all things related to the workshop.
 
 ## Overview
