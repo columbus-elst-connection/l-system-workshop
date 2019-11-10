@@ -34,7 +34,7 @@ instructions described by the L-system informing interested parties what has
 happened.
 
 The interpreter is the workhorse of our program. Although it is the centerpiece
-of our software, it is a quit simple machine.
+of our software, it is a quite simple machine.
 
 ## Renderer
 An L-system without a "picture" is as a Christmas tree without decorations. It
