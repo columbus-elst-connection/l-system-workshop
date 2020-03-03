@@ -8,4 +8,9 @@ edition = "2018"
 
 [dependencies]
 api = { path = "../api" }
-turtle = "^1.0.0-rc.2"
+# turtle = "^1.0.0-rc.2"
+# use this version from github that is newer than above version, as above version does not compile due to
+# an issue in the cocoa library which is a transitive dependency
+turtle = { git = "https://github.com/sunjay/turtle", rev = "268e005665ecac48a96c5833e0b9d09f538f076b" }
+
+
